@@ -6,10 +6,10 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
   if (!lastPeriodDate) return null
 
   const phases = [
-    { name: 'Power Phase 1', days: [1, 10], color: '#B0E0E6', icon: '⚡' },
-    { name: 'Manifestation', days: [11, 15], color: '#F4D03F', icon: '✨' },
-    { name: 'Power Phase 2', days: [16, 19], color: '#98D8C8', icon: '🎯' },
-    { name: 'Nurture Phase', days: [20, cycleLength], color: '#FFB6C1', icon: '🌙' }
+    { name: 'Power Phase 1', displayName: 'Power Phase 1', days: [1, 10], color: '#B0E0E6', icon: '⚡' },
+    { name: 'Manifestation Phase', displayName: 'Manifestation', days: [11, 15], color: '#F4D03F', icon: '✨' },
+    { name: 'Power Phase 2', displayName: 'Power Phase 2', days: [16, 19], color: '#98D8C8', icon: '🎯' },
+    { name: 'Nurture Phase', displayName: 'Nurture Phase', days: [20, cycleLength], color: '#FFB6C1', icon: '🌙' }
   ]
 
   // Get libido levels for each phase
@@ -19,19 +19,13 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
     return fertilityInfo?.libido?.level || 'low'
   }
 
-  // Determine if a day has high libido
-  const getLibidoForDay = (day) => {
-    if (day >= 1 && day <= 10) {
-      const level = getLibidoLevel('Power Phase 1')
-      return level === 'moderate-high' ? 1 : 0
-    } else if (day >= 11 && day <= 15) {
-      const level = getLibidoLevel('Manifestation Phase')
-      return level === 'peak' ? 2 : 0
-    } else if (day >= 16 && day <= 19) {
-      const level = getLibidoLevel('Power Phase 2')
-      return level === 'moderate' ? 1 : 0
-    }
-    return 0
+  // Get libido indicator for each phase
+  const getLibidoIndicator = (phaseName) => {
+    const level = getLibidoLevel(phaseName)
+    if (level === 'peak') return '🌶️🌶️'
+    if (level === 'moderate-high' || level === 'moderate') return '🌶️'
+    if (level === 'low') return '💀'
+    return null
   }
 
   const getPhaseWidth = (startDay, endDay) => {
@@ -64,10 +58,15 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
                   backgroundColor: `${phase.color}40`,
                   borderColor: phase.color
                 }}
-                title={phase.name}
+                title={phase.displayName}
               >
                 <span className="phase-segment-icon">{phase.icon}</span>
-                <span className="phase-segment-label">{phase.name}</span>
+                <span className="phase-segment-label">
+                  {phase.displayName}
+                  {getLibidoIndicator(phase.name) && (
+                    <span className="libido-indicator">{getLibidoIndicator(phase.name)}</span>
+                  )}
+                </span>
               </div>
             )
           })}
@@ -99,26 +98,6 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
               )
             })
           })()}
-        </div>
-        
-        {/* Libido indicators */}
-        <div className="libido-indicators">
-          {Array.from({ length: cycleLength }, (_, i) => i + 1).map(day => {
-            const libidoLevel = getLibidoForDay(day)
-            if (libidoLevel > 0) {
-              return (
-                <div 
-                  key={`libido-${day}`} 
-                  className="libido-marker" 
-                  style={{ left: `${((day - 1) / cycleLength) * 100}%` }}
-                  title={`High libido - Day ${day}`}
-                >
-                  {libidoLevel === 2 ? '🌶️🌶️' : '🌶️'}
-                </div>
-              )
-            }
-            return null
-          })}
         </div>
       </div>
     </div>
