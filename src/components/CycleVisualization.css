@@ -1,0 +1,148 @@
+.cycle-visualization {
+  background: var(--bg-card);
+  border: 1px solid rgba(244, 208, 63, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.cycle-visualization h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.cycle-timeline {
+  position: relative;
+  height: 120px;
+  margin-top: 2rem;
+}
+
+.phases-container {
+  position: relative;
+  height: 60px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.phase-segment {
+  position: absolute;
+  height: 100%;
+  border: 2px solid;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.phase-segment:hover {
+  transform: scaleY(1.1);
+  z-index: 10;
+}
+
+.phase-segment.active {
+  box-shadow: 0 0 20px currentColor;
+  z-index: 5;
+}
+
+.phase-segment-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.phase-segment-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.current-day-marker {
+  position: absolute;
+  top: 70px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 20;
+}
+
+.marker-dot {
+  width: 16px;
+  height: 16px;
+  background: var(--primary-gold);
+  border: 3px solid var(--bg-card);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(244, 208, 63, 0.5);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(244, 208, 63, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(244, 208, 63, 0.7);
+  }
+}
+
+.marker-label {
+  font-size: 0.85rem;
+  color: var(--primary-gold);
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--bg-card);
+  padding: 0.25rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--primary-gold);
+}
+
+.cycle-days {
+  position: absolute;
+  top: 100px;
+  width: 100%;
+  height: 20px;
+}
+
+.day-marker {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.day-marker span {
+  display: block;
+  width: 2px;
+  height: 8px;
+  background: var(--text-secondary);
+  margin: 0 auto 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .cycle-visualization {
+    padding: 1.5rem;
+  }
+
+  .phase-segment-label {
+    font-size: 0.6rem;
+  }
+
+  .phase-segment-icon {
+    font-size: 1.2rem;
+  }
+}
+

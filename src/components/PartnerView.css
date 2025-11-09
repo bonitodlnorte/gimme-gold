@@ -1,0 +1,309 @@
+.partner-view {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.partner-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.partner-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.partner-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.partner-welcome {
+  background: var(--bg-card);
+  border: 2px dashed rgba(244, 208, 63, 0.4);
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.partner-welcome h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.partner-welcome p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.partner-welcome .no-data {
+  color: var(--primary-gold);
+  font-weight: 600;
+  margin-top: 2rem;
+}
+
+.partner-info-card {
+  background: var(--bg-card);
+  border: 2px solid var(--primary-gold);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.15);
+}
+
+.current-status h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.status-text {
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.status-text strong {
+  color: var(--primary-gold);
+  font-weight: 700;
+}
+
+.status-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.communication-guide {
+  background: var(--bg-card);
+  border: 1px solid rgba(244, 208, 63, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.communication-guide h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.approach-badge {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: 3px solid;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.approach-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.tips-section {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.tips-section.do {
+  border-left: 4px solid var(--accent-green);
+}
+
+.tips-section.avoid {
+  border-left: 4px solid var(--accent-pink);
+}
+
+.tips-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.tips-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tips-section li {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.tips-section.do li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-green);
+  font-weight: 700;
+}
+
+.tips-section.avoid li::before {
+  content: '✗';
+  position: absolute;
+  left: 0;
+  color: var(--accent-pink);
+  font-weight: 700;
+}
+
+.activity-suggestions {
+  background: var(--bg-card);
+  border: 1px solid rgba(244, 208, 63, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.activity-suggestions h3 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.suggestions-intro {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.suggestion-card {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.suggestion-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.suggestion-card h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.suggestion-card p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.suggestion-level {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hormone-info {
+  background: var(--bg-card);
+  border: 1px solid rgba(244, 208, 63, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.hormone-info h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.hormone-explanation p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+}
+
+.hormone-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hormone-detail {
+  background: var(--bg-secondary);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.hormone-detail strong {
+  color: var(--primary-gold);
+  margin-right: 0.5rem;
+}
+
+.hormone-note {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .partner-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .suggestions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .communication-guide,
+  .activity-suggestions,
+  .hormone-info {
+    padding: 1.5rem;
+  }
+}
+

@@ -1,0 +1,241 @@
+.educational-content {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-purple);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(221, 160, 221, 0.15);
+}
+
+.education-header {
+  margin-bottom: 2rem;
+}
+
+.education-header h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.education-intro {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.phases-education {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.phase-education-card {
+  background: var(--bg-secondary);
+  border: 2px solid;
+  border-radius: 16px;
+  padding: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.phase-education-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.phase-education-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.phase-education-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.phase-education-header h4 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.phase-days {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.phase-description-text {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.hormones-breakdown {
+  margin-bottom: 1.5rem;
+}
+
+.hormones-breakdown h5 {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.hormones-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hormone-badge {
+  background: var(--bg-card);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.hormone-badge span {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.hormone-badge strong {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.what-happens {
+  margin-bottom: 1.5rem;
+}
+
+.what-happens h5 {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.what-happens ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.what-happens li {
+  color: var(--text-primary);
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.what-happens li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary-gold);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.why-matters {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-gold);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.why-matters h5 {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.why-matters p {
+  color: var(--text-primary);
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.key-takeaways {
+  background: linear-gradient(135deg, rgba(244, 208, 63, 0.15) 0%, rgba(244, 208, 63, 0.08) 100%);
+  border: 2px solid var(--primary-gold);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.15);
+}
+
+.key-takeaways h4 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-gold);
+}
+
+.key-takeaways ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.key-takeaways li {
+  color: var(--text-primary);
+  line-height: 1.8;
+  padding-left: 2rem;
+  position: relative;
+  font-size: 1.05rem;
+}
+
+.key-takeaways li::before {
+  content: '💡';
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+.key-takeaways strong {
+  color: var(--primary-gold);
+}
+
+@media (max-width: 768px) {
+  .educational-content {
+    padding: 1.5rem;
+  }
+
+  .phase-education-card {
+    padding: 1.5rem;
+  }
+
+  .phase-education-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hormones-list {
+    flex-direction: column;
+  }
+}
+

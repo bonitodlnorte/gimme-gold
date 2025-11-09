@@ -1,0 +1,117 @@
+.cycle-tracker {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tracker-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.education-toggle {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-purple);
+  color: var(--accent-purple);
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(221, 160, 221, 0.15);
+}
+
+.education-toggle:hover {
+  background: var(--accent-purple);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(221, 160, 221, 0.25);
+}
+
+.input-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(244, 208, 63, 0.3);
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.date-input,
+.number-input {
+  background: var(--bg-secondary);
+  border: 2px solid rgba(244, 208, 63, 0.4);
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.date-input:focus,
+.number-input:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(244, 208, 63, 0.15);
+}
+
+.welcome-message {
+  background: var(--bg-card);
+  padding: 3rem;
+  border-radius: 16px;
+  text-align: center;
+  border: 2px dashed rgba(244, 208, 63, 0.4);
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.welcome-message p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.welcome-message p:first-child {
+  font-size: 1.5rem;
+  color: var(--primary-gold);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .tracker-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .input-section {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+}
+
