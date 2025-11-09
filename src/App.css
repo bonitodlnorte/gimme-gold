@@ -29,7 +29,7 @@
 }
 
 .app-logo {
-  height: 90px;
+  height: 108px;
   width: auto;
   object-fit: contain;
   transition: transform 0.3s ease;
@@ -149,7 +149,7 @@
   }
 
   .app-logo {
-    height: 70px;
+    height: 84px;
   }
 
   .app-title {
@@ -176,7 +176,7 @@
   }
 
   .app-logo {
-    height: 60px;
+    height: 72px;
   }
 
   .app-title {
