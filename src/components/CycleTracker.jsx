@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { format, addDays, differenceInDays } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import PhaseCard from './PhaseCard'
 import Recommendations from './Recommendations'
 import CycleVisualization from './CycleVisualization'
@@ -15,6 +16,7 @@ function CycleTracker({
   currentPhase,
   daysInCycle 
 }) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [showRecordDialog, setShowRecordDialog] = useState(false)
   const [recordNote, setRecordNote] = useState('')
@@ -93,7 +95,7 @@ function CycleTracker({
 
   const handleRecordNewPeriod = () => {
     if (!lastPeriodDate) {
-      alert('Please set your last period date first')
+      alert(t('cycleTracker.pleaseSetPeriodDate'))
       return
     }
     setRecordDate(format(new Date(), 'yyyy-MM-dd'))
@@ -113,7 +115,7 @@ function CycleTracker({
     
     // Validate cycle length is reasonable (between 15 and 45 days)
     if (actualCycleLength < 15 || actualCycleLength > 45) {
-      alert(`The calculated cycle length (${actualCycleLength} days) seems unusual. Please verify the dates are correct.`)
+      alert(t('cycleTracker.unusualCycleLength', { days: actualCycleLength }))
       return
     }
     
@@ -162,26 +164,26 @@ function CycleTracker({
   return (
     <div className="cycle-tracker">
       <div className="tracker-header">
-        <h2>Your Cycle Tracker</h2>
+        <h2>{t('cycleTracker.title')}</h2>
         <div className="header-actions">
           <button 
             className="cycle-log-button"
             onClick={() => navigate('/cycle-log')}
           >
-            📊 View Cycle Log
+            {t('cycleTracker.viewCycleLog')}
           </button>
           <button 
             className="education-toggle"
             onClick={() => navigate('/learn')}
           >
-            📚 Learn About Phases
+            {t('cycleTracker.learnAboutPhases')}
           </button>
         </div>
       </div>
 
       <div className="input-section">
         <div className="input-group">
-          <label htmlFor="period-date">Last Period Start Date</label>
+          <label htmlFor="period-date">{t('cycleTracker.lastPeriodStartDate')}</label>
           <input
             id="period-date"
             type="date"
@@ -198,7 +200,7 @@ function CycleTracker({
         </div>
 
         <div className="input-group">
-          <label htmlFor="cycle-length">Cycle Length (days)</label>
+          <label htmlFor="cycle-length">{t('cycleTracker.cycleLength')}</label>
           <div className="cycle-length-input-wrapper">
             <input
               id="cycle-length"
@@ -213,34 +215,34 @@ function CycleTracker({
               <button
                 className="set-average-button"
                 onClick={() => onCycleLengthChange(Math.round(averageCycleLength))}
-                title={`Set to your average: ${averageCycleLength} days (based on latest 4 measurements)`}
+                title={t('cycleTracker.setToAverage') + `: ${averageCycleLength} ${t('common.days')} (${t('cycleLog.basedOnLatest')})`}
               >
-                📊 Set to Average ({Math.round(averageCycleLength)})
+                {t('cycleTracker.setToAverage')} ({Math.round(averageCycleLength)})
               </button>
             )}
           </div>
           {averageCycleLength && (
             <p className="cycle-length-note">
-              Your average: {averageCycleLength} days (based on latest 4 measurements). You can override this manually.
+              {t('cycleTracker.averageNote', { average: averageCycleLength.toFixed(1) })}
             </p>
           )}
         </div>
 
         {lastPeriodDate && (
           <div className="input-group next-period-group">
-            <label>📅 Next Period Expected</label>
+            <label>📅 {t('cycleTracker.nextPeriodExpected')}</label>
             <div className="next-period-content">
               <p className="next-period-date">
                 {format(addDays(lastPeriodDate, cycleLength), 'EEEE, MMMM d, yyyy')}
               </p>
               <p className="next-period-days">
-                In approximately {cycleLength - daysInCycle} day{cycleLength - daysInCycle !== 1 ? 's' : ''}
+                {t('cycleTracker.inApproximately', { days: cycleLength - daysInCycle, count: cycleLength - daysInCycle })}
               </p>
               <button
                 className="record-period-button"
                 onClick={handleRecordNewPeriod}
               >
-                🩸 Register New Period
+                {t('cycleTracker.registerNewPeriod')}
               </button>
             </div>
           </div>
@@ -250,12 +252,12 @@ function CycleTracker({
       {showRecordDialog && (
         <div className="record-dialog-overlay" onClick={() => setShowRecordDialog(false)}>
           <div className="record-dialog" onClick={(e) => e.stopPropagation()}>
-            <h3>📝 Record New Period</h3>
+            <h3>{t('cycleTracker.recordNewPeriod')}</h3>
             <p className="dialog-info">
-              This will calculate your actual cycle length from your last period.
+              {t('cycleTracker.recordDialogInfo')}
             </p>
             <div className="dialog-date-section">
-              <label htmlFor="record-date">Period Start Date:</label>
+              <label htmlFor="record-date">{t('cycleTracker.periodStartDate')}</label>
               <input
                 id="record-date"
                 type="date"
@@ -271,12 +273,12 @@ function CycleTracker({
               )}
             </div>
             <div className="dialog-note-section">
-              <label htmlFor="record-note">Add a note (optional):</label>
+              <label htmlFor="record-note">{t('cycleTracker.addNoteOptional')}</label>
               <textarea
                 id="record-note"
                 value={recordNote}
                 onChange={(e) => setRecordNote(e.target.value)}
-                placeholder="e.g., Heavy flow, cramps, mood..."
+                placeholder={t('cycleTracker.notePlaceholder')}
                 rows="3"
                 className="dialog-note-input"
               />
@@ -290,13 +292,13 @@ function CycleTracker({
                   setRecordDate(format(new Date(), 'yyyy-MM-dd'))
                 }}
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 className="dialog-confirm-button"
                 onClick={confirmRecordNewPeriod}
               >
-                ✓ Record Period
+                {t('cycleTracker.recordPeriod')}
               </button>
             </div>
           </div>
@@ -313,20 +315,20 @@ function CycleTracker({
             lastPeriodDate={lastPeriodDate}
           />
           <div className="share-section">
-            <h3 className="share-title">📤 Share Partner View</h3>
+            <h3 className="share-title">{t('cycleTracker.sharePartnerView')}</h3>
             <p className="share-description">
-              Share a link to the Partner View with your partner, boss, or colleague so they can understand your cycle and support you better.
+              {t('cycleTracker.shareDescription')}
             </p>
             <button
               className="share-button whatsapp-share"
               onClick={() => {
                 const shareUrl = `${window.location.origin}/partner?date=${format(lastPeriodDate, 'yyyy-MM-dd')}&length=${cycleLength}`
-                const message = `Check out my cycle info to understand how to support me better: ${shareUrl}`
+                const message = t('cycleTracker.shareMessage', { url: shareUrl })
                 const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`
                 window.open(whatsappUrl, '_blank')
               }}
             >
-              📱 Share via WhatsApp
+              {t('cycleTracker.shareViaWhatsApp')}
             </button>
             <button
               className="share-button copy-link"
@@ -336,7 +338,7 @@ function CycleTracker({
                   await navigator.clipboard.writeText(shareUrl)
                   const button = e.target
                   const originalText = button.textContent
-                  button.textContent = '✓ Link Copied!'
+                  button.textContent = t('cycleTracker.linkCopied')
                   button.style.background = 'var(--accent-green)'
                   button.style.borderColor = 'var(--accent-green)'
                   button.style.color = 'white'
@@ -356,14 +358,14 @@ function CycleTracker({
                   document.body.removeChild(textArea)
                   const button = e.target
                   const originalText = button.textContent
-                  button.textContent = '✓ Link Copied!'
+                  button.textContent = t('cycleTracker.linkCopied')
                   setTimeout(() => {
                     button.textContent = originalText
                   }, 2000)
                 }
               }}
             >
-              📋 Copy Link
+              {t('cycleTracker.copyLink')}
             </button>
           </div>
           <Recommendations phase={currentPhase} cycleLength={cycleLength} />
@@ -372,8 +374,8 @@ function CycleTracker({
 
       {!lastPeriodDate && (
         <div className="welcome-message">
-          <p>👋 Welcome to Gimme Gold!</p>
-          <p>Enter the date when your last period started to begin tracking your hormonal cycle and get personalized insights.</p>
+          <p>{t('cycleTracker.welcome')}</p>
+          <p>{t('cycleTracker.welcomeMessage')}</p>
         </div>
       )}
     </div>

@@ -14,6 +14,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
+  position: relative;
 }
 
 .header-content {
@@ -64,6 +65,62 @@
   font-weight: 300;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex !important;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.language-switcher {
+  display: flex !important;
+  gap: 0.25rem;
+  background: #FFFFFF;
+  border: 2px solid #F7DC6F;
+  border-radius: 12px;
+  padding: 0.25rem;
+  min-width: 100px;
+  z-index: 1000;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.lang-button {
+  background: transparent;
+  border: none;
+  color: #6B6B6B;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 40px;
+  text-align: center;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.lang-button:hover {
+  background: var(--primary-gold-light, rgba(244, 208, 63, 0.2));
+  color: var(--text-primary, #333);
+}
+
+.lang-button.active {
+  background: #F4D03F;
+  color: #2C2C2C;
+  box-shadow: 0 2px 4px rgba(244, 208, 63, 0.2);
+}
+
+.lang-button:not(.active) {
+  color: #6B6B6B;
 }
 
 .view-toggle {
@@ -146,6 +203,22 @@
 @media (max-width: 768px) {
   .app-header {
     padding: 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+
+  .language-switcher {
+    order: 1;
+  }
+
+  .view-toggle {
+    order: 2;
   }
 
   .app-logo {
@@ -173,6 +246,25 @@
 @media (max-width: 480px) {
   .header-content {
     gap: 0.75rem;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .language-switcher {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lang-button {
+    flex: 1;
+  }
+
+  .view-toggle {
+    width: 100%;
   }
 
   .app-logo {

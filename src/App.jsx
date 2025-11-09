@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import CycleTracker from './components/CycleTracker'
 import PartnerView from './components/PartnerView'
 import WorkoutReportPage from './components/WorkoutReportPage'
@@ -40,6 +41,8 @@ function SharedPartnerView() {
 }
 
 function App() {
+  const { t, i18n } = useTranslation()
+  const [, forceUpdate] = useState(0)
   const [lastPeriodDate, setLastPeriodDate] = useState(() => {
     const saved = localStorage.getItem('gimmeGold_lastPeriodDate')
     return saved ? new Date(saved) : null
@@ -52,6 +55,28 @@ function App() {
 
   const location = useLocation()
   const navigate = useNavigate()
+
+  // Listen for language changes to force re-render
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      forceUpdate(prev => prev + 1)
+    }
+    i18n.on('languageChanged', handleLanguageChanged)
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged)
+    }
+  }, [i18n])
+
+  const changeLanguage = (lng) => {
+    console.log('Changing language to:', lng)
+    i18n.changeLanguage(lng)
+  }
+
+  // Debug: Log current language
+  useEffect(() => {
+    console.log('Current language:', i18n.language)
+    console.log('Language switcher should be visible')
+  }, [i18n.language])
 
   useEffect(() => {
     if (lastPeriodDate) {
@@ -83,24 +108,95 @@ function App() {
         <div className="header-content" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
           <img 
             src="/images/Gimme Gold logo no text.png" 
-            alt="Gimme Gold Logo" 
+            alt={t('app.logoAlt')} 
             className="app-logo"
           />
           <div className="header-text">
             <h1 className="app-title">
               <span className="gold-text">Gimme</span> Gold
             </h1>
-            <p className="app-subtitle">Hormonal Cycle Intelligence</p>
+            <p className="app-subtitle">{t('app.subtitle')}</p>
           </div>
         </div>
-        {showViewToggle && (
-          <button 
-            className="view-toggle"
-            onClick={() => setIsPartnerView(!isPartnerView)}
-          >
-            {isPartnerView ? '👤 My View' : '👥 Partner View'}
-          </button>
-        )}
+        <div className="header-actions" style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '1rem',
+          position: 'relative',
+          zIndex: 1000
+        }}>
+          <div className="language-switcher" style={{
+            display: 'flex',
+            gap: '0.25rem',
+            background: '#FFFFFF',
+            border: '3px solid #FF0000',
+            borderRadius: '12px',
+            padding: '0.5rem',
+            minWidth: '120px',
+            zIndex: 1001,
+            visibility: 'visible',
+            opacity: 1,
+            position: 'relative',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
+          }}>
+            <button
+              className={`lang-button ${i18n.language?.startsWith('en') || i18n.language === 'en' ? 'active' : ''}`}
+              onClick={() => {
+                console.log('Changing to English')
+                changeLanguage('en')
+              }}
+              aria-label="English"
+              style={{
+                display: 'block',
+                visibility: 'visible',
+                opacity: 1,
+                background: i18n.language?.startsWith('en') || i18n.language === 'en' ? '#F4D03F' : 'transparent',
+                color: i18n.language?.startsWith('en') || i18n.language === 'en' ? '#2C2C2C' : '#6B6B6B',
+                border: 'none',
+                padding: '0.5rem 1rem',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                minWidth: '40px'
+              }}
+            >
+              EN
+            </button>
+            <button
+              className={`lang-button ${i18n.language?.startsWith('es') || i18n.language === 'es' ? 'active' : ''}`}
+              onClick={() => {
+                console.log('Changing to Spanish')
+                changeLanguage('es')
+              }}
+              aria-label="Español"
+              style={{
+                display: 'block',
+                visibility: 'visible',
+                opacity: 1,
+                background: i18n.language?.startsWith('es') || i18n.language === 'es' ? '#F4D03F' : 'transparent',
+                color: i18n.language?.startsWith('es') || i18n.language === 'es' ? '#2C2C2C' : '#6B6B6B',
+                border: 'none',
+                padding: '0.5rem 1rem',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                minWidth: '40px'
+              }}
+            >
+              ES
+            </button>
+          </div>
+          {showViewToggle && (
+            <button 
+              className="view-toggle"
+              onClick={() => setIsPartnerView(!isPartnerView)}
+            >
+              {isPartnerView ? t('app.myView') : t('app.partnerView')}
+            </button>
+          )}
+        </div>
       </header>
 
       <main className="app-main">
@@ -162,7 +258,7 @@ function App() {
 
       <footer className="app-footer">
         <p>
-          Created with <span className="heart">❤️</span> and AI by{' '}
+          {t('app.footer')}{' '}
           <a 
             href="https://www.korokota.com" 
             target="_blank" 

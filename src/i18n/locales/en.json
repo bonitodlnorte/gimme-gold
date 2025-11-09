@@ -1,0 +1,555 @@
+{
+  "common": {
+    "back": "← Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "day": "Day",
+    "days": "days",
+    "of": "of",
+    "current": "Current",
+    "noNote": "No note",
+    "addNote": "Add a note...",
+    "optional": "optional",
+    "do": "DO",
+    "dont": "DON'T",
+    "avoid": "Avoid"
+  },
+  "app": {
+    "title": "Gimme Gold",
+    "subtitle": "Hormonal Cycle Intelligence",
+    "myView": "👤 My View",
+    "partnerView": "👥 Partner View",
+    "footer": "Created with ❤️ and AI by",
+    "logoAlt": "Gimme Gold Logo"
+  },
+  "cycleTracker": {
+    "title": "Your Cycle Tracker",
+    "viewCycleLog": "📊 View Cycle Log",
+    "learnAboutPhases": "📚 Learn About Phases",
+    "lastPeriodStartDate": "Last Period Start Date",
+    "cycleLength": "Cycle Length (days)",
+    "setToAverage": "📊 Set to Average",
+    "averageNote": "Your average: {{average}} days (based on latest 4 measurements). You can override this manually.",
+    "nextPeriodExpected": "📅 Next Period Expected",
+    "inApproximately": "In approximately {{days}} day",
+    "inApproximately_plural": "In approximately {{days}} days",
+    "registerNewPeriod": "🩸 Register New Period",
+    "recordNewPeriod": "📝 Record New Period",
+    "recordDialogInfo": "This will calculate your actual cycle length from your last period.",
+    "periodStartDate": "Period Start Date:",
+    "addNoteOptional": "Add a note (optional):",
+    "notePlaceholder": "e.g., Heavy flow, cramps, mood...",
+    "recordPeriod": "✓ Record Period",
+    "pleaseSetPeriodDate": "Please set your last period date first",
+    "unusualCycleLength": "The calculated cycle length ({{days}} days) seems unusual. Please verify the dates are correct.",
+    "sharePartnerView": "📤 Share Partner View",
+    "shareDescription": "Share a link to the Partner View with your partner, boss, or colleague so they can understand your cycle and support you better.",
+    "shareViaWhatsApp": "📱 Share via WhatsApp",
+    "copyLink": "📋 Copy Link",
+    "linkCopied": "✓ Link Copied!",
+    "shareMessage": "Check out my cycle info to understand how to support me better: {{url}}",
+    "welcome": "👋 Welcome to Gimme Gold!",
+    "welcomeMessage": "Enter the date when your last period started to begin tracking your hormonal cycle and get personalized insights."
+  },
+  "phaseCard": {
+    "currentHormonalState": "Current Hormonal State",
+    "estrogen": "Estrogen",
+    "progesterone": "Progesterone",
+    "testosterone": "Testosterone"
+  },
+  "recommendations": {
+    "title": "Your Personalized Recommendations",
+    "subtitle": "Based on your current hormonal phase, here's how to optimize your activities",
+    "sexualHealthFertility": "💕 Sexual Health & Fertility",
+    "bestTimeForGreatSex": "Best Time for Great Sex",
+    "bestDays": "Best Days:",
+    "bestTimeToGetPregnant": "Best Time to Get Pregnant",
+    "fertileWindow": "Fertile Window:",
+    "avoidingPregnancy": "Avoiding Pregnancy",
+    "safetyLevel": "Safety Level:",
+    "workCareer": "Work & Career",
+    "exerciseFitness": "Exercise & Fitness",
+    "socialActivities": "Social Activities",
+    "intimacyConnection": "Intimacy & Connection",
+    "bestFor": "Best For:",
+    "viewFullWorkoutReport": "🏋️ View Full Workout Performance Report →",
+    "viewFullWorkCareerReport": "💼 View Full Work & Career Performance Report →",
+    "levels": {
+      "peak": "PEAK TIME",
+      "greatTime": "Great Time",
+      "goodTime": "Good Time",
+      "moderate": "Moderate",
+      "good": "Good",
+      "takeItEasy": "Take It Easy",
+      "restTime": "Rest Time",
+      "peakPerformance": "✨ Peak Performance Time",
+      "greatTimeEmoji": "⚡ Great Time",
+      "goodTimeEmoji": "👍 Good Time",
+      "takeItEasyEmoji": "🌙 Take It Easy",
+      "restTimeEmoji": "🌙 Rest Time",
+      "peakSocial": "✨ Peak Social Time",
+      "goodSocial": "👍 Good Time",
+      "moderateSocial": "👌 Moderate",
+      "preferQuiet": "🌙 Prefer Quiet Time",
+      "peakIntimacy": "✨ Peak Intimacy Time",
+      "goodIntimacy": "💕 Good Time",
+      "focusEmotional": "🌙 Focus on Emotional Support"
+    },
+    "fertilityLevels": {
+      "peak": "PEAK",
+      "high": "HIGH",
+      "moderate": "MODERATE",
+      "low": "LOW",
+      "veryLow": "VERY LOW",
+      "highRisk": "HIGH RISK",
+      "safer": "SAFER"
+    }
+  },
+  "partnerView": {
+    "title": "👥 Partner View",
+    "subtitle": "Understanding her cycle helps you support her better",
+    "noData": "No cycle data available yet. Ask your partner to set up her cycle tracking first.",
+    "welcomeMessage": "This view helps you understand where your partner is in her cycle and how to best support her.",
+    "currentStatus": "Current Status",
+    "sheIsCurrentlyIn": "She is currently in <strong>{{phase}}</strong> (Day {{day}} of {{length}})",
+    "howToApproach": "💬 How to Approach Her Right Now",
+    "activitySuggestions": "🎯 Activity Suggestions",
+    "suggestionsIntro": "Based on her current phase, here are activities that align well with her energy:",
+    "work": "Work",
+    "social": "Social",
+    "intimacy": "Intimacy",
+    "understandingHormones": "🧪 Understanding Her Hormones",
+    "hormoneExplanation": "Her current hormonal state affects her energy, mood, and cognitive function. Understanding this helps you communicate and interact with her more effectively.",
+    "playDead": {
+      "title": "PLAY DEAD",
+      "subtitle": "🐾 The last 2-3 days before her period - be extra careful!",
+      "do": [
+        "Be quiet (like, really quiet)",
+        "Bring chocolate (the good kind)",
+        "Offer back rubs (without asking)",
+        "Say \"yes\" to everything (seriously, everything)"
+      ],
+      "dont": [
+        "Ask \"what's wrong?\" (you'll regret it)",
+        "Make jokes (not the time, bro)",
+        "Suggest going out (she wants to stay in)",
+        "Be logical (logic doesn't work here)"
+      ]
+    },
+    "proceedWithCaution": {
+      "title": "PROCEED WITH EXTREME CAUTION",
+      "subtitle": "🦺 She's in her sensitive phase - handle with care!",
+      "do": [
+        "Be gentle (like handling glass)",
+        "Listen actively (actually listen)",
+        "Offer help (but don't hover)",
+        "Be patient (very, very patient)"
+      ],
+      "dont": [
+        "Be critical (save it for later)",
+        "Rush her (she moves at her own pace)",
+        "Make demands (just don't)",
+        "Minimize feelings (they're real, deal with it)"
+      ]
+    },
+    "superhero": {
+      "title": "SHE'S A SUPERHERO",
+      "do": [
+        "Celebrate her (she's amazing right now)",
+        "Support her goals (she can do anything)",
+        "Enjoy the energy (it's contagious)",
+        "Be intimate (trust us on this one)"
+      ],
+      "dont": [
+        "Hold her back (she's unstoppable)",
+        "Be jealous (of her confidence)",
+        "Undermine confidence (she's at peak)",
+        "Waste this time (it's limited)"
+      ]
+    },
+    "buildingMode": {
+      "title": "BUILDING MODE",
+      "do": [
+        "Encourage her (she's gaining momentum)",
+        "Plan together (she's thinking ahead)",
+        "Be supportive (she needs it)",
+        "Engage in conversations (she's getting sharper)"
+      ],
+      "dont": [
+        "Be dismissive (her ideas matter)",
+        "Rush decisions (let her think)",
+        "Overwhelm her (energy is building)",
+        "Ignore her ideas (they're getting better)"
+      ]
+    },
+    "focusMode": {
+      "title": "FOCUS MODE",
+      "do": [
+        "Respect her focus (she's in the zone)",
+        "Support her work (she's getting things done)",
+        "Be understanding (she's introspective)",
+        "Have deep conversations (she's ready)"
+      ],
+      "dont": [
+        "Interrupt her (she's concentrating)",
+        "Demand attention (she's focused)",
+        "Be overly social (she prefers depth)",
+        "Distract her (let her work)"
+      ]
+    },
+    "hormoneNotes": {
+      "estrogen": {
+        "peak": " - Enhances confidence, verbal skills, and cognitive function",
+        "rising": " - Building energy and improving mood",
+        "dropping": " - Energy shifting, focus increasing",
+        "low": " - Time for rest and recovery"
+      },
+      "progesterone": {
+        "peak": " - Promotes calmness, but may lower energy",
+        "rising": " - Increasing focus and introspection",
+        "low": " - More active and energetic phase"
+      },
+      "testosterone": {
+        "surge": " - Boosts confidence, libido, and assertiveness",
+        "moderate": " - Balanced levels",
+        "low": " - More introspective phase"
+      }
+    },
+    "communicationTips": {
+      "powerPhase1": {
+        "approach": "Supportive and encouraging",
+        "description": "She's building energy and confidence. Great time for collaborative planning and starting new projects together.",
+        "do": [
+          "Encourage her ideas",
+          "Plan activities together",
+          "Be supportive of new initiatives",
+          "Engage in meaningful conversations"
+        ],
+        "avoid": [
+          "Being dismissive",
+          "Rushing decisions",
+          "Overwhelming with too many tasks"
+        ]
+      },
+      "manifestationPhase": {
+        "approach": "Empower and celebrate",
+        "description": "She's at her peak! This is her time to shine. Support her in high-stakes situations and celebrate her confidence.",
+        "do": [
+          "Encourage her to take on challenges",
+          "Support important presentations/meetings",
+          "Celebrate her achievements",
+          "Enjoy social activities together",
+          "Be intimate and connected"
+        ],
+        "avoid": [
+          "Undermining her confidence",
+          "Scheduling conflicts during this time",
+          "Being dismissive of her ideas"
+        ]
+      },
+      "powerPhase2": {
+        "approach": "Respectful and focused",
+        "description": "She has excellent focus and endurance. Great time for deep work and completing projects together.",
+        "do": [
+          "Respect her need for focus",
+          "Support her in completing tasks",
+          "Have meaningful one-on-one conversations",
+          "Be patient and understanding"
+        ],
+        "avoid": [
+          "Interrupting her flow",
+          "Demanding immediate attention",
+          "Being overly social"
+        ]
+      },
+      "nurturePhase": {
+        "approach": "Gentle and understanding",
+        "description": "She needs rest and self-care. This is a time for patience, understanding, and emotional support.",
+        "do": [
+          "Offer emotional support",
+          "Be patient and understanding",
+          "Help with practical tasks",
+          "Create a calm environment",
+          "Respect her need for space"
+        ],
+        "avoid": [
+          "Pushing for high-energy activities",
+          "Being critical or demanding",
+          "Expecting peak performance",
+          "Minimizing her feelings"
+        ]
+      }
+    }
+  },
+  "cycleLog": {
+    "title": "📊 Cycle Log",
+    "subtitle": "Track your cycle history and patterns",
+    "back": "← Back",
+    "noHistory": "No Cycle History Yet",
+    "noHistoryMessage": "Start tracking by recording your periods in the main tracker.",
+    "goToTracker": "Go to Cycle Tracker",
+    "averageCycleLength": "Average Cycle Length",
+    "basedOnLatest": "Based on latest 4 measurements",
+    "trend": "Trend",
+    "totalCyclesRecorded": "Total Cycles Recorded",
+    "addPastCycle": "➕ Add Past Cycle",
+    "date": "Date",
+    "cycleLength": "Cycle Length",
+    "note": "Note",
+    "actions": "Actions",
+    "currentPeriod": "Current period",
+    "deleteConfirm": "Are you sure you want to delete this cycle entry?",
+    "addDialogTitle": "➕ Add Past Cycle",
+    "periodStartDate": "Period Start Date:",
+    "cycleLengthAuto": "Cycle length will be calculated automatically from the previous period.",
+    "addEntry": "✓ Add Entry",
+    "pleaseFillDate": "Please fill in the date"
+  },
+  "learnPage": {
+    "title": "📚 Understanding Hormonal Cycles",
+    "subtitle": "Learn how hormonal cycles work and why understanding them matters for everyone",
+    "videoTitle": "🎥 Introduction by Dr. Mindy Pelz",
+    "videoDescription": "Watch Dr. Mindy Pelz explain the concept of hormonal cycle intelligence and why she says <strong> \"I'm going to give you gold\"</strong> when teaching about these powerful phases.",
+    "watchOnYouTube": "Watch on YouTube ↗",
+    "whyThisMatters": "💡 Why This Matters for Everyone",
+    "forWomen": "👩 For Women",
+    "forMenPartners": "👨 For Men & Partners",
+    "womenPoints": [
+      "Understand your body's natural rhythms and work with them, not against them",
+      "Plan important activities during your peak performance phases",
+      "Honor your need for rest during the Nurture Phase",
+      "Make informed decisions about work, relationships, and self-care",
+      "Recognize that your cycle is a superpower, not a limitation"
+    ],
+    "menPoints": [
+      "Better understand and support the women in your life",
+      "Recognize that hormonal changes are natural and powerful",
+      "Plan collaborative activities during peak performance phases",
+      "Provide understanding and support during rest phases",
+      "Build stronger relationships through empathy and knowledge"
+    ],
+    "educationNote": "<strong>This is knowledge that should be taught in high school.</strong> Understanding hormonal cycles helps everyone work together more effectively, build stronger relationships, and create more supportive environments at home and in the workplace."
+  },
+  "educationalContent": {
+    "title": "📚 Understanding Hormonal Cycles",
+    "intro": "Based on Dr. Mindy Pelz's research, the menstrual cycle is divided into four distinct phases, each with unique hormonal patterns that affect energy, mood, cognition, and performance. Understanding these phases helps both women and their partners, colleagues, and loved ones work together more effectively and build stronger, more supportive relationships.",
+    "hormonalState": "Hormonal State:",
+    "whatsHappening": "What's Happening:",
+    "whyThisMatters": "Why This Matters:",
+    "keyTakeaways": "💡 Key Takeaways",
+    "takeaways": [
+      "<strong>The cycle is a superpower, not a limitation.</strong> Understanding these phases helps work with the body's natural rhythms, not against them.",
+      "<strong>Plan strategically.</strong> Schedule important meetings, presentations, and high-stakes activities during the Manifestation Phase (Days 11-15) when cognitive function and confidence peak.",
+      "<strong>Honor the Nurture Phase.</strong> Rest and self-care during Days 20-28 are essential for hormonal balance and long-term health. This is a time for recovery, not pushing through.",
+      "<strong>Every phase has value.</strong> Each phase offers unique strengths - from building energy to peak performance to deep focus to rest. There's no \"bad\" phase, only different opportunities.",
+      "<strong>Knowledge empowers everyone.</strong> When partners, colleagues, and loved ones understand hormonal cycles, they can provide better support, plan collaborative activities more effectively, and build stronger relationships based on empathy and understanding.",
+      "<strong>This should be taught in high school.</strong> Understanding hormonal cycles is fundamental knowledge that benefits everyone - women, men, partners, and society as a whole."
+    ],
+    "phases": {
+      "powerPhase1": {
+        "name": "Power Phase 1",
+        "days": "Days 1-10",
+        "description": "Estrogen begins to rise, enhancing energy and cognitive functions. This is a time of building momentum.",
+        "whatHappens": [
+          "Estrogen levels start increasing",
+          "Energy and mood begin to improve",
+          "Cognitive function enhances",
+          "Serotonin and dopamine levels rise",
+          "Body prepares for ovulation"
+        ],
+        "whyItMatters": "This phase sets the foundation for peak performance. As estrogen rises, you gain clarity, energy, and confidence."
+      },
+      "manifestationPhase": {
+        "name": "Manifestation Phase",
+        "days": "Days 11-15",
+        "description": "PEAK PERFORMANCE! Estrogen peaks, testosterone surges, and progesterone slightly increases. This is your time to shine.",
+        "whatHappens": [
+          "Estrogen reaches its highest point",
+          "Testosterone surges significantly",
+          "Brain power and verbal skills peak",
+          "Confidence and assertiveness increase",
+          "Libido reaches its peak",
+          "Detoxification processes are enhanced",
+          "Ovulation typically occurs"
+        ],
+        "whyItMatters": "This is your superpower phase. Your brain is operating at maximum capacity, making it the ideal time for important presentations, negotiations, creative work, and high-stakes activities."
+      },
+      "powerPhase2": {
+        "name": "Power Phase 2",
+        "days": "Days 16-19",
+        "description": "Estrogen drops while progesterone rises, supporting focus and endurance. Great for deep work and follow-through.",
+        "whatHappens": [
+          "Estrogen levels begin to decline",
+          "Progesterone starts rising",
+          "Focus and concentration improve",
+          "Endurance is enhanced",
+          "More introspective energy",
+          "Body prepares for potential pregnancy"
+        ],
+        "whyItMatters": "While not as flashy as the Manifestation Phase, this is excellent for sustained focus, problem-solving, and completing complex projects."
+      },
+      "nurturePhase": {
+        "name": "Nurture Phase",
+        "days": "Days 20-28",
+        "description": "Progesterone dominates, promoting rest and rejuvenation. This is a time for self-care and reflection.",
+        "whatHappens": [
+          "Progesterone reaches its peak",
+          "Estrogen and testosterone are low",
+          "Energy levels naturally decrease",
+          "Body prepares for menstruation",
+          "Increased need for rest and recovery",
+          "More emotional sensitivity",
+          "Intuition may be heightened"
+        ],
+        "whyItMatters": "This phase is crucial for recovery and preparation for the next cycle. Resting during this time supports hormonal balance and overall health."
+      }
+    }
+  },
+  "hormoneTooltip": {
+    "close": "Close tooltip",
+    "regulates": "Regulates:",
+    "whenRising": "When Rising:",
+    "whenFalling": "When Falling:",
+    "estrogen": {
+      "name": "Estrogen",
+      "description": "A primary female sex hormone that plays a crucial role in the menstrual cycle and overall health.",
+      "systems": "Regulates reproductive system, brain function, bone health, cardiovascular system, and skin health.",
+      "rising": "When rising: You may feel more energetic, confident, and mentally sharp. Mood improves, verbal skills enhance, and you feel more social and optimistic.",
+      "falling": "When falling: Energy may decrease, mood can become more introspective, and you may feel less confident or more sensitive."
+    },
+    "progesterone": {
+      "name": "Progesterone",
+      "description": "A hormone that prepares the body for pregnancy and helps maintain the uterine lining.",
+      "systems": "Regulates reproductive system, sleep quality, mood stability, and supports pregnancy if it occurs.",
+      "rising": "When rising: You may feel calmer, more focused, and introspective. Sleep quality improves, and you have better sustained attention for deep work.",
+      "falling": "When falling: You may feel more alert and energetic, but also potentially more anxious or restless. This signals the body to prepare for menstruation."
+    },
+    "testosterone": {
+      "name": "Testosterone",
+      "description": "A hormone present in both women and men, though in different amounts. In women, it supports energy, libido, and assertiveness.",
+      "systems": "Regulates libido, muscle mass, bone density, energy levels, confidence, and assertiveness.",
+      "rising": "When rising: You may feel more confident, assertive, and competitive. Libido increases, energy peaks, and you feel more motivated to take on challenges.",
+      "falling": "When falling: You may feel less driven, more introspective, and prefer quieter activities. Energy for high-intensity activities decreases."
+    }
+  },
+  "installButton": {
+    "installApp": "Install App",
+    "addToHomeScreen": "Add to Home Screen",
+    "title": "📱 Add to Home Screen",
+    "instructions": [
+      "Tap the <strong>Share</strong> button 📤 at the bottom of your screen",
+      "Scroll down and tap <strong>\"Add to Home Screen\"</strong>",
+      "Tap <strong>\"Add\"</strong> in the top right corner",
+      "Enjoy Gimme Gold as an app! 🎉"
+    ]
+  },
+  "workoutReport": {
+    "title": "🏋️ Workout Performance Report",
+    "noData": "No cycle data available. Please set up your cycle tracking first.",
+    "goToTracker": "Go to Cycle Tracker",
+    "hormonalFactors": "Hormonal Factors Affecting Performance",
+    "recommendedWorkouts": "Recommended Workouts",
+    "performanceMetrics": {
+      "energyLevel": "Energy Level",
+      "strength": "Strength",
+      "endurance": "Endurance",
+      "recovery": "Recovery",
+      "injuryRisk": "Injury Risk"
+    },
+    "workoutTypes": {
+      "type": "Type:",
+      "intensity": "Intensity:",
+      "duration": "Duration:",
+      "frequency": "Frequency:",
+      "focus": "Focus:",
+      "exercises": "Exercises:",
+      "why": "Why:"
+    },
+    "avoid": "Avoid:",
+    "tips": "Tips:",
+    "performanceExpectations": "Performance Expectations:",
+    "expectations": {
+      "strength": "Strength:",
+      "endurance": "Endurance:",
+      "speed": "Speed:",
+      "power": "Power:",
+      "recovery": "Recovery:"
+    }
+  },
+  "workCareerReport": {
+    "title": "💼 Work & Career Performance Report",
+    "noData": "No cycle data available. Please set up your cycle tracking first.",
+    "goToTracker": "Go to Cycle Tracker",
+    "hormonalFactors": "Hormonal Factors Affecting Work Performance",
+    "recommendedActivities": "Recommended Work Activities",
+    "performanceMetrics": {
+      "cognitiveLevel": "Cognitive Level",
+      "communication": "Communication",
+      "decisionMaking": "Decision Making",
+      "creativity": "Creativity"
+    },
+    "activityTypes": {
+      "type": "Type:",
+      "timing": "Timing:",
+      "duration": "Duration:",
+      "focus": "Focus:",
+      "why": "Why:"
+    },
+    "bestFor": "Best For:",
+    "avoid": "Avoid:",
+    "tips": "Tips:",
+    "performanceExpectations": "Performance Expectations:",
+    "expectations": {
+      "cognitive": "Cognitive:",
+      "communication": "Communication:",
+      "decisionMaking": "Decision Making:",
+      "creativity": "Creativity:",
+      "energy": "Energy:"
+    }
+  },
+  "phases": {
+    "powerPhase1": {
+      "name": "Power Phase 1",
+      "description": "Estrogen Rising",
+      "hormones": {
+        "estrogen": "Rising",
+        "progesterone": "Low",
+        "testosterone": "Low"
+      }
+    },
+    "manifestationPhase": {
+      "name": "Manifestation Phase",
+      "description": "Peak Performance",
+      "hormones": {
+        "estrogen": "Peak",
+        "progesterone": "Rising",
+        "testosterone": "Surge"
+      }
+    },
+    "powerPhase2": {
+      "name": "Power Phase 2",
+      "description": "Focused Energy",
+      "hormones": {
+        "estrogen": "Dropping",
+        "progesterone": "Rising",
+        "testosterone": "Moderate"
+      }
+    },
+    "nurturePhase": {
+      "name": "Nurture Phase",
+      "description": "Rest & Rejuvenation",
+      "hormones": {
+        "estrogen": "Low",
+        "progesterone": "Peak",
+        "testosterone": "Low"
+      }
+    }
+  }
+}
+

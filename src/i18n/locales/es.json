@@ -1,0 +1,555 @@
+{
+  "common": {
+    "back": "← Atrás",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "day": "Día",
+    "days": "días",
+    "of": "de",
+    "current": "Actual",
+    "noNote": "Sin nota",
+    "addNote": "Añadir una nota...",
+    "optional": "opcional",
+    "do": "HACER",
+    "dont": "NO HACER",
+    "avoid": "Evitar"
+  },
+  "app": {
+    "title": "Gimme Gold",
+    "subtitle": "Inteligencia del Ciclo Hormonal",
+    "myView": "👤 Mi Vista",
+    "partnerView": "👥 Vista de Pareja",
+    "footer": "Creado con ❤️ e IA por",
+    "logoAlt": "Logo de Gimme Gold"
+  },
+  "cycleTracker": {
+    "title": "Tu Seguimiento de Ciclo",
+    "viewCycleLog": "📊 Ver Registro de Ciclos",
+    "learnAboutPhases": "📚 Aprender sobre las Fases",
+    "lastPeriodStartDate": "Fecha de Inicio del Último Periodo",
+    "cycleLength": "Duración del Ciclo (días)",
+    "setToAverage": "📊 Establecer Promedio",
+    "averageNote": "Tu promedio: {{average}} días (basado en las últimas 4 mediciones). Puedes cambiarlo manualmente.",
+    "nextPeriodExpected": "📅 Próximo Periodo Esperado",
+    "inApproximately": "En aproximadamente {{days}} día",
+    "inApproximately_plural": "En aproximadamente {{days}} días",
+    "registerNewPeriod": "🩸 Registrar Nuevo Periodo",
+    "recordNewPeriod": "📝 Registrar Nuevo Periodo",
+    "recordDialogInfo": "Esto calculará la duración real de tu ciclo desde tu último periodo.",
+    "periodStartDate": "Fecha de Inicio del Periodo:",
+    "addNoteOptional": "Añadir una nota (opcional):",
+    "notePlaceholder": "p. ej., Flujo abundante, calambres, estado de ánimo...",
+    "recordPeriod": "✓ Registrar Periodo",
+    "pleaseSetPeriodDate": "Por favor, establece primero la fecha de tu último periodo",
+    "unusualCycleLength": "La duración calculada del ciclo ({{days}} días) parece inusual. Por favor, verifica que las fechas sean correctas.",
+    "sharePartnerView": "📤 Compartir Vista de Pareja",
+    "shareDescription": "Comparte un enlace a la Vista de Pareja con tu pareja, jefe o compañero para que puedan entender tu ciclo y apoyarte mejor.",
+    "shareViaWhatsApp": "📱 Compartir por WhatsApp",
+    "copyLink": "📋 Copiar Enlace",
+    "linkCopied": "✓ ¡Enlace Copiado!",
+    "shareMessage": "Echa un vistazo a la información de mi ciclo para entender cómo apoyarme mejor: {{url}}",
+    "welcome": "👋 ¡Bienvenida a Gimme Gold!",
+    "welcomeMessage": "Introduce la fecha en que comenzó tu último periodo para empezar a seguir tu ciclo hormonal y obtener información personalizada."
+  },
+  "phaseCard": {
+    "currentHormonalState": "Estado Hormonal Actual",
+    "estrogen": "Estrógeno",
+    "progesterone": "Progesterona",
+    "testosterone": "Testosterona"
+  },
+  "recommendations": {
+    "title": "Tus Recomendaciones Personalizadas",
+    "subtitle": "Basado en tu fase hormonal actual, así es como optimizar tus actividades",
+    "sexualHealthFertility": "💕 Salud Sexual y Fertilidad",
+    "bestTimeForGreatSex": "Mejor Momento para Tener Buen Sexo",
+    "bestDays": "Mejores Días:",
+    "bestTimeToGetPregnant": "Mejor Momento para Quedar Embarazada",
+    "fertileWindow": "Ventana Fértil:",
+    "avoidingPregnancy": "Evitar el Embarazo",
+    "safetyLevel": "Nivel de Seguridad:",
+    "workCareer": "Trabajo y Carrera",
+    "exerciseFitness": "Ejercicio y Fitness",
+    "socialActivities": "Actividades Sociales",
+    "intimacyConnection": "Intimidad y Conexión",
+    "bestFor": "Mejor Para:",
+    "viewFullWorkoutReport": "🏋️ Ver Informe Completo de Rendimiento en Entrenamiento →",
+    "viewFullWorkCareerReport": "💼 Ver Informe Completo de Rendimiento en Trabajo y Carrera →",
+    "levels": {
+      "peak": "MOMENTO PICO",
+      "greatTime": "Gran Momento",
+      "goodTime": "Buen Momento",
+      "moderate": "Moderado",
+      "good": "Bueno",
+      "takeItEasy": "Tómalo con Calma",
+      "restTime": "Tiempo de Descanso",
+      "peakPerformance": "✨ Momento de Rendimiento Pico",
+      "greatTimeEmoji": "⚡ Gran Momento",
+      "goodTimeEmoji": "👍 Buen Momento",
+      "takeItEasyEmoji": "🌙 Tómalo con Calma",
+      "restTimeEmoji": "🌙 Tiempo de Descanso",
+      "peakSocial": "✨ Momento Social Pico",
+      "goodSocial": "👍 Buen Momento",
+      "moderateSocial": "👌 Moderado",
+      "preferQuiet": "🌙 Preferir Tiempo Tranquilo",
+      "peakIntimacy": "✨ Momento de Intimidad Pico",
+      "goodIntimacy": "💕 Buen Momento",
+      "focusEmotional": "🌙 Enfocarse en Apoyo Emocional"
+    },
+    "fertilityLevels": {
+      "peak": "PICO",
+      "high": "ALTO",
+      "moderate": "MODERADO",
+      "low": "BAJO",
+      "veryLow": "MUY BAJO",
+      "highRisk": "ALTO RIESGO",
+      "safer": "MÁS SEGURO"
+    }
+  },
+  "partnerView": {
+    "title": "👥 Vista de Pareja",
+    "subtitle": "Entender su ciclo te ayuda a apoyarla mejor",
+    "noData": "Aún no hay datos del ciclo disponibles. Pide a tu pareja que configure el seguimiento de su ciclo primero.",
+    "welcomeMessage": "Esta vista te ayuda a entender en qué fase de su ciclo está tu pareja y cómo apoyarla mejor.",
+    "currentStatus": "Estado Actual",
+    "sheIsCurrentlyIn": "Actualmente está en <strong>{{phase}}</strong> (Día {{day}} de {{length}})",
+    "howToApproach": "💬 Cómo Acercarte a Ella Ahora",
+    "activitySuggestions": "🎯 Sugerencias de Actividades",
+    "suggestionsIntro": "Basado en su fase actual, aquí tienes actividades que se alinean bien con su energía:",
+    "work": "Trabajo",
+    "social": "Social",
+    "intimacy": "Intimidad",
+    "understandingHormones": "🧪 Entender Sus Hormonas",
+    "hormoneExplanation": "Su estado hormonal actual afecta su energía, estado de ánimo y función cognitiva. Entender esto te ayuda a comunicarte e interactuar con ella de manera más efectiva.",
+    "playDead": {
+      "title": "HACERSE EL MUERTO",
+      "subtitle": "🐾 Los últimos 2-3 días antes de su periodo - ¡ten mucho cuidado!",
+      "do": [
+        "Estar callado (en serio, muy callado)",
+        "Traer chocolate (del bueno)",
+        "Ofrecer masajes en la espalda (sin preguntar)",
+        "Decir \"sí\" a todo (en serio, a todo)"
+      ],
+      "dont": [
+        "Preguntar \"¿qué pasa?\" (te arrepentirás)",
+        "Hacer bromas (no es el momento, tío)",
+        "Sugerir salir (ella quiere quedarse en casa)",
+        "Ser lógico (la lógica no funciona aquí)"
+      ]
+    },
+    "proceedWithCaution": {
+      "title": "PROCEDER CON EXTREMA PRECAUCIÓN",
+      "subtitle": "🦺 Está en su fase sensible - ¡manéjala con cuidado!",
+      "do": [
+        "Ser suave (como manejar vidrio)",
+        "Escuchar activamente (escuchar de verdad)",
+        "Ofrecer ayuda (pero no estar encima)",
+        "Ser paciente (muy, muy paciente)"
+      ],
+      "dont": [
+        "Ser crítico (guárdalo para después)",
+        "Apresurarla (ella se mueve a su propio ritmo)",
+        "Hacer exigencias (simplemente no lo hagas)",
+        "Minimizar sentimientos (son reales, acéptalo)"
+      ]
+    },
+    "superhero": {
+      "title": "ES UNA SUPERHÉROE",
+      "do": [
+        "Celebrarla (está increíble ahora mismo)",
+        "Apoyar sus objetivos (puede hacer cualquier cosa)",
+        "Disfrutar de la energía (es contagiosa)",
+        "Ser íntimo (confía en nosotros en esto)"
+      ],
+      "dont": [
+        "Frenarla (es imparable)",
+        "Tener celos (de su confianza)",
+        "Minar su confianza (está en su pico)",
+        "Desperdiciar este tiempo (es limitado)"
+      ]
+    },
+    "buildingMode": {
+      "title": "MODO CONSTRUCCIÓN",
+      "do": [
+        "Animarle (está ganando impulso)",
+        "Planear juntos (está pensando en el futuro)",
+        "Ser solidario (lo necesita)",
+        "Participar en conversaciones (se está volviendo más aguda)"
+      ],
+      "dont": [
+        "Ser despectivo (sus ideas importan)",
+        "Acelerar decisiones (déjala pensar)",
+        "Abrumarla (la energía está creciendo)",
+        "Ignorar sus ideas (están mejorando)"
+      ]
+    },
+    "focusMode": {
+      "title": "MODO ENFOQUE",
+      "do": [
+        "Respetar su concentración (está en la zona)",
+        "Apoyar su trabajo (está haciendo las cosas)",
+        "Ser comprensivo (está introspectiva)",
+        "Tener conversaciones profundas (está lista)"
+      ],
+      "dont": [
+        "Interrumpirla (está concentrada)",
+        "Exigir atención (está enfocada)",
+        "Ser demasiado social (prefiere profundidad)",
+        "Distraerla (déjala trabajar)"
+      ]
+    },
+    "hormoneNotes": {
+      "estrogen": {
+        "peak": " - Mejora la confianza, habilidades verbales y función cognitiva",
+        "rising": " - Construyendo energía y mejorando el estado de ánimo",
+        "dropping": " - La energía cambia, el enfoque aumenta",
+        "low": " - Tiempo de descanso y recuperación"
+      },
+      "progesterone": {
+        "peak": " - Promueve la calma, pero puede reducir la energía",
+        "rising": " - Aumentando el enfoque y la introspección",
+        "low": " - Fase más activa y enérgica"
+      },
+      "testosterone": {
+        "surge": " - Aumenta la confianza, libido y asertividad",
+        "moderate": " - Niveles equilibrados",
+        "low": " - Fase más introspectiva"
+      }
+    },
+    "communicationTips": {
+      "powerPhase1": {
+        "approach": "Solidario y alentador",
+        "description": "Está construyendo energía y confianza. Gran momento para planear colaborativamente y comenzar nuevos proyectos juntos.",
+        "do": [
+          "Animar sus ideas",
+          "Planear actividades juntos",
+          "Ser solidario con nuevas iniciativas",
+          "Participar en conversaciones significativas"
+        ],
+        "avoid": [
+          "Ser despectivo",
+          "Acelerar decisiones",
+          "Abrumarla con demasiadas tareas"
+        ]
+      },
+      "manifestationPhase": {
+        "approach": "Empoderar y celebrar",
+        "description": "¡Está en su pico! Este es su momento para brillar. Apóyala en situaciones de alto riesgo y celebra su confianza.",
+        "do": [
+          "Animarle a asumir desafíos",
+          "Apoyar presentaciones/reuniones importantes",
+          "Celebrar sus logros",
+          "Disfrutar de actividades sociales juntos",
+          "Ser íntimo y conectado"
+        ],
+        "avoid": [
+          "Minar su confianza",
+          "Programar conflictos durante este tiempo",
+          "Ser despectivo de sus ideas"
+        ]
+      },
+      "powerPhase2": {
+        "approach": "Respetuoso y enfocado",
+        "description": "Tiene excelente enfoque y resistencia. Gran momento para trabajo profundo y completar proyectos juntos.",
+        "do": [
+          "Respetar su necesidad de concentración",
+          "Apoyarla en completar tareas",
+          "Tener conversaciones significativas uno a uno",
+          "Ser paciente y comprensivo"
+        ],
+        "avoid": [
+          "Interrumpir su flujo",
+          "Exigir atención inmediata",
+          "Ser demasiado social"
+        ]
+      },
+      "nurturePhase": {
+        "approach": "Suave y comprensivo",
+        "description": "Necesita descanso y autocuidado. Este es un momento para paciencia, comprensión y apoyo emocional.",
+        "do": [
+          "Ofrecer apoyo emocional",
+          "Ser paciente y comprensivo",
+          "Ayudar con tareas prácticas",
+          "Crear un ambiente tranquilo",
+          "Respetar su necesidad de espacio"
+        ],
+        "avoid": [
+          "Presionar para actividades de alta energía",
+          "Ser crítico o exigente",
+          "Esperar rendimiento pico",
+          "Minimizar sus sentimientos"
+        ]
+      }
+    }
+  },
+  "cycleLog": {
+    "title": "📊 Registro de Ciclos",
+    "subtitle": "Sigue tu historial y patrones de ciclo",
+    "back": "← Atrás",
+    "noHistory": "Aún No Hay Historial de Ciclos",
+    "noHistoryMessage": "Comienza a seguir registrando tus periodos en el seguimiento principal.",
+    "goToTracker": "Ir al Seguimiento de Ciclo",
+    "averageCycleLength": "Duración Promedio del Ciclo",
+    "basedOnLatest": "Basado en las últimas 4 mediciones",
+    "trend": "Tendencia",
+    "totalCyclesRecorded": "Total de Ciclos Registrados",
+    "addPastCycle": "➕ Añadir Ciclo Pasado",
+    "date": "Fecha",
+    "cycleLength": "Duración del Ciclo",
+    "note": "Nota",
+    "actions": "Acciones",
+    "currentPeriod": "Periodo actual",
+    "deleteConfirm": "¿Estás segura de que quieres eliminar esta entrada del ciclo?",
+    "addDialogTitle": "➕ Añadir Ciclo Pasado",
+    "periodStartDate": "Fecha de Inicio del Periodo:",
+    "cycleLengthAuto": "La duración del ciclo se calculará automáticamente desde el periodo anterior.",
+    "addEntry": "✓ Añadir Entrada",
+    "pleaseFillDate": "Por favor, rellena la fecha"
+  },
+  "learnPage": {
+    "title": "📚 Entender los Ciclos Hormonales",
+    "subtitle": "Aprende cómo funcionan los ciclos hormonales y por qué entenderlos importa para todos",
+    "videoTitle": "🎥 Introducción de la Dra. Mindy Pelz",
+    "videoDescription": "Mira a la Dra. Mindy Pelz explicar el concepto de inteligencia del ciclo hormonal y por qué dice <strong> \"Te voy a dar oro\"</strong> cuando enseña sobre estas poderosas fases.",
+    "watchOnYouTube": "Ver en YouTube ↗",
+    "whyThisMatters": "💡 Por Qué Esto Importa para Todos",
+    "forWomen": "👩 Para Mujeres",
+    "forMenPartners": "👨 Para Hombres y Parejas",
+    "womenPoints": [
+      "Entiende los ritmos naturales de tu cuerpo y trabaja con ellos, no contra ellos",
+      "Planifica actividades importantes durante tus fases de rendimiento pico",
+      "Respeta tu necesidad de descanso durante la Fase de Cuidado",
+      "Toma decisiones informadas sobre trabajo, relaciones y autocuidado",
+      "Reconoce que tu ciclo es un superpoder, no una limitación"
+    ],
+    "menPoints": [
+      "Mejor entiende y apoya a las mujeres en tu vida",
+      "Reconoce que los cambios hormonales son naturales y poderosos",
+      "Planifica actividades colaborativas durante las fases de rendimiento pico",
+      "Proporciona comprensión y apoyo durante las fases de descanso",
+      "Construye relaciones más fuertes a través de la empatía y el conocimiento"
+    ],
+    "educationNote": "<strong>Este es conocimiento que debería enseñarse en la escuela secundaria.</strong> Entender los ciclos hormonales ayuda a todos a trabajar juntos de manera más efectiva, construir relaciones más fuertes y crear entornos más solidarios en el hogar y en el lugar de trabajo."
+  },
+  "educationalContent": {
+    "title": "📚 Entender los Ciclos Hormonales",
+    "intro": "Basado en la investigación de la Dra. Mindy Pelz, el ciclo menstrual se divide en cuatro fases distintas, cada una con patrones hormonales únicos que afectan la energía, el estado de ánimo, la cognición y el rendimiento. Entender estas fases ayuda tanto a las mujeres como a sus parejas, colegas y seres queridos a trabajar juntos de manera más efectiva y construir relaciones más fuertes y solidarias.",
+    "hormonalState": "Estado Hormonal:",
+    "whatsHappening": "Qué Está Pasando:",
+    "whyThisMatters": "Por Qué Esto Importa:",
+    "keyTakeaways": "💡 Puntos Clave",
+    "takeaways": [
+      "<strong>El ciclo es un superpoder, no una limitación.</strong> Entender estas fases ayuda a trabajar con los ritmos naturales del cuerpo, no contra ellos.",
+      "<strong>Planifica estratégicamente.</strong> Programa reuniones importantes, presentaciones y actividades de alto riesgo durante la Fase de Manifestación (Días 11-15) cuando la función cognitiva y la confianza alcanzan su pico.",
+      "<strong>Respeta la Fase de Cuidado.</strong> El descanso y el autocuidado durante los Días 20-28 son esenciales para el equilibrio hormonal y la salud a largo plazo. Este es un momento para la recuperación, no para forzar.",
+      "<strong>Cada fase tiene valor.</strong> Cada fase ofrece fortalezas únicas - desde construir energía hasta rendimiento pico, enfoque profundo y descanso. No hay una fase \"mala\", solo diferentes oportunidades.",
+      "<strong>El conocimiento empodera a todos.</strong> Cuando las parejas, colegas y seres queridos entienden los ciclos hormonales, pueden proporcionar mejor apoyo, planificar actividades colaborativas de manera más efectiva y construir relaciones más fuertes basadas en la empatía y la comprensión.",
+      "<strong>Esto debería enseñarse en la escuela secundaria.</strong> Entender los ciclos hormonales es conocimiento fundamental que beneficia a todos - mujeres, hombres, parejas y la sociedad en su conjunto."
+    ],
+    "phases": {
+      "powerPhase1": {
+        "name": "Fase de Poder 1",
+        "days": "Días 1-10",
+        "description": "El estrógeno comienza a subir, mejorando la energía y las funciones cognitivas. Este es un momento de construcción de impulso.",
+        "whatHappens": [
+          "Los niveles de estrógeno comienzan a aumentar",
+          "La energía y el estado de ánimo comienzan a mejorar",
+          "La función cognitiva mejora",
+          "Los niveles de serotonina y dopamina aumentan",
+          "El cuerpo se prepara para la ovulación"
+        ],
+        "whyItMatters": "Esta fase establece la base para el rendimiento pico. A medida que el estrógeno sube, ganas claridad, energía y confianza."
+      },
+      "manifestationPhase": {
+        "name": "Fase de Manifestación",
+        "days": "Días 11-15",
+        "description": "¡RENDIMIENTO PICO! El estrógeno alcanza su pico, la testosterona aumenta significativamente y la progesterona aumenta ligeramente. Este es tu momento para brillar.",
+        "whatHappens": [
+          "El estrógeno alcanza su punto más alto",
+          "La testosterona aumenta significativamente",
+          "El poder cerebral y las habilidades verbales alcanzan su pico",
+          "La confianza y la asertividad aumentan",
+          "La libido alcanza su pico",
+          "Los procesos de desintoxicación se mejoran",
+          "Típicamente ocurre la ovulación"
+        ],
+        "whyItMatters": "Esta es tu fase de superpoder. Tu cerebro está operando a máxima capacidad, lo que la convierte en el momento ideal para presentaciones importantes, negociaciones, trabajo creativo y actividades de alto riesgo."
+      },
+      "powerPhase2": {
+        "name": "Fase de Poder 2",
+        "days": "Días 16-19",
+        "description": "El estrógeno baja mientras la progesterona sube, apoyando el enfoque y la resistencia. Excelente para trabajo profundo y seguimiento.",
+        "whatHappens": [
+          "Los niveles de estrógeno comienzan a declinar",
+          "La progesterona comienza a subir",
+          "El enfoque y la concentración mejoran",
+          "La resistencia se mejora",
+          "Más energía introspectiva",
+          "El cuerpo se prepara para un posible embarazo"
+        ],
+        "whyItMatters": "Aunque no es tan llamativa como la Fase de Manifestación, esta es excelente para el enfoque sostenido, la resolución de problemas y completar proyectos complejos."
+      },
+      "nurturePhase": {
+        "name": "Fase de Cuidado",
+        "days": "Días 20-28",
+        "description": "La progesterona domina, promoviendo el descanso y la rejuvenación. Este es un momento para el autocuidado y la reflexión.",
+        "whatHappens": [
+          "La progesterona alcanza su pico",
+          "El estrógeno y la testosterona están bajos",
+          "Los niveles de energía disminuyen naturalmente",
+          "El cuerpo se prepara para la menstruación",
+          "Mayor necesidad de descanso y recuperación",
+          "Mayor sensibilidad emocional",
+          "La intuición puede estar aumentada"
+        ],
+        "whyItMatters": "Esta fase es crucial para la recuperación y la preparación para el siguiente ciclo. Descansar durante este tiempo apoya el equilibrio hormonal y la salud general."
+      }
+    }
+  },
+  "hormoneTooltip": {
+    "close": "Cerrar información",
+    "regulates": "Regula:",
+    "whenRising": "Cuando Sube:",
+    "whenFalling": "Cuando Baja:",
+    "estrogen": {
+      "name": "Estrógeno",
+      "description": "Una hormona sexual femenina primaria que juega un papel crucial en el ciclo menstrual y la salud general.",
+      "systems": "Regula el sistema reproductivo, la función cerebral, la salud ósea, el sistema cardiovascular y la salud de la piel.",
+      "rising": "Cuando sube: Puedes sentirte más enérgica, segura y mentalmente aguda. El estado de ánimo mejora, las habilidades verbales mejoran y te sientes más social y optimista.",
+      "falling": "Cuando baja: La energía puede disminuir, el estado de ánimo puede volverse más introspectivo y puedes sentirte menos segura o más sensible."
+    },
+    "progesterone": {
+      "name": "Progesterona",
+      "description": "Una hormona que prepara el cuerpo para el embarazo y ayuda a mantener el revestimiento uterino.",
+      "systems": "Regula el sistema reproductivo, la calidad del sueño, la estabilidad del estado de ánimo y apoya el embarazo si ocurre.",
+      "rising": "Cuando sube: Puedes sentirte más tranquila, enfocada e introspectiva. La calidad del sueño mejora y tienes mejor atención sostenida para trabajo profundo.",
+      "falling": "Cuando baja: Puedes sentirte más alerta y enérgica, pero también potencialmente más ansiosa o inquieta. Esto le indica al cuerpo que se prepare para la menstruación."
+    },
+    "testosterone": {
+      "name": "Testosterona",
+      "description": "Una hormona presente tanto en mujeres como en hombres, aunque en cantidades diferentes. En las mujeres, apoya la energía, la libido y la asertividad.",
+      "systems": "Regula la libido, la masa muscular, la densidad ósea, los niveles de energía, la confianza y la asertividad.",
+      "rising": "Cuando sube: Puedes sentirte más segura, asertiva y competitiva. La libido aumenta, la energía alcanza su pico y te sientes más motivada para asumir desafíos.",
+      "falling": "Cuando baja: Puedes sentirte menos impulsada, más introspectiva y preferir actividades más tranquilas. La energía para actividades de alta intensidad disminuye."
+    }
+  },
+  "installButton": {
+    "installApp": "Instalar App",
+    "addToHomeScreen": "Añadir a la Pantalla de Inicio",
+    "title": "📱 Añadir a la Pantalla de Inicio",
+    "instructions": [
+      "Toca el botón <strong>Compartir</strong> 📤 en la parte inferior de tu pantalla",
+      "Desplázate hacia abajo y toca <strong>\"Añadir a la Pantalla de Inicio\"</strong>",
+      "Toca <strong>\"Añadir\"</strong> en la esquina superior derecha",
+      "¡Disfruta de Gimme Gold como una app! 🎉"
+    ]
+  },
+  "workoutReport": {
+    "title": "🏋️ Informe de Rendimiento en Entrenamiento",
+    "noData": "No hay datos del ciclo disponibles. Por favor, configura primero el seguimiento de tu ciclo.",
+    "goToTracker": "Ir al Seguimiento de Ciclo",
+    "hormonalFactors": "Factores Hormonales que Afectan el Rendimiento",
+    "recommendedWorkouts": "Entrenamientos Recomendados",
+    "performanceMetrics": {
+      "energyLevel": "Nivel de Energía",
+      "strength": "Fuerza",
+      "endurance": "Resistencia",
+      "recovery": "Recuperación",
+      "injuryRisk": "Riesgo de Lesión"
+    },
+    "workoutTypes": {
+      "type": "Tipo:",
+      "intensity": "Intensidad:",
+      "duration": "Duración:",
+      "frequency": "Frecuencia:",
+      "focus": "Enfoque:",
+      "exercises": "Ejercicios:",
+      "why": "Por Qué:"
+    },
+    "avoid": "Evitar:",
+    "tips": "Consejos:",
+    "performanceExpectations": "Expectativas de Rendimiento:",
+    "expectations": {
+      "strength": "Fuerza:",
+      "endurance": "Resistencia:",
+      "speed": "Velocidad:",
+      "power": "Potencia:",
+      "recovery": "Recuperación:"
+    }
+  },
+  "workCareerReport": {
+    "title": "💼 Informe de Rendimiento en Trabajo y Carrera",
+    "noData": "No hay datos del ciclo disponibles. Por favor, configura primero el seguimiento de tu ciclo.",
+    "goToTracker": "Ir al Seguimiento de Ciclo",
+    "hormonalFactors": "Factores Hormonales que Afectan el Rendimiento Laboral",
+    "recommendedActivities": "Actividades Laborales Recomendadas",
+    "performanceMetrics": {
+      "cognitiveLevel": "Nivel Cognitivo",
+      "communication": "Comunicación",
+      "decisionMaking": "Toma de Decisiones",
+      "creativity": "Creatividad"
+    },
+    "activityTypes": {
+      "type": "Tipo:",
+      "timing": "Momento:",
+      "duration": "Duración:",
+      "focus": "Enfoque:",
+      "why": "Por Qué:"
+    },
+    "bestFor": "Mejor Para:",
+    "avoid": "Evitar:",
+    "tips": "Consejos:",
+    "performanceExpectations": "Expectativas de Rendimiento:",
+    "expectations": {
+      "cognitive": "Cognitivo:",
+      "communication": "Comunicación:",
+      "decisionMaking": "Toma de Decisiones:",
+      "creativity": "Creatividad:",
+      "energy": "Energía:"
+    }
+  },
+  "phases": {
+    "powerPhase1": {
+      "name": "Fase de Poder 1",
+      "description": "Estrógeno Subiendo",
+      "hormones": {
+        "estrogen": "Subiendo",
+        "progesterone": "Bajo",
+        "testosterone": "Bajo"
+      }
+    },
+    "manifestationPhase": {
+      "name": "Fase de Manifestación",
+      "description": "Rendimiento Pico",
+      "hormones": {
+        "estrogen": "Pico",
+        "progesterone": "Subiendo",
+        "testosterone": "Aumento"
+      }
+    },
+    "powerPhase2": {
+      "name": "Fase de Poder 2",
+      "description": "Energía Enfocada",
+      "hormones": {
+        "estrogen": "Bajando",
+        "progesterone": "Subiendo",
+        "testosterone": "Moderado"
+      }
+    },
+    "nurturePhase": {
+      "name": "Fase de Cuidado",
+      "description": "Descanso y Rejuvenecimiento",
+      "hormones": {
+        "estrogen": "Bajo",
+        "progesterone": "Pico",
+        "testosterone": "Bajo"
+      }
+    }
+  }
+}
+
