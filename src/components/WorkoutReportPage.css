@@ -1,0 +1,87 @@
+.workout-report-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 100vh;
+}
+
+.workout-report-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.back-button {
+  background: var(--bg-card);
+  border: 2px solid var(--primary-gold);
+  color: var(--primary-gold-dark);
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(244, 208, 63, 0.15);
+  align-self: flex-start;
+}
+
+.back-button:hover {
+  background: var(--primary-gold);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 208, 63, 0.25);
+}
+
+.workout-report-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.no-data-message {
+  background: var(--bg-card);
+  border: 2px dashed rgba(244, 208, 63, 0.4);
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.no-data-message p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.primary-button {
+  background: var(--primary-gold);
+  border: 2px solid var(--primary-gold);
+  color: var(--text-primary);
+  padding: 0.75rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(244, 208, 63, 0.15);
+}
+
+.primary-button:hover {
+  background: var(--primary-gold-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 208, 63, 0.25);
+}
+
+@media (max-width: 768px) {
+  .workout-report-header h1 {
+    font-size: 2rem;
+  }
+
+  .back-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+

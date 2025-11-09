@@ -4,7 +4,6 @@ import PhaseCard from './PhaseCard'
 import Recommendations from './Recommendations'
 import CycleVisualization from './CycleVisualization'
 import EducationalContent from './EducationalContent'
-import WorkoutPerformance from './WorkoutPerformance'
 import './CycleTracker.css'
 
 function CycleTracker({ 
@@ -71,7 +70,6 @@ function CycleTracker({
             cycleLength={cycleLength}
             daysInCycle={daysInCycle}
           />
-          <WorkoutPerformance phase={currentPhase} cycleLength={cycleLength} />
           <Recommendations phase={currentPhase} cycleLength={cycleLength} />
         </>
       )}

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import CycleTracker from './components/CycleTracker'
 import PartnerView from './components/PartnerView'
+import WorkoutReportPage from './components/WorkoutReportPage'
 import { getCyclePhase, getDaysInCycle } from './utils/cycleCalculator'
 import './App.css'
 
@@ -14,6 +16,9 @@ function App() {
     const saved = localStorage.getItem('gimmeGold_cycleLength')
     return saved ? parseInt(saved) : 28
   })
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (lastPeriodDate) {
@@ -32,41 +37,59 @@ function App() {
   const currentPhase = lastPeriodDate ? getCyclePhase(lastPeriodDate, cycleLength) : null
   const daysInCycle = lastPeriodDate ? getDaysInCycle(lastPeriodDate) : 0
 
+  // Hide header toggle on workout report page
+  const showViewToggle = !location.pathname.includes('/workout-report')
+
   return (
     <div className="app">
       <header className="app-header">
         <div className="header-content">
-          <h1 className="app-title">
+          <h1 className="app-title" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
             <span className="gold-text">Gimme</span> Gold
           </h1>
           <p className="app-subtitle">Hormonal Cycle Intelligence</p>
         </div>
-        <button 
-          className="view-toggle"
-          onClick={() => setIsPartnerView(!isPartnerView)}
-        >
-          {isPartnerView ? '👤 My View' : '👥 Partner View'}
-        </button>
+        {showViewToggle && (
+          <button 
+            className="view-toggle"
+            onClick={() => setIsPartnerView(!isPartnerView)}
+          >
+            {isPartnerView ? '👤 My View' : '👥 Partner View'}
+          </button>
+        )}
       </header>
 
       <main className="app-main">
-        {isPartnerView ? (
-          <PartnerView 
-            lastPeriodDate={lastPeriodDate}
-            cycleLength={cycleLength}
-            currentPhase={currentPhase}
-            daysInCycle={daysInCycle}
+        <Routes>
+          <Route 
+            path="/workout-report" 
+            element={
+              <WorkoutReportPage />
+            } 
           />
-        ) : (
-          <CycleTracker
-            lastPeriodDate={lastPeriodDate}
-            onPeriodStart={handlePeriodStart}
-            cycleLength={cycleLength}
-            onCycleLengthChange={setCycleLength}
-            currentPhase={currentPhase}
-            daysInCycle={daysInCycle}
+          <Route 
+            path="/" 
+            element={
+              isPartnerView ? (
+                <PartnerView 
+                  lastPeriodDate={lastPeriodDate}
+                  cycleLength={cycleLength}
+                  currentPhase={currentPhase}
+                  daysInCycle={daysInCycle}
+                />
+              ) : (
+                <CycleTracker
+                  lastPeriodDate={lastPeriodDate}
+                  onPeriodStart={handlePeriodStart}
+                  cycleLength={cycleLength}
+                  onCycleLengthChange={setCycleLength}
+                  currentPhase={currentPhase}
+                  daysInCycle={daysInCycle}
+                />
+              )
+            } 
           />
-        )}
+        </Routes>
       </main>
     </div>
   )

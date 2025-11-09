@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import { getPhaseRecommendations, getFertilityInfo } from '../utils/cycleCalculator'
 import './Recommendations.css'
 
 function Recommendations({ phase, cycleLength }) {
+  const navigate = useNavigate()
   const recommendations = getPhaseRecommendations(phase)
   const fertilityInfo = getFertilityInfo(phase, cycleLength)
 
@@ -165,6 +167,17 @@ function Recommendations({ phase, cycleLength }) {
                   ))}
                 </ul>
               </div>
+
+              {category.key === 'exercise' && (
+                <button
+                  className="workout-report-button"
+                  onClick={() => navigate('/workout-report', { 
+                    state: { phase, cycleLength } 
+                  })}
+                >
+                  🏋️ View Full Workout Performance Report →
+                </button>
+              )}
             </div>
           )
         })}
