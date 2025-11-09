@@ -4,6 +4,7 @@ import CycleTracker from './components/CycleTracker'
 import PartnerView from './components/PartnerView'
 import WorkoutReportPage from './components/WorkoutReportPage'
 import WorkCareerReportPage from './components/WorkCareerReportPage'
+import CycleLogPage from './components/CycleLogPage'
 import InstallButton from './components/InstallButton'
 import { getCyclePhase, getDaysInCycle } from './utils/cycleCalculator'
 import './App.css'
@@ -71,7 +72,8 @@ function App() {
   // Hide header toggle on report pages and shared partner view
   const showViewToggle = !location.pathname.includes('/workout-report') && 
                          !location.pathname.includes('/work-career-report') && 
-                         !location.pathname.includes('/partner')
+                         !location.pathname.includes('/partner') &&
+                         !location.pathname.includes('/cycle-log')
 
   return (
     <div className="app">
@@ -111,6 +113,12 @@ function App() {
             path="/work-career-report" 
             element={
               <WorkCareerReportPage />
+            } 
+          />
+          <Route 
+            path="/cycle-log" 
+            element={
+              <CycleLogPage />
             } 
           />
           <Route 

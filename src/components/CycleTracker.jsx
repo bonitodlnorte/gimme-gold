@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { format, addDays } from 'date-fns'
+import { format, addDays, differenceInDays } from 'date-fns'
+import { useNavigate } from 'react-router-dom'
 import PhaseCard from './PhaseCard'
 import Recommendations from './Recommendations'
 import CycleVisualization from './CycleVisualization'
 import EducationalContent from './EducationalContent'
+import { getCycleHistory, addCycleEntry, calculateAverageCycleLength } from '../utils/cycleHistory'
 import './CycleTracker.css'
 
 function CycleTracker({ 
@@ -14,23 +16,72 @@ function CycleTracker({
   currentPhase,
   daysInCycle 
 }) {
+  const navigate = useNavigate()
   const [showEducation, setShowEducation] = useState(false)
+  const [showRecordDialog, setShowRecordDialog] = useState(false)
+  const [recordNote, setRecordNote] = useState('')
 
   const handleDateChange = (e) => {
     const date = new Date(e.target.value)
     onPeriodStart(date)
   }
 
+  const handleRecordNewPeriod = () => {
+    if (!lastPeriodDate) {
+      alert('Please set your last period date first')
+      return
+    }
+    setShowRecordDialog(true)
+  }
+
+  const confirmRecordNewPeriod = () => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0) // Reset time to start of day
+    
+    // Store the previous period date before updating
+    const previousPeriodDate = new Date(lastPeriodDate)
+    previousPeriodDate.setHours(0, 0, 0, 0)
+    
+    // Calculate actual cycle length from previous period to today
+    const actualCycleLength = differenceInDays(today, previousPeriodDate)
+    
+    // Add to cycle history with the previous period date
+    addCycleEntry(previousPeriodDate, actualCycleLength, recordNote)
+    
+    // Update to new period date (today)
+    onPeriodStart(today)
+    
+    // Update cycle length to the average of all recorded cycles
+    const history = getCycleHistory()
+    if (history.length > 0) {
+      const newAverage = calculateAverageCycleLength(history)
+      if (newAverage) {
+        onCycleLengthChange(Math.round(newAverage))
+      }
+    }
+    
+    setShowRecordDialog(false)
+    setRecordNote('')
+  }
+
   return (
     <div className="cycle-tracker">
       <div className="tracker-header">
         <h2>Your Cycle Tracker</h2>
-        <button 
-          className="education-toggle"
-          onClick={() => setShowEducation(!showEducation)}
-        >
-          {showEducation ? '📚 Hide Info' : '📚 Learn About Phases'}
-        </button>
+        <div className="header-actions">
+          <button 
+            className="cycle-log-button"
+            onClick={() => navigate('/cycle-log')}
+          >
+            📊 View Cycle Log
+          </button>
+          <button 
+            className="education-toggle"
+            onClick={() => setShowEducation(!showEducation)}
+          >
+            {showEducation ? '📚 Hide Info' : '📚 Learn About Phases'}
+          </button>
+        </div>
       </div>
 
       {showEducation && <EducationalContent />}
@@ -75,9 +126,57 @@ function CycleTracker({
             <p className="next-period-days">
               In approximately {cycleLength - daysInCycle} day{cycleLength - daysInCycle !== 1 ? 's' : ''}
             </p>
+            <button
+              className="record-period-button"
+              onClick={handleRecordNewPeriod}
+            >
+              📝 Record New Period Started
+            </button>
           </div>
         )}
       </div>
+
+      {showRecordDialog && (
+        <div className="record-dialog-overlay" onClick={() => setShowRecordDialog(false)}>
+          <div className="record-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3>📝 Record New Period</h3>
+            <p className="dialog-info">
+              Recording period started today: <strong>{format(new Date(), 'EEEE, MMMM d, yyyy')}</strong>
+            </p>
+            <p className="dialog-info">
+              This will calculate your actual cycle length from your last period.
+            </p>
+            <div className="dialog-note-section">
+              <label htmlFor="record-note">Add a note (optional):</label>
+              <textarea
+                id="record-note"
+                value={recordNote}
+                onChange={(e) => setRecordNote(e.target.value)}
+                placeholder="e.g., Heavy flow, cramps, mood..."
+                rows="3"
+                className="dialog-note-input"
+              />
+            </div>
+            <div className="dialog-actions">
+              <button
+                className="dialog-cancel-button"
+                onClick={() => {
+                  setShowRecordDialog(false)
+                  setRecordNote('')
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="dialog-confirm-button"
+                onClick={confirmRecordNewPeriod}
+              >
+                ✓ Record Period
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {currentPhase && (
         <>
