@@ -58,14 +58,14 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
   const getSimpleInstructions = () => {
     if (isCriticalDays) {
       return {
-        image: '/images/play-dead-animal.jpg',
+        image: '/images/play-dead-animal.jpeg',
         title: 'PLAY DEAD',
         do: ['Be quiet (like, really quiet)', 'Bring chocolate (the good kind)', 'Offer back rubs (without asking)', 'Say "yes" to everything (seriously, everything)'],
         dont: ['Ask "what\'s wrong?" (you\'ll regret it)', 'Make jokes (not the time, bro)', 'Suggest going out (she wants to stay in)', 'Be logical (logic doesn\'t work here)']
       }
     } else if (isSuperCautiousPhase) {
       return {
-        image: '/images/bomb-squad.jpg',
+        image: '/images/bomb-squad.jpeg',
         title: 'PROCEED WITH EXTREME CAUTION',
         do: ['Be gentle (like handling glass)', 'Listen actively (actually listen)', 'Offer help (but don\'t hover)', 'Be patient (very, very patient)'],
         dont: ['Be critical (save it for later)', 'Rush her (she moves at her own pace)', 'Make demands (just don\'t)', 'Minimize feelings (they\'re real, deal with it)']
@@ -149,24 +149,6 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
           </div>
         </div>
       </div>
-
-      {isSensitivePhase && (
-        <div className="sensitive-phase-warning">
-          <div className="warning-content">
-            <div className="warning-icon">🚨</div>
-            <div className="warning-text">
-              <h3 className="warning-title">⚠️ PROCEED WITH EXTREME CAUTION ⚠️</h3>
-              <p className="warning-message">
-                She's in her most sensitive phase. Act like you're deactivating a bomb - 
-                be gentle, patient, and supportive. This is NOT the time for jokes, criticism, 
-                or pushing boundaries.
-              </p>
-            </div>
-            <div className="warning-icon">🚨</div>
-          </div>
-          <div className="bomb-squad-emoji">🦺💣🧨</div>
-        </div>
-      )}
 
       <div className="partner-info-card">
         <div className="current-status">
