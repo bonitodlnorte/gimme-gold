@@ -1,11 +1,40 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Routes, Route, useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import CycleTracker from './components/CycleTracker'
 import PartnerView from './components/PartnerView'
 import WorkoutReportPage from './components/WorkoutReportPage'
 import WorkCareerReportPage from './components/WorkCareerReportPage'
 import { getCyclePhase, getDaysInCycle } from './utils/cycleCalculator'
 import './App.css'
+
+// Component for shared partner view (reads from URL params)
+function SharedPartnerView() {
+  const [searchParams] = useSearchParams()
+  const dateParam = searchParams.get('date')
+  const lengthParam = searchParams.get('length')
+
+  let lastPeriodDate = null
+  let cycleLength = 28
+
+  if (dateParam) {
+    lastPeriodDate = new Date(dateParam)
+  }
+  if (lengthParam) {
+    cycleLength = parseInt(lengthParam) || 28
+  }
+
+  const currentPhase = lastPeriodDate ? getCyclePhase(lastPeriodDate, cycleLength) : null
+  const daysInCycle = lastPeriodDate ? getDaysInCycle(lastPeriodDate) : 0
+
+  return (
+    <PartnerView 
+      lastPeriodDate={lastPeriodDate}
+      cycleLength={cycleLength}
+      currentPhase={currentPhase}
+      daysInCycle={daysInCycle}
+    />
+  )
+}
 
 function App() {
   const [lastPeriodDate, setLastPeriodDate] = useState(() => {
@@ -38,8 +67,10 @@ function App() {
   const currentPhase = lastPeriodDate ? getCyclePhase(lastPeriodDate, cycleLength) : null
   const daysInCycle = lastPeriodDate ? getDaysInCycle(lastPeriodDate) : 0
 
-  // Hide header toggle on report pages
-  const showViewToggle = !location.pathname.includes('/workout-report') && !location.pathname.includes('/work-career-report')
+  // Hide header toggle on report pages and shared partner view
+  const showViewToggle = !location.pathname.includes('/workout-report') && 
+                         !location.pathname.includes('/work-career-report') && 
+                         !location.pathname.includes('/partner')
 
   return (
     <div className="app">
@@ -72,6 +103,12 @@ function App() {
             path="/work-career-report" 
             element={
               <WorkCareerReportPage />
+            } 
+          />
+          <Route 
+            path="/partner" 
+            element={
+              <SharedPartnerView />
             } 
           />
           <Route 

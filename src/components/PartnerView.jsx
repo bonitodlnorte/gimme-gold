@@ -50,6 +50,51 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
 
   const communicationTips = getCommunicationTips(currentPhase.name)
   const isSensitivePhase = currentPhase.name === 'Nurture Phase'
+  
+  // Determine if it's the most critical days (last 2-3 days before period)
+  const isCriticalDays = isSensitivePhase && currentPhase.day >= (cycleLength - 2)
+  const isSuperCautiousPhase = isSensitivePhase && !isCriticalDays
+
+  const getSimpleInstructions = () => {
+    if (isCriticalDays) {
+      return {
+        image: '/images/play-dead-animal.jpg',
+        title: 'PLAY DEAD',
+        do: ['Be quiet (like, really quiet)', 'Bring chocolate (the good kind)', 'Offer back rubs (without asking)', 'Say "yes" to everything (seriously, everything)'],
+        dont: ['Ask "what\'s wrong?" (you\'ll regret it)', 'Make jokes (not the time, bro)', 'Suggest going out (she wants to stay in)', 'Be logical (logic doesn\'t work here)']
+      }
+    } else if (isSuperCautiousPhase) {
+      return {
+        image: '/images/bomb-squad.jpg',
+        title: 'PROCEED WITH EXTREME CAUTION',
+        do: ['Be gentle (like handling glass)', 'Listen actively (actually listen)', 'Offer help (but don\'t hover)', 'Be patient (very, very patient)'],
+        dont: ['Be critical (save it for later)', 'Rush her (she moves at her own pace)', 'Make demands (just don\'t)', 'Minimize feelings (they\'re real, deal with it)']
+      }
+    } else if (currentPhase.name === 'Manifestation Phase') {
+      return {
+        image: null,
+        title: 'SHE\'S A SUPERHERO',
+        do: ['Celebrate her (she\'s amazing right now)', 'Support her goals (she can do anything)', 'Enjoy the energy (it\'s contagious)', 'Be intimate (trust us on this one)'],
+        dont: ['Hold her back (she\'s unstoppable)', 'Be jealous (of her confidence)', 'Undermine confidence (she\'s at peak)', 'Waste this time (it\'s limited)']
+      }
+    } else if (currentPhase.name === 'Power Phase 1') {
+      return {
+        image: null,
+        title: 'BUILDING MODE',
+        do: ['Encourage her (she\'s gaining momentum)', 'Plan together (she\'s thinking ahead)', 'Be supportive (she needs it)', 'Engage in conversations (she\'s getting sharper)'],
+        dont: ['Be dismissive (her ideas matter)', 'Rush decisions (let her think)', 'Overwhelm her (energy is building)', 'Ignore her ideas (they\'re getting better)']
+      }
+    } else {
+      return {
+        image: null,
+        title: 'FOCUS MODE',
+        do: ['Respect her focus (she\'s in the zone)', 'Support her work (she\'s getting things done)', 'Be understanding (she\'s introspective)', 'Have deep conversations (she\'s ready)'],
+        dont: ['Interrupt her (she\'s concentrating)', 'Demand attention (she\'s focused)', 'Be overly social (she prefers depth)', 'Distract her (let her work)']
+      }
+    }
+  }
+
+  const simpleInstructions = getSimpleInstructions()
 
   return (
     <div className="partner-view">
@@ -58,6 +103,51 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
         <p className="partner-subtitle">
           Understanding her cycle helps you support her better
         </p>
+      </div>
+
+      <div className="simple-instructions">
+        <div className="instructions-content">
+          {simpleInstructions.image && (
+            <div className="instruction-image-container">
+              <img 
+                src={simpleInstructions.image} 
+                alt={simpleInstructions.title}
+                className="instruction-image"
+                onError={(e) => {
+                  // Fallback if image doesn't load - hide container
+                  e.target.parentElement.style.display = 'none'
+                }}
+              />
+            </div>
+          )}
+          <div className="instructions-text">
+            <h3 className="instructions-title">{simpleInstructions.title}</h3>
+            {isCriticalDays && (
+              <p className="instructions-subtitle">🐾 The last 2-3 days before her period - be extra careful!</p>
+            )}
+            {isSuperCautiousPhase && (
+              <p className="instructions-subtitle">🦺 She's in her sensitive phase - handle with care!</p>
+            )}
+            <div className="instructions-grid">
+              <div className="instruction-do">
+                <h4>✅ DO</h4>
+                <ul>
+                  {simpleInstructions.do.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="instruction-dont">
+                <h4>❌ DON'T</h4>
+                <ul>
+                  {simpleInstructions.dont.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {isSensitivePhase && (

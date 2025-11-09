@@ -104,6 +104,66 @@
   margin-bottom: 1.5rem;
 }
 
+.share-section {
+  background: var(--bg-card);
+  border: 2px solid rgba(244, 208, 63, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.share-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem 0;
+}
+
+.share-description {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.share-button {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid;
+  margin: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.share-button.whatsapp-share {
+  background: #25D366;
+  border-color: #25D366;
+  color: white;
+}
+
+.share-button.whatsapp-share:hover {
+  background: #20BA5A;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.share-button.copy-link {
+  background: var(--bg-card);
+  border-color: var(--primary-gold);
+  color: var(--primary-gold-dark);
+}
+
+.share-button.copy-link:hover {
+  background: var(--primary-gold);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 208, 63, 0.25);
+}
+
 @media (max-width: 768px) {
   .tracker-header h2 {
     font-size: 1.5rem;
@@ -112,6 +172,16 @@
   .input-section {
     grid-template-columns: 1fr;
     padding: 1.5rem;
+  }
+
+  .share-section {
+    padding: 1.5rem;
+  }
+
+  .share-button {
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0;
   }
 }
 
