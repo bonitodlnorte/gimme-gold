@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import PhaseCard from './PhaseCard'
 import Recommendations from './Recommendations'
 import CycleVisualization from './CycleVisualization'
-import EducationalContent from './EducationalContent'
 import { getCycleHistory, addCycleEntry, calculateAverageCycleLength } from '../utils/cycleHistory'
 import './CycleTracker.css'
 
@@ -17,7 +16,6 @@ function CycleTracker({
   daysInCycle 
 }) {
   const navigate = useNavigate()
-  const [showEducation, setShowEducation] = useState(false)
   const [showRecordDialog, setShowRecordDialog] = useState(false)
   const [recordNote, setRecordNote] = useState('')
   const [recordDate, setRecordDate] = useState(format(new Date(), 'yyyy-MM-dd'))
@@ -166,14 +164,12 @@ function CycleTracker({
           </button>
           <button 
             className="education-toggle"
-            onClick={() => setShowEducation(!showEducation)}
+            onClick={() => navigate('/learn')}
           >
-            {showEducation ? '📚 Hide Info' : '📚 Learn About Phases'}
+            📚 Learn About Phases
           </button>
         </div>
       </div>
-
-      {showEducation && <EducationalContent />}
 
       <div className="input-section">
         <div className="input-group">

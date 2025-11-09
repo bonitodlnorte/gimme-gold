@@ -43,6 +43,9 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
     return diffDays
   }
 
+  // Calculate next period date
+  const nextPeriodDate = addDays(lastPeriodDate, cycleLength)
+  
   // Get calendar month to display (current month or month containing cycle start)
   const today = new Date()
   const cycleStartMonth = startOfMonth(lastPeriodDate)
@@ -82,13 +85,14 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
             const phase = cycleDay ? getPhaseForDay(cycleDay) : null
             const libidoIndicator = cycleDay ? getLibidoIndicator(cycleDay) : null
             const isToday = isSameDay(date, today)
+            const isNextPeriod = isSameDay(date, nextPeriodDate)
             const isCurrentMonth = isSameMonth(date, displayMonth)
             const isPhaseTransition = cycleDay && [1, 11, 16, 20].includes(cycleDay)
 
             return (
               <div
                 key={index}
-                className={`calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${phase ? 'has-phase' : ''} ${isPhaseTransition ? 'phase-transition' : ''}`}
+                className={`calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isNextPeriod ? 'next-period' : ''} ${phase ? 'has-phase' : ''} ${isPhaseTransition ? 'phase-transition' : ''}`}
                 style={{
                   backgroundColor: phase ? `${phase.color}30` : 'transparent',
                   borderColor: phase ? phase.color : 'transparent'
@@ -96,6 +100,7 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
               >
                 <div className="calendar-day-number">
                   {format(date, 'd')}
+                  {isNextPeriod && <span className="next-period-emoji">🩸</span>}
                 </div>
                 {cycleDay && (
                   <div className="calendar-day-info">
@@ -106,6 +111,11 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
                     {isPhaseTransition && phase && (
                       <div className="calendar-day-phase">{phase.icon} {phase.displayName}</div>
                     )}
+                  </div>
+                )}
+                {isNextPeriod && !cycleDay && (
+                  <div className="calendar-day-info">
+                    <div className="next-period-label">Next Period</div>
                   </div>
                 )}
               </div>

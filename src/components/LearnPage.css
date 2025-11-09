@@ -1,0 +1,230 @@
+.learn-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.learn-page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--accent-purple);
+}
+
+.learn-page-header h1 {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.learn-page-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.video-section {
+  background: var(--bg-card);
+  border: 2px solid var(--primary-gold);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 12px rgba(244, 208, 63, 0.15);
+}
+
+.video-section h2 {
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.video-description {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.video-description strong {
+  color: var(--primary-gold);
+  font-weight: 700;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 1rem;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.youtube-embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.video-note {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.video-link {
+  color: var(--primary-gold);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.video-link:hover {
+  color: var(--accent-purple);
+  text-decoration: underline;
+}
+
+.why-this-matters {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--accent-purple);
+}
+
+.why-this-matters h2 {
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.matters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.matters-card {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-purple);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(221, 160, 221, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.matters-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(221, 160, 221, 0.25);
+}
+
+.matters-card h3 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.matters-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.matters-card li {
+  color: var(--text-primary);
+  line-height: 1.8;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  font-size: 1.05rem;
+}
+
+.matters-card li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--primary-gold);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.education-note {
+  background: linear-gradient(135deg, rgba(244, 208, 63, 0.15) 0%, rgba(221, 160, 221, 0.15) 100%);
+  border: 2px solid var(--primary-gold);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.education-note p {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.education-note strong {
+  color: var(--primary-gold);
+  font-weight: 700;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .learn-page {
+    padding: 1rem;
+  }
+
+  .learn-page-header h1 {
+    font-size: 2rem;
+  }
+
+  .learn-page-subtitle {
+    font-size: 1rem;
+  }
+
+  .video-section {
+    padding: 1.5rem;
+  }
+
+  .video-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .matters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .matters-card {
+    padding: 1.5rem;
+  }
+
+  .why-this-matters h2 {
+    font-size: 1.5rem;
+  }
+}
+

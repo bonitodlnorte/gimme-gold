@@ -51,10 +51,10 @@
 
 .calendar-day {
   aspect-ratio: 1;
-  min-height: 80px;
+  min-height: 60px;
   border: 2px solid transparent;
-  border-radius: 8px;
-  padding: 0.5rem;
+  border-radius: 6px;
+  padding: 0.4rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -74,6 +74,12 @@
   background: var(--bg-card);
 }
 
+.calendar-day.next-period {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+  background: rgba(231, 76, 60, 0.1);
+}
+
 .calendar-day.has-phase {
   border-width: 2px;
 }
@@ -84,10 +90,18 @@
 }
 
 .calendar-day-number {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.next-period-emoji {
+  font-size: 0.9rem;
+  line-height: 1;
 }
 
 .calendar-day-info {
@@ -99,25 +113,32 @@
 }
 
 .calendar-day-cycle {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--text-secondary);
   font-weight: 500;
 }
 
+.next-period-label {
+  font-size: 0.65rem;
+  color: #e74c3c;
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
 .calendar-day-libido {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   line-height: 1;
   margin-top: 0.1rem;
 }
 
 .calendar-day-phase {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--text-primary);
   font-weight: 600;
-  margin-top: 0.2rem;
-  padding: 0.2rem 0.4rem;
+  margin-top: 0.15rem;
+  padding: 0.15rem 0.3rem;
   background: rgba(255, 255, 255, 0.5);
-  border-radius: 4px;
+  border-radius: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -153,21 +174,21 @@
   }
 
   .calendar-day {
-    min-height: 70px;
-    padding: 0.4rem;
+    min-height: 55px;
+    padding: 0.35rem;
   }
 
   .calendar-day-number {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .calendar-day-cycle {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
   }
 
   .calendar-day-phase {
-    font-size: 0.6rem;
-    padding: 0.15rem 0.3rem;
+    font-size: 0.55rem;
+    padding: 0.1rem 0.25rem;
   }
 
   .calendar-weekday {
@@ -182,25 +203,25 @@
 
 @media (max-width: 480px) {
   .calendar-day {
-    min-height: 60px;
+    min-height: 50px;
     padding: 0.3rem;
   }
 
   .calendar-day-number {
-    font-size: 0.85rem;
-  }
-
-  .calendar-day-cycle {
-    font-size: 0.6rem;
-  }
-
-  .calendar-day-libido {
     font-size: 0.8rem;
   }
 
-  .calendar-day-phase {
+  .calendar-day-cycle {
     font-size: 0.55rem;
-    padding: 0.1rem 0.25rem;
+  }
+
+  .calendar-day-libido {
+    font-size: 0.75rem;
+  }
+
+  .calendar-day-phase {
+    font-size: 0.5rem;
+    padding: 0.1rem 0.2rem;
   }
 
   .calendar-weekday {
