@@ -135,6 +135,20 @@ function App() {
           />
         </Routes>
       </main>
+
+      <footer className="app-footer">
+        <p>
+          Created with <span className="heart">❤️</span> and AI by{' '}
+          <a 
+            href="https://www.korokota.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="footer-link"
+          >
+            Korokota.com
+          </a>
+        </p>
+      </footer>
     </div>
   )
 }

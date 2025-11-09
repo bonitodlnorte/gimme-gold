@@ -70,6 +70,55 @@
   margin: 0 auto;
 }
 
+.app-footer {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  border-top: 2px solid var(--primary-gold-light);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  margin-top: 3rem;
+  box-shadow: 0 -2px 8px rgba(244, 208, 63, 0.1);
+}
+
+.app-footer p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.app-footer .heart {
+  color: var(--accent-pink);
+  font-size: 1rem;
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.app-footer .footer-link {
+  color: var(--primary-gold-dark);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.app-footer .footer-link:hover {
+  color: var(--primary-gold);
+  border-bottom-color: var(--primary-gold);
+  transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
   .app-header {
     padding: 1.5rem;
@@ -81,6 +130,15 @@
 
   .app-main {
     padding: 1rem;
+  }
+
+  .app-footer {
+    padding: 1rem;
+    margin-top: 2rem;
+  }
+
+  .app-footer p {
+    font-size: 0.85rem;
   }
 }
 
