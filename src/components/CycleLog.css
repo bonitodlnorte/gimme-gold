@@ -191,6 +191,33 @@
   border-bottom: none;
 }
 
+.current-period-row {
+  background: rgba(244, 208, 63, 0.1);
+  font-weight: 500;
+}
+
+.current-badge {
+  background: var(--primary-gold);
+  color: var(--text-primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.cycle-length-badge.empty {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.no-actions {
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
 .date-cell {
   min-width: 200px;
 }

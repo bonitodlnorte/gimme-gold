@@ -114,48 +114,46 @@
   font-style: italic;
 }
 
-.next-period-info {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%);
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-top: 0.5rem;
-  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+.next-period-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.next-period-info h4 {
-  margin: 0 0 0.75rem 0;
-  color: var(--text-primary);
-  font-size: 1.1rem;
-  font-weight: 600;
+.next-period-group label {
+  margin-bottom: 0.5rem;
+}
+
+.next-period-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .next-period-date {
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   color: var(--text-primary);
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
 .next-period-days {
-  margin: 0 0 1rem 0;
-  color: var(--text-primary);
-  font-size: 0.95rem;
-  opacity: 0.9;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .record-period-button {
   background: linear-gradient(135deg, var(--accent-green) 0%, #7fc4b3 100%);
   border: 2px solid var(--accent-green);
   color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(152, 216, 200, 0.3);
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   width: 100%;
 }
 

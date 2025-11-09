@@ -53,8 +53,8 @@ function CycleTracker({
       return
     }
     
-    // Add to cycle history with the previous period date
-    addCycleEntry(previousPeriodDate, actualCycleLength, recordNote)
+    // Add to cycle history with the previous period date (cycle length calculated automatically)
+    addCycleEntry(previousPeriodDate, recordNote)
     
     // Update to new period date
     onPeriodStart(newPeriodDate)
@@ -127,20 +127,22 @@ function CycleTracker({
         </div>
 
         {lastPeriodDate && (
-          <div className="next-period-info">
-            <h4>📅 Next Period Expected</h4>
-            <p className="next-period-date">
-              {format(addDays(lastPeriodDate, cycleLength), 'EEEE, MMMM d, yyyy')}
-            </p>
-            <p className="next-period-days">
-              In approximately {cycleLength - daysInCycle} day{cycleLength - daysInCycle !== 1 ? 's' : ''}
-            </p>
-            <button
-              className="record-period-button"
-              onClick={handleRecordNewPeriod}
-            >
-              📝 Record New Period Started
-            </button>
+          <div className="input-group next-period-group">
+            <label>📅 Next Period Expected</label>
+            <div className="next-period-content">
+              <p className="next-period-date">
+                {format(addDays(lastPeriodDate, cycleLength), 'EEEE, MMMM d, yyyy')}
+              </p>
+              <p className="next-period-days">
+                In approximately {cycleLength - daysInCycle} day{cycleLength - daysInCycle !== 1 ? 's' : ''}
+              </p>
+              <button
+                className="record-period-button"
+                onClick={handleRecordNewPeriod}
+              >
+                📝 Period Started
+              </button>
+            </div>
           </div>
         )}
       </div>

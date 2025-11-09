@@ -31,22 +31,53 @@ export function saveCycleHistory(history) {
   }
 }
 
-export function addCycleEntry(date, cycleLength, note = '') {
+export function addCycleEntry(date, note = '') {
   const history = getCycleHistory()
+  const newDate = new Date(date)
+  newDate.setHours(0, 0, 0, 0)
+  
   const newEntry = {
     id: Date.now().toString(),
-    date: new Date(date),
-    cycleLength: cycleLength,
+    date: newDate,
+    cycleLength: null, // Will be calculated after sorting
     note: note.trim()
   }
-  const updatedHistory = [...history, newEntry].sort((a, b) => b.date - a.date) // Most recent first
-  saveCycleHistory(updatedHistory)
-  return updatedHistory
+  const updatedHistory = [...history, newEntry]
+  // Recalculate all cycle lengths after adding new entry
+  const recalculated = recalculateCycleLengths(updatedHistory)
+  saveCycleHistory(recalculated)
+  return recalculated
+}
+
+export function recalculateCycleLengths(history) {
+  // Sort by date (most recent first)
+  const sorted = [...history].sort((a, b) => b.date - a.date)
+  
+  // Recalculate all cycle lengths
+  return sorted.map((entry, index) => {
+    if (index === 0) {
+      // First entry (most recent) has no previous period, so cycle length is null
+      return { ...entry, cycleLength: null }
+    } else {
+      // Calculate cycle length from previous period
+      const previousDate = new Date(sorted[index - 1].date)
+      previousDate.setHours(0, 0, 0, 0)
+      const currentDate = new Date(entry.date)
+      currentDate.setHours(0, 0, 0, 0)
+      const diffTime = previousDate - currentDate
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+      if (diffDays > 0 && diffDays < 100) { // Reasonable range
+        return { ...entry, cycleLength: diffDays }
+      } else {
+        return { ...entry, cycleLength: null }
+      }
+    }
+  })
 }
 
 export function updateCycleEntry(id, updates) {
   const history = getCycleHistory()
-  const updatedHistory = history.map(entry => {
+  let updatedHistory = history.map(entry => {
     if (entry.id === id) {
       return {
         ...entry,
@@ -56,28 +87,40 @@ export function updateCycleEntry(id, updates) {
     }
     return entry
   })
+  
+  // If date was updated, recalculate all cycle lengths
+  if (updates.date) {
+    updatedHistory = recalculateCycleLengths(updatedHistory)
+  }
+  
   saveCycleHistory(updatedHistory)
   return updatedHistory
 }
 
 export function deleteCycleEntry(id) {
   const history = getCycleHistory()
-  const updatedHistory = history.filter(entry => entry.id !== id)
-  saveCycleHistory(updatedHistory)
-  return updatedHistory
+  const filtered = history.filter(entry => entry.id !== id)
+  // Recalculate cycle lengths after deletion
+  const recalculated = recalculateCycleLengths(filtered)
+  saveCycleHistory(recalculated)
+  return recalculated
 }
 
 export function calculateAverageCycleLength(history) {
-  if (history.length === 0) return null
-  const total = history.reduce((sum, entry) => sum + entry.cycleLength, 0)
-  return Math.round((total / history.length) * 10) / 10 // Round to 1 decimal
+  // Only include entries with cycle length (exclude first entry and current period)
+  const entriesWithLength = history.filter(entry => entry.cycleLength !== null)
+  if (entriesWithLength.length === 0) return null
+  const total = entriesWithLength.reduce((sum, entry) => sum + entry.cycleLength, 0)
+  return Math.round((total / entriesWithLength.length) * 10) / 10 // Round to 1 decimal
 }
 
 export function calculateCycleTrend(history) {
-  if (history.length < 2) return null
+  // Only include entries with cycle length (exclude first entry and current period)
+  const entriesWithLength = history.filter(entry => entry.cycleLength !== null)
+  if (entriesWithLength.length < 2) return null
   
   // Get the last 3 cycles for trend calculation
-  const recentCycles = history.slice(0, Math.min(3, history.length))
+  const recentCycles = entriesWithLength.slice(0, Math.min(3, entriesWithLength.length))
   const cycleLengths = recentCycles.map(entry => entry.cycleLength)
   
   // Calculate if trend is increasing, decreasing, or stable
