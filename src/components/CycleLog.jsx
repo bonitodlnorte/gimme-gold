@@ -45,8 +45,11 @@ function CycleLog() {
       setCurrentPeriodDate(currentDate)
     }
     
+    // Sort by date (most recent first) to ensure correct order
+    const sortedHistory = [...cycleHistory].sort((a, b) => b.date - a.date)
+    
     // Calculate cycle length for the most recent entry using current period date
-    const historyWithCurrentPeriod = cycleHistory.map((entry, index) => {
+    const historyWithCurrentPeriod = sortedHistory.map((entry, index) => {
       // If this is the most recent entry (first after sorting) and we have a current period date
       if (index === 0 && currentDate && entry.cycleLength === null) {
         const currentPeriodDate = new Date(currentDate)
@@ -62,12 +65,9 @@ function CycleLog() {
       return entry
     })
     
-    // Sort by date (most recent first) to ensure correct order
-    const sortedHistory = [...historyWithCurrentPeriod].sort((a, b) => b.date - a.date)
-    
-    setHistory(sortedHistory)
-    setAverageLength(calculateAverageCycleLength(sortedHistory))
-    setTrend(calculateCycleTrend(sortedHistory))
+    setHistory(historyWithCurrentPeriod)
+    setAverageLength(calculateAverageCycleLength(historyWithCurrentPeriod))
+    setTrend(calculateCycleTrend(historyWithCurrentPeriod))
   }
 
   const handleDelete = (id) => {
