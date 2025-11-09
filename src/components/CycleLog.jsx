@@ -37,14 +37,37 @@ function CycleLog() {
 
   const loadHistory = () => {
     const cycleHistory = getCycleHistory()
-    setHistory(cycleHistory)
-    setAverageLength(calculateAverageCycleLength(cycleHistory))
-    setTrend(calculateCycleTrend(cycleHistory))
-    // Update current period date
+    // Get current period date
     const savedDate = localStorage.getItem('gimmeGold_lastPeriodDate')
+    let currentDate = null
     if (savedDate) {
-      setCurrentPeriodDate(new Date(savedDate))
+      currentDate = new Date(savedDate)
+      setCurrentPeriodDate(currentDate)
     }
+    
+    // Calculate cycle length for the most recent entry using current period date
+    const historyWithCurrentPeriod = cycleHistory.map((entry, index) => {
+      // If this is the most recent entry (first after sorting) and we have a current period date
+      if (index === 0 && currentDate && entry.cycleLength === null) {
+        const currentPeriodDate = new Date(currentDate)
+        currentPeriodDate.setHours(0, 0, 0, 0)
+        const entryDate = new Date(entry.date)
+        entryDate.setHours(0, 0, 0, 0)
+        const diffTime = currentPeriodDate - entryDate
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+        if (diffDays > 0 && diffDays < 100) {
+          return { ...entry, cycleLength: diffDays }
+        }
+      }
+      return entry
+    })
+    
+    // Sort by date (most recent first) to ensure correct order
+    const sortedHistory = [...historyWithCurrentPeriod].sort((a, b) => b.date - a.date)
+    
+    setHistory(sortedHistory)
+    setAverageLength(calculateAverageCycleLength(sortedHistory))
+    setTrend(calculateCycleTrend(sortedHistory))
   }
 
   const handleDelete = (id) => {
