@@ -4,6 +4,7 @@ import CycleTracker from './components/CycleTracker'
 import PartnerView from './components/PartnerView'
 import WorkoutReportPage from './components/WorkoutReportPage'
 import WorkCareerReportPage from './components/WorkCareerReportPage'
+import InstallButton from './components/InstallButton'
 import { getCyclePhase, getDaysInCycle } from './utils/cycleCalculator'
 import './App.css'
 
@@ -156,6 +157,8 @@ function App() {
           </a>
         </p>
       </footer>
+
+      <InstallButton />
     </div>
   )
 }

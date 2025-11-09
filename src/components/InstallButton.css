@@ -1,0 +1,157 @@
+.install-button-container {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+}
+
+.install-button {
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-light) 100%);
+  border: 2px solid var(--primary-gold-dark);
+  color: var(--text-primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(244, 208, 63, 0.3);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.install-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 208, 63, 0.4);
+  background: linear-gradient(135deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%);
+}
+
+.install-button:active {
+  transform: translateY(0);
+}
+
+.install-icon {
+  font-size: 1.2rem;
+}
+
+.install-text {
+  font-weight: 600;
+}
+
+.ios-instructions {
+  position: absolute;
+  bottom: calc(100% + 1rem);
+  right: 0;
+  background: var(--bg-card);
+  border: 2px solid var(--primary-gold-light);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-width: 320px;
+  z-index: 1001;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ios-instructions h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ios-instructions ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.ios-instructions li {
+  margin-bottom: 0.75rem;
+}
+
+.ios-instructions li:last-child {
+  margin-bottom: 0;
+}
+
+.ios-instructions strong {
+  color: var(--primary-gold-dark);
+  font-weight: 600;
+}
+
+.ios-icon {
+  font-size: 1rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.close-instructions {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.close-instructions:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .install-button-container {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .install-button {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .ios-instructions {
+    max-width: calc(100vw - 2rem);
+    right: 0;
+    left: 0;
+    margin: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .install-button {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  .install-icon {
+    font-size: 1rem;
+  }
+}
+
