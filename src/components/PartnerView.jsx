@@ -49,6 +49,7 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
   }
 
   const communicationTips = getCommunicationTips(currentPhase.name)
+  const isSensitivePhase = currentPhase.name === 'Nurture Phase'
 
   return (
     <div className="partner-view">
@@ -58,6 +59,24 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
           Understanding her cycle helps you support her better
         </p>
       </div>
+
+      {isSensitivePhase && (
+        <div className="sensitive-phase-warning">
+          <div className="warning-content">
+            <div className="warning-icon">🚨</div>
+            <div className="warning-text">
+              <h3 className="warning-title">⚠️ PROCEED WITH EXTREME CAUTION ⚠️</h3>
+              <p className="warning-message">
+                She's in her most sensitive phase. Act like you're deactivating a bomb - 
+                be gentle, patient, and supportive. This is NOT the time for jokes, criticism, 
+                or pushing boundaries.
+              </p>
+            </div>
+            <div className="warning-icon">🚨</div>
+          </div>
+          <div className="bomb-squad-emoji">🦺💣🧨</div>
+        </div>
+      )}
 
       <div className="partner-info-card">
         <div className="current-status">
