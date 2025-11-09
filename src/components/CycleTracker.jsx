@@ -140,7 +140,7 @@ function CycleTracker({
                 className="record-period-button"
                 onClick={handleRecordNewPeriod}
               >
-                📝 Period Started
+                🩸 Register New Period
               </button>
             </div>
           </div>
