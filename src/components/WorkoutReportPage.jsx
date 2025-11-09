@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { getCyclePhase } from '../utils/cycleCalculator'
 import WorkoutPerformance from './WorkoutPerformance'
 import './WorkoutReportPage.css'
 
 function WorkoutReportPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
   let { phase, cycleLength } = location.state || {}
@@ -30,14 +32,14 @@ function WorkoutReportPage() {
       <div className="workout-report-page">
         <div className="workout-report-header">
           <button className="back-button" onClick={() => navigate(-1)}>
-            ← Back
+            {t('common.back')}
           </button>
-          <h1>🏋️ Workout Performance Report</h1>
+          <h1>{t('workoutReport.title')}</h1>
         </div>
         <div className="no-data-message">
-          <p>No cycle data available. Please set up your cycle tracking first.</p>
+          <p>{t('workoutReport.noData')}</p>
           <button className="primary-button" onClick={() => navigate('/')}>
-            Go to Cycle Tracker
+            {t('workoutReport.goToTracker')}
           </button>
         </div>
       </div>
@@ -48,9 +50,9 @@ function WorkoutReportPage() {
     <div className="workout-report-page">
       <div className="workout-report-header">
         <button className="back-button" onClick={() => navigate(-1)}>
-          ← Back to Recommendations
+          {t('common.back')} {t('recommendations.title', { defaultValue: 'to Recommendations' })}
         </button>
-        <h1>🏋️ Full Workout Performance Report</h1>
+        <h1>{t('workoutReport.title')}</h1>
       </div>
       <WorkoutPerformance phase={phase} cycleLength={cycleLength} />
     </div>

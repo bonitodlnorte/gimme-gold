@@ -76,9 +76,9 @@ function EducationalContent() {
             <div className="what-happens">
               <h5>{t('educationalContent.whatsHappening')}</h5>
               <ul>
-                {phase.whatHappens.map((item, idx) => (
+                {Array.isArray(phase.whatHappens) ? phase.whatHappens.map((item, idx) => (
                   <li key={idx}>{item}</li>
-                ))}
+                )) : null}
               </ul>
             </div>
 
@@ -93,9 +93,26 @@ function EducationalContent() {
       <div className="key-takeaways">
         <h4>{t('educationalContent.keyTakeaways')}</h4>
         <ul>
-          {t('educationalContent.takeaways', { returnObjects: true }).map((takeaway, index) => (
-            <li key={index} dangerouslySetInnerHTML={{ __html: takeaways }} />
-          ))}
+          {(() => {
+            try {
+              const translationResult = t('educationalContent.takeaways', { returnObjects: true })
+              // Ensure we have a valid array
+              const itemsArray = Array.isArray(translationResult) ? translationResult : []
+              
+              if (itemsArray.length === 0) {
+                return null
+              }
+              
+              return itemsArray.map((listItem, idx) => {
+                // Safely convert to string
+                const content = listItem != null ? String(listItem) : ''
+                return <li key={idx} dangerouslySetInnerHTML={{ __html: content }} />
+              })
+            } catch (err) {
+              console.error('Error loading takeaways:', err)
+              return null
+            }
+          })()}
         </ul>
       </div>
     </div>

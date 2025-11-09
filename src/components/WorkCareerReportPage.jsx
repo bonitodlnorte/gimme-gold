@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { getCyclePhase } from '../utils/cycleCalculator'
 import WorkCareerPerformance from './WorkCareerPerformance'
 import './WorkCareerReportPage.css'
 
 function WorkCareerReportPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
   let { phase, cycleLength } = location.state || {}
@@ -30,14 +32,14 @@ function WorkCareerReportPage() {
       <div className="work-career-report-page">
         <div className="work-career-report-header">
           <button className="back-button" onClick={() => navigate(-1)}>
-            ← Back
+            {t('common.back')}
           </button>
-          <h1>💼 Work & Career Performance Report</h1>
+          <h1>{t('workCareerReport.title')}</h1>
         </div>
         <div className="no-data-message">
-          <p>No cycle data available. Please set up your cycle tracking first.</p>
+          <p>{t('workCareerReport.noData')}</p>
           <button className="primary-button" onClick={() => navigate('/')}>
-            Go to Cycle Tracker
+            {t('workCareerReport.goToTracker')}
           </button>
         </div>
       </div>
@@ -48,9 +50,9 @@ function WorkCareerReportPage() {
     <div className="work-career-report-page">
       <div className="work-career-report-header">
         <button className="back-button" onClick={() => navigate(-1)}>
-          ← Back to Recommendations
+          {t('common.back')} {t('recommendations.title', { defaultValue: 'to Recommendations' })}
         </button>
-        <h1>💼 Full Work & Career Performance Report</h1>
+        <h1>{t('workCareerReport.title')}</h1>
       </div>
       <WorkCareerPerformance phase={phase} cycleLength={cycleLength} />
     </div>

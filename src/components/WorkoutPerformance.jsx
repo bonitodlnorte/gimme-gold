@@ -1,17 +1,19 @@
+import { useTranslation } from 'react-i18next'
 import { getWorkoutPerformance } from '../utils/cycleCalculator'
 import './WorkoutPerformance.css'
 
 function WorkoutPerformance({ phase, cycleLength }) {
+  const { t } = useTranslation()
   const workoutInfo = getWorkoutPerformance(phase, cycleLength)
 
   if (!workoutInfo) return null
 
   const getPerformanceBadge = (level) => {
     const badges = {
-      peak: { text: 'PEAK PERFORMANCE', color: '#F4D03F', emoji: '✨', bgColor: 'rgba(244, 208, 63, 0.15)' },
-      'moderate-high': { text: 'BUILDING', color: '#98D8C8', emoji: '⚡', bgColor: 'rgba(152, 216, 200, 0.15)' },
-      high: { text: 'EXCELLENT', color: '#B0E0E6', emoji: '👍', bgColor: 'rgba(176, 224, 230, 0.15)' },
-      'low-moderate': { text: 'REST & RECOVERY', color: '#FFB6C1', emoji: '🌙', bgColor: 'rgba(255, 182, 193, 0.15)' }
+      peak: { text: t('workoutReport.performanceMetrics.peak', { defaultValue: 'PEAK PERFORMANCE' }), color: '#F4D03F', emoji: '✨', bgColor: 'rgba(244, 208, 63, 0.15)' },
+      'moderate-high': { text: t('workoutReport.performanceMetrics.building', { defaultValue: 'BUILDING' }), color: '#98D8C8', emoji: '⚡', bgColor: 'rgba(152, 216, 200, 0.15)' },
+      high: { text: t('workoutReport.performanceMetrics.excellent', { defaultValue: 'EXCELLENT' }), color: '#B0E0E6', emoji: '👍', bgColor: 'rgba(176, 224, 230, 0.15)' },
+      'low-moderate': { text: t('workoutReport.performanceMetrics.restRecovery', { defaultValue: 'REST & RECOVERY' }), color: '#FFB6C1', emoji: '🌙', bgColor: 'rgba(255, 182, 193, 0.15)' }
     }
     return badges[level] || badges.high
   }
@@ -21,7 +23,7 @@ function WorkoutPerformance({ phase, cycleLength }) {
   return (
     <div className="workout-performance">
       <div className="workout-header">
-        <h2 className="workout-title">🏋️ Workout Performance Report</h2>
+        <h2 className="workout-title">{t('workoutReport.title')}</h2>
         <div 
           className="performance-badge-large"
           style={{
@@ -40,51 +42,51 @@ function WorkoutPerformance({ phase, cycleLength }) {
         <div className="metric-card">
           <div className="metric-icon">⚡</div>
           <div className="metric-info">
-            <div className="metric-label">Energy Level</div>
+            <div className="metric-label">{t('workoutReport.performanceMetrics.energyLevel')}</div>
             <div className="metric-value">{workoutInfo.energyLevel}</div>
           </div>
         </div>
         <div className="metric-card">
           <div className="metric-icon">💪</div>
           <div className="metric-info">
-            <div className="metric-label">Strength</div>
+            <div className="metric-label">{t('workoutReport.performanceMetrics.strength')}</div>
             <div className="metric-value">{workoutInfo.strengthLevel}</div>
           </div>
         </div>
         <div className="metric-card">
           <div className="metric-icon">🏃</div>
           <div className="metric-info">
-            <div className="metric-label">Endurance</div>
+            <div className="metric-label">{t('workoutReport.performanceMetrics.endurance')}</div>
             <div className="metric-value">{workoutInfo.enduranceLevel}</div>
           </div>
         </div>
         <div className="metric-card">
           <div className="metric-icon">🔄</div>
           <div className="metric-info">
-            <div className="metric-label">Recovery</div>
+            <div className="metric-label">{t('workoutReport.performanceMetrics.recovery')}</div>
             <div className="metric-value">{workoutInfo.recoverySpeed}</div>
           </div>
         </div>
         <div className="metric-card">
           <div className="metric-icon">⚠️</div>
           <div className="metric-info">
-            <div className="metric-label">Injury Risk</div>
+            <div className="metric-label">{t('workoutReport.performanceMetrics.injuryRisk')}</div>
             <div className="metric-value">{workoutInfo.injuryRisk}</div>
           </div>
         </div>
       </div>
 
       <div className="hormonal-factors">
-        <h3 className="section-title">Hormonal Factors Affecting Performance</h3>
+        <h3 className="section-title">{t('workoutReport.hormonalFactors')}</h3>
         <div className="hormones-grid">
           <div className="hormone-factor">
-            <strong>Estrogen:</strong> {workoutInfo.hormonalFactors.estrogen}
+            <strong>{t('phaseCard.estrogen')}:</strong> {workoutInfo.hormonalFactors.estrogen}
           </div>
           <div className="hormone-factor">
-            <strong>Progesterone:</strong> {workoutInfo.hormonalFactors.progesterone}
+            <strong>{t('phaseCard.progesterone')}:</strong> {workoutInfo.hormonalFactors.progesterone}
           </div>
           <div className="hormone-factor">
-            <strong>Testosterone:</strong> {workoutInfo.hormonalFactors.testosterone}
+            <strong>{t('phaseCard.testosterone')}:</strong> {workoutInfo.hormonalFactors.testosterone}
           </div>
           <div className="hormone-factor">
             <strong>Cortisol:</strong> {workoutInfo.hormonalFactors.cortisol}
@@ -93,7 +95,7 @@ function WorkoutPerformance({ phase, cycleLength }) {
       </div>
 
       <div className="recommended-workouts">
-        <h3 className="section-title">Recommended Workouts</h3>
+        <h3 className="section-title">{t('workoutReport.recommendedWorkouts')}</h3>
         <div className="workouts-grid">
           {workoutInfo.recommendedWorkouts.map((workout, index) => (
             <div key={index} className="workout-card">

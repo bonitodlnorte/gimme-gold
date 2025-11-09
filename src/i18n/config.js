@@ -19,10 +19,17 @@ i18n
     fallbackLng: 'en',
     supportedLngs: ['en', 'es'],
     interpolation: {
-      escapeValue: false
+      escapeValue: false,
+      // Disable any features that might use eval
+      skipOnVariables: false
     },
     react: {
       useSuspense: false // Disable suspense to avoid eval issues
+    },
+    // Disable any features that might use eval
+    parseMissingKeyHandler: (key) => {
+      console.warn(`Missing translation key: ${key}`)
+      return key
     },
     detection: {
       order: ['localStorage', 'navigator'],
@@ -34,7 +41,9 @@ i18n
         if (lng && lng.startsWith('en')) return 'en'
         return 'en' // default fallback
       }
-    }
+    },
+    // Ensure no eval is used
+    compatibilityJSON: 'v3'
   })
 
 export default i18n
