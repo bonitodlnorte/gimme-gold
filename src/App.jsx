@@ -75,11 +75,18 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <div className="header-content">
-          <h1 className="app-title" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <span className="gold-text">Gimme</span> Gold
-          </h1>
-          <p className="app-subtitle">Hormonal Cycle Intelligence</p>
+        <div className="header-content" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          <img 
+            src="/images/Gimme-Gold-Logo.png" 
+            alt="Gimme Gold Logo" 
+            className="app-logo"
+          />
+          <div className="header-text">
+            <h1 className="app-title">
+              <span className="gold-text">Gimme</span> Gold
+            </h1>
+            <p className="app-subtitle">Hormonal Cycle Intelligence</p>
+          </div>
         </div>
         {showViewToggle && (
           <button 

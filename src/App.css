@@ -18,6 +18,30 @@
 
 .header-content {
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: opacity 0.2s ease;
+}
+
+.header-content:hover {
+  opacity: 0.9;
+}
+
+.app-logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.header-content:hover .app-logo {
+  transform: scale(1.05);
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .app-title {
@@ -124,6 +148,10 @@
     padding: 1.5rem;
   }
 
+  .app-logo {
+    height: 45px;
+  }
+
   .app-title {
     font-size: 2rem;
   }
@@ -139,6 +167,24 @@
 
   .app-footer p {
     font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    gap: 0.75rem;
+  }
+
+  .app-logo {
+    height: 40px;
+  }
+
+  .app-title {
+    font-size: 1.75rem;
+  }
+
+  .app-subtitle {
+    font-size: 0.8rem;
   }
 }
 
