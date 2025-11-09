@@ -81,6 +81,43 @@
   box-shadow: 0 0 0 3px rgba(244, 208, 63, 0.15);
 }
 
+.date-display {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.next-period-info {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+.next-period-info h4 {
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.next-period-date {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.next-period-days {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
 .welcome-message {
   background: var(--bg-card);
   padding: 3rem;

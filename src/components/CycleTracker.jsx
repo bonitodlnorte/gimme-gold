@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { format } from 'date-fns'
+import { format, addDays } from 'date-fns'
 import PhaseCard from './PhaseCard'
 import Recommendations from './Recommendations'
 import CycleVisualization from './CycleVisualization'
@@ -46,6 +46,11 @@ function CycleTracker({
             max={format(new Date(), 'yyyy-MM-dd')}
             className="date-input"
           />
+          {lastPeriodDate && (
+            <p className="date-display">
+              {format(lastPeriodDate, 'EEEE, MMMM d, yyyy')}
+            </p>
+          )}
         </div>
 
         <div className="input-group">
@@ -60,6 +65,18 @@ function CycleTracker({
             className="number-input"
           />
         </div>
+
+        {lastPeriodDate && (
+          <div className="next-period-info">
+            <h4>📅 Next Period Expected</h4>
+            <p className="next-period-date">
+              {format(addDays(lastPeriodDate, cycleLength), 'EEEE, MMMM d, yyyy')}
+            </p>
+            <p className="next-period-days">
+              In approximately {cycleLength - daysInCycle} day{cycleLength - daysInCycle !== 1 ? 's' : ''}
+            </p>
+          </div>
+        )}
       </div>
 
       {currentPhase && (
