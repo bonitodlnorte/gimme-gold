@@ -290,6 +290,7 @@ function CycleTracker({
             currentPhase={currentPhase} 
             cycleLength={cycleLength}
             daysInCycle={daysInCycle}
+            lastPeriodDate={lastPeriodDate}
           />
           <div className="share-section">
             <h3 className="share-title">📤 Share Partner View</h3>
