@@ -571,3 +571,354 @@ export function getWorkoutPerformance(phase, cycleLength) {
   return workoutInfo[phase.name] || null
 }
 
+export function getWorkCareerPerformance(phase, cycleLength) {
+  if (!phase) return null
+
+  const workInfo = {
+    'Power Phase 1': {
+      performanceLevel: 'high',
+      cognitiveLevel: 'Building',
+      communicationLevel: 'Good',
+      decisionMakingLevel: 'Good',
+      creativityLevel: 'Moderate',
+      overview: 'Your cognitive function and energy are building as estrogen rises. Great time for planning, organizing, and setting up systems. Your brain is becoming sharper and more focused.',
+      hormonalFactors: {
+        estrogen: 'Rising - improving cognitive function and verbal skills',
+        progesterone: 'Low - minimal impact',
+        testosterone: 'Low - building confidence gradually',
+        cortisol: 'Balanced - good stress response'
+      },
+      recommendedActivities: [
+        {
+          type: 'Planning & Strategy',
+          timing: 'Best Time',
+          duration: '2-4 hours',
+          focus: 'Strategic planning, goal setting, system design',
+          activities: ['Annual/quarterly planning', 'Project roadmaps', 'Process improvements', 'Team structure planning', 'Budget planning'],
+          why: 'Estrogen is rising, improving your ability to see the big picture and plan strategically. Your cognitive function is improving daily.'
+        },
+        {
+          type: 'Meetings',
+          timing: 'Good Time',
+          duration: '30-60 minutes',
+          focus: 'Collaborative meetings, brainstorming, team alignment',
+          activities: ['Team meetings', 'Brainstorming sessions', 'Planning meetings', 'Status updates', 'Collaborative discussions'],
+          why: 'Your communication skills are improving. Good for collaborative work and building consensus.'
+        },
+        {
+          type: 'Creative Work',
+          timing: 'Moderate',
+          duration: '1-3 hours',
+          focus: 'Ideation, concept development, creative exploration',
+          activities: ['Brainstorming', 'Concept development', 'Creative exploration', 'Design thinking', 'Innovation sessions'],
+          why: 'Creativity is building but not at peak. Good for exploring ideas and concepts.'
+        },
+        {
+          type: 'Crucial Conversations',
+          timing: 'Moderate',
+          duration: '30-60 minutes',
+          focus: 'Important discussions, feedback, negotiations',
+          activities: ['Performance reviews', 'Difficult conversations', 'Negotiations', 'Feedback sessions', 'Conflict resolution'],
+          why: 'Your communication is improving, but wait for peak phase for highest-stakes conversations.'
+        },
+        {
+          type: 'Administrative Tasks',
+          timing: 'Excellent',
+          duration: '1-2 hours',
+          focus: 'Organization, documentation, routine work',
+          activities: ['Email organization', 'Documentation', 'Data entry', 'Filing and organizing', 'Routine tasks'],
+          why: 'Your focus and organization skills are improving. Perfect for catching up on administrative work.'
+        }
+      ],
+      avoid: [
+        'Scheduling high-stakes presentations - save for Manifestation Phase',
+        'Important negotiations - wait for peak confidence',
+        'Major decision-making - gather info now, decide later',
+        'Overcommitting - energy is still building'
+      ],
+      tips: [
+        'Use this phase to prepare for peak performance days',
+        'Schedule important meetings for Days 11-15 if possible',
+        'Focus on planning and preparation',
+        'Your cognitive function improves daily - take advantage',
+        'Set up systems and processes that will support you later',
+        'This is a great time for learning and skill development'
+      ],
+      performanceExpectations: {
+        planning: 'Excellent - strategic thinking improving',
+        meetings: 'Good - communication skills building',
+        creativity: 'Moderate - ideas flowing but not at peak',
+        decisionMaking: 'Good - but wait for peak phase for major decisions',
+        presentations: 'Moderate - save important ones for peak phase',
+        negotiations: 'Moderate - wait for peak confidence'
+      }
+    },
+    'Manifestation Phase': {
+      performanceLevel: 'peak',
+      cognitiveLevel: 'Peak',
+      communicationLevel: 'Peak',
+      decisionMakingLevel: 'Peak',
+      creativityLevel: 'Peak',
+      overview: 'PEAK PERFORMANCE WINDOW! This is your absolute best time for work. Your brain power, confidence, verbal skills, and decision-making are at their highest. Schedule your most important work here.',
+      hormonalFactors: {
+        estrogen: 'Peak - optimal cognitive function, verbal skills, confidence',
+        progesterone: 'Rising slightly - minimal impact',
+        testosterone: 'Surge - maximum confidence and assertiveness',
+        cortisol: 'Optimal - excellent stress response'
+      },
+      recommendedActivities: [
+        {
+          type: 'Presentations & Public Speaking',
+          timing: 'PEAK TIME',
+          duration: '30-90 minutes',
+          focus: 'High-stakes presentations, pitches, public speaking',
+          activities: ['Client presentations', 'Board meetings', 'Conference talks', 'Sales pitches', 'Product launches', 'Keynote speeches'],
+          why: 'Your verbal skills, confidence, and charisma are at their absolute peak. This is when you shine brightest.'
+        },
+        {
+          type: 'Negotiations & Deals',
+          timing: 'PEAK TIME',
+          duration: '1-3 hours',
+          focus: 'Important negotiations, contract discussions, deal-making',
+          activities: ['Salary negotiations', 'Contract negotiations', 'Partnership deals', 'Vendor negotiations', 'Investment discussions'],
+          why: 'Testosterone surge gives you maximum confidence and assertiveness. Perfect for high-stakes negotiations.'
+        },
+        {
+          type: 'Crucial Conversations',
+          timing: 'PEAK TIME',
+          duration: '30-90 minutes',
+          focus: 'Difficult conversations, feedback, conflict resolution',
+          activities: ['Performance reviews', 'Difficult feedback', 'Conflict resolution', 'Relationship conversations', 'Boundary setting'],
+          why: 'Your communication skills and confidence are at peak. You can handle difficult conversations with clarity and assertiveness.'
+        },
+        {
+          type: 'Decision-Making',
+          timing: 'PEAK TIME',
+          duration: 'Varies',
+          focus: 'Major decisions, strategic choices, important commitments',
+          activities: ['Major business decisions', 'Strategic choices', 'Hiring decisions', 'Investment decisions', 'Partnership decisions'],
+          why: 'Your cognitive function is at its highest. You can process complex information and make clear, confident decisions.'
+        },
+        {
+          type: 'Creative Work',
+          timing: 'PEAK TIME',
+          duration: '2-4 hours',
+          focus: 'High-impact creative work, innovation, problem-solving',
+          activities: ['Creative strategy', 'Innovation projects', 'Problem-solving', 'Design work', 'Content creation', 'Campaign development'],
+          why: 'Peak cognitive function and confidence make this ideal for breakthrough creative work.'
+        },
+        {
+          type: 'Meetings',
+          timing: 'PEAK TIME',
+          duration: '30-90 minutes',
+          focus: 'Important meetings, client meetings, leadership meetings',
+          activities: ['Client meetings', 'Leadership meetings', 'Important discussions', 'Stakeholder meetings', 'Strategic meetings'],
+          why: 'You\'re at your most charismatic and persuasive. Perfect for important meetings where you need to influence and inspire.'
+        }
+      ],
+      avoid: [
+        'Wasting this window on routine tasks - delegate those',
+        'Scheduling low-priority meetings - protect this time',
+        'Overcommitting - focus on high-impact work',
+        'Multitasking - focus on one important thing at a time'
+      ],
+      tips: [
+        'Block this time for your most important work',
+        'Schedule presentations, negotiations, and crucial conversations here',
+        'This is THE time to ask for raises, promotions, or opportunities',
+        'Your confidence is at peak - take calculated risks',
+        'Protect this time - say no to low-priority requests',
+        'Use this phase to make major decisions',
+        'Your verbal skills are at their best - leverage them'
+      ],
+      performanceExpectations: {
+        planning: 'Peak - but focus on execution, not planning',
+        meetings: 'Peak - most charismatic and persuasive',
+        creativity: 'Peak - breakthrough ideas and solutions',
+        decisionMaking: 'Peak - clear, confident decisions',
+        presentations: 'Peak - best performance possible',
+        negotiations: 'Peak - maximum confidence and assertiveness'
+      }
+    },
+    'Power Phase 2': {
+      performanceLevel: 'high',
+      cognitiveLevel: 'Excellent Focus',
+      communicationLevel: 'Good',
+      decisionMakingLevel: 'Good',
+      creativityLevel: 'Moderate',
+      overview: 'Excellent focus and endurance. While not at peak, this phase is perfect for deep work, completing projects, and following through on commitments. Your ability to concentrate is enhanced.',
+      hormonalFactors: {
+        estrogen: 'Dropping - still supportive but declining',
+        progesterone: 'Rising - promotes focus and introspection',
+        testosterone: 'Moderate - confidence still good',
+        cortisol: 'Balanced - good for sustained effort'
+      },
+      recommendedActivities: [
+        {
+          type: 'Deep Work & Focus',
+          timing: 'Excellent',
+          duration: '2-4 hours',
+          focus: 'Complex problem-solving, detailed work, analysis',
+          activities: ['Data analysis', 'Research', 'Writing', 'Coding', 'Financial analysis', 'Report writing'],
+          why: 'Progesterone promotes deep focus and concentration. Perfect for work requiring sustained attention.'
+        },
+        {
+          type: 'Project Completion',
+          timing: 'Excellent',
+          duration: '3-6 hours',
+          focus: 'Finishing projects, following through, execution',
+          activities: ['Project completion', 'Task execution', 'Implementation', 'Follow-through', 'Deliverable creation'],
+          why: 'Your focus and endurance are excellent. Perfect for completing work started in earlier phases.'
+        },
+        {
+          type: 'Meetings',
+          timing: 'Good',
+          duration: '30-60 minutes',
+          focus: 'One-on-one meetings, detailed discussions, follow-ups',
+          activities: ['One-on-one meetings', 'Follow-up meetings', 'Detailed discussions', 'Status reviews', 'Progress check-ins'],
+          why: 'Good focus makes you effective in smaller, more focused meetings.'
+        },
+        {
+          type: 'Administrative & Organization',
+          timing: 'Excellent',
+          duration: '1-3 hours',
+          focus: 'Organization, documentation, process improvement',
+          activities: ['Documentation', 'Process improvement', 'System optimization', 'Quality control', 'Review and refinement'],
+          why: 'Enhanced focus makes this ideal for detailed organizational work.'
+        },
+        {
+          type: 'Creative Work',
+          timing: 'Moderate',
+          duration: '1-3 hours',
+          focus: 'Refinement, editing, iteration',
+          activities: ['Editing and refinement', 'Iteration', 'Quality improvement', 'Polishing work', 'Detail work'],
+          why: 'Good for refining and improving creative work, though not ideal for breakthrough creativity.'
+        },
+        {
+          type: 'Crucial Conversations',
+          timing: 'Moderate',
+          duration: '30-60 minutes',
+          focus: 'Follow-up conversations, routine feedback',
+          activities: ['Follow-up conversations', 'Routine feedback', 'Status updates', 'Progress discussions'],
+          why: 'Good for routine conversations, but save high-stakes ones for peak phase.'
+        }
+      ],
+      avoid: [
+        'Scheduling important presentations - confidence is declining',
+        'Major negotiations - wait for next peak phase',
+        'Expecting peak creativity - focus on execution instead',
+        'Overcommitting to new projects - focus on completion'
+      ],
+      tips: [
+        'Focus on completing work started in earlier phases',
+        'This is excellent for deep, focused work',
+        'Use your enhanced focus for complex problem-solving',
+        'Great time for documentation and process improvement',
+        'Your endurance is good - tackle longer tasks',
+        'Protect your focus time - minimize interruptions'
+      ],
+      performanceExpectations: {
+        planning: 'Good - but focus on execution',
+        meetings: 'Good - effective in focused settings',
+        creativity: 'Moderate - better for refinement than creation',
+        decisionMaking: 'Good - but less confident than peak',
+        presentations: 'Moderate - save important ones for peak',
+        negotiations: 'Moderate - confidence declining'
+      }
+    },
+    'Nurture Phase': {
+      performanceLevel: 'low-moderate',
+      cognitiveLevel: 'Lower',
+      communicationLevel: 'Sensitive',
+      decisionMakingLevel: 'Lower',
+      creativityLevel: 'Lower',
+      overview: 'Time for rest and reflection. Your energy and cognitive function are lower. Focus on less demanding tasks, reflection, and planning for the next cycle. This phase is crucial for recovery.',
+      hormonalFactors: {
+        estrogen: 'Low - reduced energy and cognitive function',
+        progesterone: 'Peak - promotes rest and introspection',
+        testosterone: 'Low - reduced confidence and assertiveness',
+        cortisol: 'May be elevated - increased stress sensitivity'
+      },
+      recommendedActivities: [
+        {
+          type: 'Reflection & Planning',
+          timing: 'Good',
+          duration: '1-2 hours',
+          focus: 'Reflection, review, planning for next cycle',
+          activities: ['Cycle review', 'Lessons learned', 'Planning for next cycle', 'Goal reflection', 'Personal development'],
+          why: 'Progesterone promotes introspection. Good time to reflect and plan, but avoid major decisions.'
+        },
+        {
+          type: 'Gentle Tasks',
+          timing: 'Best',
+          duration: '1-2 hours',
+          focus: 'Low-stress tasks, routine work, maintenance',
+          activities: ['Email cleanup', 'Light reading', 'Routine tasks', 'Maintenance work', 'Simple organization'],
+          why: 'Your energy is lower. Focus on tasks that don\'t require high cognitive load.'
+        },
+        {
+          type: 'Meetings',
+          timing: 'Avoid if Possible',
+          duration: 'Keep Short',
+          focus: 'Only essential meetings, keep brief',
+          activities: ['Essential meetings only', 'Brief check-ins', 'Simple updates'],
+          why: 'Your energy and focus are lower. Avoid meetings if possible, or keep them very brief.'
+        },
+        {
+          type: 'Creative Work',
+          timing: 'Not Recommended',
+          duration: 'N/A',
+          focus: 'Rest and recovery',
+          activities: ['Rest', 'Recovery', 'Self-care'],
+          why: 'Your creativity and energy are at their lowest. This is not the time for creative work.'
+        },
+        {
+          type: 'Crucial Conversations',
+          timing: 'Avoid',
+          duration: 'N/A',
+          focus: 'Postpone if possible',
+          activities: ['Postpone difficult conversations', 'Reschedule if possible'],
+          why: 'Your emotional sensitivity is higher and confidence is lower. Postpone difficult conversations if possible.'
+        },
+        {
+          type: 'Decision-Making',
+          timing: 'Avoid Major Decisions',
+          duration: 'N/A',
+          focus: 'Postpone major decisions',
+          activities: ['Postpone major decisions', 'Gather information instead'],
+          why: 'Your cognitive function is lower and emotional sensitivity is higher. Avoid major decisions during this phase.'
+        }
+      ],
+      avoid: [
+        'Scheduling important meetings - reschedule if possible',
+        'Major presentations - save for next peak phase',
+        'Negotiations - confidence is at lowest',
+        'Difficult conversations - emotional sensitivity is high',
+        'Major decisions - cognitive function is lower',
+        'Creative work - energy and creativity are low',
+        'Overcommitting - honor your need for rest'
+      ],
+      tips: [
+        'This phase is essential for recovery - honor it',
+        'Reschedule important meetings if possible',
+        'Focus on reflection and planning, not execution',
+        'Your emotional sensitivity is higher - be gentle with yourself',
+        'This is NOT a failure - it\'s a necessary part of the cycle',
+        'Use this time to rest and prepare for the next cycle',
+        'Avoid making major decisions - wait for peak phase',
+        'Protect your energy - say no to non-essential requests'
+      ],
+      performanceExpectations: {
+        planning: 'Moderate - good for reflection, not action planning',
+        meetings: 'Lower - avoid if possible',
+        creativity: 'Lower - not the time for creative work',
+        decisionMaking: 'Lower - avoid major decisions',
+        presentations: 'Lower - reschedule if possible',
+        negotiations: 'Lower - confidence is at lowest'
+      }
+    }
+  }
+
+  return workInfo[phase.name] || null
+}
+

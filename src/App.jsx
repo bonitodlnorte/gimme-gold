@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import CycleTracker from './components/CycleTracker'
 import PartnerView from './components/PartnerView'
 import WorkoutReportPage from './components/WorkoutReportPage'
+import WorkCareerReportPage from './components/WorkCareerReportPage'
 import { getCyclePhase, getDaysInCycle } from './utils/cycleCalculator'
 import './App.css'
 
@@ -37,8 +38,8 @@ function App() {
   const currentPhase = lastPeriodDate ? getCyclePhase(lastPeriodDate, cycleLength) : null
   const daysInCycle = lastPeriodDate ? getDaysInCycle(lastPeriodDate) : 0
 
-  // Hide header toggle on workout report page
-  const showViewToggle = !location.pathname.includes('/workout-report')
+  // Hide header toggle on report pages
+  const showViewToggle = !location.pathname.includes('/workout-report') && !location.pathname.includes('/work-career-report')
 
   return (
     <div className="app">
@@ -65,6 +66,12 @@ function App() {
             path="/workout-report" 
             element={
               <WorkoutReportPage />
+            } 
+          />
+          <Route 
+            path="/work-career-report" 
+            element={
+              <WorkCareerReportPage />
             } 
           />
           <Route 

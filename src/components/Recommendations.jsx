@@ -178,6 +178,17 @@ function Recommendations({ phase, cycleLength }) {
                   🏋️ View Full Workout Performance Report →
                 </button>
               )}
+
+              {category.key === 'work' && (
+                <button
+                  className="work-career-report-button"
+                  onClick={() => navigate('/work-career-report', { 
+                    state: { phase, cycleLength } 
+                  })}
+                >
+                  💼 View Full Work & Career Performance Report →
+                </button>
+              )}
             </div>
           )
         })}

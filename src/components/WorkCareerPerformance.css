@@ -1,0 +1,413 @@
+.work-career-performance {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(176, 224, 230, 0.08) 0%, rgba(221, 160, 221, 0.08) 100%);
+  border-radius: 20px;
+  border: 2px solid rgba(176, 224, 230, 0.2);
+  box-shadow: 0 4px 12px rgba(176, 224, 230, 0.1);
+}
+
+.work-career-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.work-career-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.performance-badge-large {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: 3px solid;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.work-career-overview {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  text-align: center;
+  font-weight: 500;
+  padding: 1.5rem;
+  background: var(--bg-card);
+  border-radius: 12px;
+  border-left: 4px solid var(--accent-blue);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.performance-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.metric-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 2px solid rgba(176, 224, 230, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.metric-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.metric-info {
+  flex: 1;
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.metric-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.hormonal-factors {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.hormones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.hormone-factor {
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  border-left: 3px solid var(--accent-blue);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.hormone-factor strong {
+  color: var(--primary-gold);
+  margin-right: 0.5rem;
+}
+
+.recommended-activities {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.activity-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 2px solid rgba(176, 224, 230, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.activity-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-color: rgba(176, 224, 230, 0.5);
+}
+
+.activity-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.activity-type {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.activity-timing {
+  padding: 0.4rem 0.9rem;
+  background: rgba(176, 224, 230, 0.15);
+  color: var(--accent-blue);
+  border: 2px solid var(--accent-blue);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.activity-details {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.activity-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.detail-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.activity-focus {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.activity-focus strong {
+  color: var(--primary-gold);
+  margin-right: 0.5rem;
+}
+
+.activity-list {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.activity-list strong {
+  color: var(--primary-gold);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.activity-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activity-list li {
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.activity-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-blue);
+  font-weight: 700;
+}
+
+.activity-why {
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  color: var(--text-primary);
+  line-height: 1.7;
+  border-left: 3px solid var(--accent-blue);
+  font-style: italic;
+}
+
+.activity-why strong {
+  color: var(--primary-gold);
+  margin-right: 0.5rem;
+  font-style: normal;
+}
+
+.performance-expectations {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.expectations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.expectation-item {
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-left: 3px solid var(--primary-gold);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.expectation-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.expectation-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.work-tips-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.tips-column {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tips-list,
+.avoid-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tips-list li {
+  padding-left: 2rem;
+  position: relative;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.tips-list li::before {
+  content: '💡';
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+.avoid-list li {
+  padding-left: 2rem;
+  position: relative;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.avoid-list li::before {
+  content: '⚠️';
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .work-career-performance {
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .work-career-title {
+    font-size: 1.5rem;
+  }
+
+  .performance-badge-large {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.5rem;
+  }
+
+  .performance-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .activities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .activity-details {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .expectations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-tips-section {
+    grid-template-columns: 1fr;
+  }
+
+  .hormones-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
