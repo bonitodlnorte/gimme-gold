@@ -20,6 +20,7 @@ function CycleTracker({
   const [showEducation, setShowEducation] = useState(false)
   const [showRecordDialog, setShowRecordDialog] = useState(false)
   const [recordNote, setRecordNote] = useState('')
+  const [recordDate, setRecordDate] = useState(format(new Date(), 'yyyy-MM-dd'))
 
   const handleDateChange = (e) => {
     const date = new Date(e.target.value)
@@ -31,25 +32,32 @@ function CycleTracker({
       alert('Please set your last period date first')
       return
     }
+    setRecordDate(format(new Date(), 'yyyy-MM-dd'))
     setShowRecordDialog(true)
   }
 
   const confirmRecordNewPeriod = () => {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0) // Reset time to start of day
+    const newPeriodDate = new Date(recordDate)
+    newPeriodDate.setHours(0, 0, 0, 0) // Reset time to start of day
     
     // Store the previous period date before updating
     const previousPeriodDate = new Date(lastPeriodDate)
     previousPeriodDate.setHours(0, 0, 0, 0)
     
-    // Calculate actual cycle length from previous period to today
-    const actualCycleLength = differenceInDays(today, previousPeriodDate)
+    // Calculate actual cycle length from previous period to new period date
+    const actualCycleLength = differenceInDays(newPeriodDate, previousPeriodDate)
+    
+    // Validate cycle length is reasonable (between 15 and 45 days)
+    if (actualCycleLength < 15 || actualCycleLength > 45) {
+      alert(`The calculated cycle length (${actualCycleLength} days) seems unusual. Please verify the dates are correct.`)
+      return
+    }
     
     // Add to cycle history with the previous period date
     addCycleEntry(previousPeriodDate, actualCycleLength, recordNote)
     
-    // Update to new period date (today)
-    onPeriodStart(today)
+    // Update to new period date
+    onPeriodStart(newPeriodDate)
     
     // Update cycle length to the average of all recorded cycles
     const history = getCycleHistory()
@@ -62,6 +70,7 @@ function CycleTracker({
     
     setShowRecordDialog(false)
     setRecordNote('')
+    setRecordDate(format(new Date(), 'yyyy-MM-dd'))
   }
 
   return (
@@ -141,11 +150,24 @@ function CycleTracker({
           <div className="record-dialog" onClick={(e) => e.stopPropagation()}>
             <h3>📝 Record New Period</h3>
             <p className="dialog-info">
-              Recording period started today: <strong>{format(new Date(), 'EEEE, MMMM d, yyyy')}</strong>
-            </p>
-            <p className="dialog-info">
               This will calculate your actual cycle length from your last period.
             </p>
+            <div className="dialog-date-section">
+              <label htmlFor="record-date">Period Start Date:</label>
+              <input
+                id="record-date"
+                type="date"
+                value={recordDate}
+                onChange={(e) => setRecordDate(e.target.value)}
+                max={format(new Date(), 'yyyy-MM-dd')}
+                className="dialog-date-input"
+              />
+              {recordDate && (
+                <p className="dialog-date-display">
+                  {format(new Date(recordDate), 'EEEE, MMMM d, yyyy')}
+                </p>
+              )}
+            </div>
             <div className="dialog-note-section">
               <label htmlFor="record-note">Add a note (optional):</label>
               <textarea
@@ -163,6 +185,7 @@ function CycleTracker({
                 onClick={() => {
                   setShowRecordDialog(false)
                   setRecordNote('')
+                  setRecordDate(format(new Date(), 'yyyy-MM-dd'))
                 }}
               >
                 Cancel

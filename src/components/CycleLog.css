@@ -133,6 +133,30 @@
   overflow-x: auto;
 }
 
+.table-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.add-entry-button {
+  background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+  border: 2px solid var(--accent-blue);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(176, 224, 230, 0.3);
+}
+
+.add-entry-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(176, 224, 230, 0.4);
+}
+
 .cycle-log-table {
   width: 100%;
   border-collapse: collapse;
@@ -173,6 +197,77 @@
 
 .date-display {
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-date-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.25rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.edit-date-button:hover {
+  opacity: 1;
+}
+
+.date-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.date-edit-input {
+  padding: 0.5rem;
+  border: 2px solid rgba(244, 208, 63, 0.4);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.date-edit-input:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(244, 208, 63, 0.15);
+}
+
+.date-edit-display {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.length-edit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.length-edit-input {
+  width: 80px;
+  padding: 0.5rem;
+  border: 2px solid rgba(244, 208, 63, 0.4);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.length-edit-input:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(244, 208, 63, 0.15);
 }
 
 .length-cell {
@@ -288,7 +383,29 @@
 
 .actions-cell {
   text-align: center;
-  width: 80px;
+  width: 120px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.edit-entry-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.25rem 0.5rem;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.edit-entry-button:hover {
+  opacity: 1;
+  background: rgba(244, 208, 63, 0.1);
 }
 
 .delete-button {
@@ -305,6 +422,97 @@
 .delete-button:hover {
   opacity: 1;
   background: rgba(255, 0, 0, 0.1);
+}
+
+.add-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.add-dialog {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--primary-gold-light);
+}
+
+.add-dialog h3 {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.add-dialog-section {
+  margin: 1.5rem 0;
+}
+
+.add-dialog-section label {
+  display: block;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.add-dialog-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid rgba(244, 208, 63, 0.4);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.add-dialog-input:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(244, 208, 63, 0.15);
+}
+
+.add-dialog-date-display {
+  margin: 0.5rem 0 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.add-dialog-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid rgba(244, 208, 63, 0.4);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.add-dialog-textarea:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(244, 208, 63, 0.15);
+}
+
+.add-dialog-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -340,6 +548,10 @@
   .note-cell {
     min-width: 200px;
     max-width: 250px;
+  }
+
+  .actions-cell {
+    width: 100px;
   }
 }
 
