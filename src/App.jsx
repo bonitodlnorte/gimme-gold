@@ -78,7 +78,7 @@ function App() {
       <header className="app-header">
         <div className="header-content" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
           <img 
-            src="/images/Gimme-Gold-Logo.png" 
+            src="/images/Gimme Gold logo no text.png" 
             alt="Gimme Gold Logo" 
             className="app-logo"
           />
