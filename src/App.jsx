@@ -74,7 +74,8 @@ function App() {
   const showViewToggle = !location.pathname.includes('/workout-report') && 
                          !location.pathname.includes('/work-career-report') && 
                          !location.pathname.includes('/partner') &&
-                         !location.pathname.includes('/cycle-log')
+                         !location.pathname.includes('/cycle-log') &&
+                         !location.pathname.includes('/learn')
 
   return (
     <div className="app">
@@ -120,6 +121,12 @@ function App() {
             path="/cycle-log" 
             element={
               <CycleLogPage />
+            } 
+          />
+          <Route 
+            path="/learn" 
+            element={
+              <LearnPage />
             } 
           />
           <Route 

@@ -508,6 +508,10 @@
 .hormone-detail strong {
   color: var(--primary-gold);
   margin-right: 0.5rem;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  cursor: help;
 }
 
 .hormone-note {

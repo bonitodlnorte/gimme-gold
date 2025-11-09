@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import PhaseCard from './PhaseCard'
+import HormoneTooltip from './HormoneTooltip'
 import { getPhaseRecommendations } from '../utils/cycleCalculator'
 import './PartnerView.css'
 
@@ -251,7 +252,9 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
           </p>
           <div className="hormone-details">
             <div className="hormone-detail">
-              <strong>Estrogen:</strong> {currentPhase.hormones.estrogen}
+              <HormoneTooltip hormone="estrogen">
+                <strong>Estrogen:</strong>
+              </HormoneTooltip> {currentPhase.hormones.estrogen}
               <span className="hormone-note">
                 {currentPhase.hormones.estrogen === 'Peak' && ' - Enhances confidence, verbal skills, and cognitive function'}
                 {currentPhase.hormones.estrogen === 'Rising' && ' - Building energy and improving mood'}
@@ -260,7 +263,9 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
               </span>
             </div>
             <div className="hormone-detail">
-              <strong>Progesterone:</strong> {currentPhase.hormones.progesterone}
+              <HormoneTooltip hormone="progesterone">
+                <strong>Progesterone:</strong>
+              </HormoneTooltip> {currentPhase.hormones.progesterone}
               <span className="hormone-note">
                 {currentPhase.hormones.progesterone === 'Peak' && ' - Promotes calmness, but may lower energy'}
                 {currentPhase.hormones.progesterone === 'Rising' && ' - Increasing focus and introspection'}
@@ -268,7 +273,9 @@ function PartnerView({ lastPeriodDate, cycleLength, currentPhase, daysInCycle })
               </span>
             </div>
             <div className="hormone-detail">
-              <strong>Testosterone:</strong> {currentPhase.hormones.testosterone}
+              <HormoneTooltip hormone="testosterone">
+                <strong>Testosterone:</strong>
+              </HormoneTooltip> {currentPhase.hormones.testosterone}
               <span className="hormone-note">
                 {currentPhase.hormones.testosterone === 'Surge' && ' - Boosts confidence, libido, and assertiveness'}
                 {currentPhase.hormones.testosterone === 'Moderate' && ' - Balanced levels'}

@@ -52,9 +52,16 @@ function CycleTracker({
         })
         
         const average = calculateAverageCycleLength(historyWithCurrentPeriod)
-        if (average && average !== cycleLength) {
+        setAverageCycleLength(average)
+        // Only auto-update if cycle length hasn't been manually set
+        // Check if cycle length matches a recent average (within 1 day)
+        if (average && Math.abs(cycleLength - average) > 1) {
+          // User has manually set it, don't auto-update
+        } else if (average && average !== cycleLength) {
           onCycleLengthChange(Math.round(average))
         }
+      } else {
+        setAverageCycleLength(null)
       }
     }
 
@@ -191,15 +198,31 @@ function CycleTracker({
 
         <div className="input-group">
           <label htmlFor="cycle-length">Cycle Length (days)</label>
-          <input
-            id="cycle-length"
-            type="number"
-            min="21"
-            max="35"
-            value={cycleLength}
-            onChange={(e) => onCycleLengthChange(parseInt(e.target.value))}
-            className="number-input"
-          />
+          <div className="cycle-length-input-wrapper">
+            <input
+              id="cycle-length"
+              type="number"
+              min="21"
+              max="35"
+              value={cycleLength}
+              onChange={(e) => onCycleLengthChange(parseInt(e.target.value))}
+              className="number-input"
+            />
+            {averageCycleLength && (
+              <button
+                className="set-average-button"
+                onClick={() => onCycleLengthChange(Math.round(averageCycleLength))}
+                title={`Set to your average: ${averageCycleLength} days (based on latest 4 measurements)`}
+              >
+                📊 Set to Average ({Math.round(averageCycleLength)})
+              </button>
+            )}
+          </div>
+          {averageCycleLength && (
+            <p className="cycle-length-note">
+              Your average: {averageCycleLength} days (based on latest 4 measurements). You can override this manually.
+            </p>
+          )}
         </div>
 
         {lastPeriodDate && (

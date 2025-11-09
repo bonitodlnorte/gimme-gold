@@ -1,0 +1,161 @@
+.hormone-tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.hormone-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  width: 320px;
+  max-width: 90vw;
+  background: var(--bg-card);
+  border: 2px solid var(--primary-gold);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+  animation: tooltipFadeIn 0.2s ease-out;
+  pointer-events: none;
+}
+
+.hormone-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-bottom-color: var(--primary-gold);
+}
+
+.tooltip-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(244, 208, 63, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tooltip-header h4 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--primary-gold);
+  font-weight: 700;
+}
+
+.tooltip-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.tooltip-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+}
+
+.tooltip-close:active {
+  transform: scale(0.9);
+}
+
+/* Hide close button on desktop (hover) */
+@media (hover: hover) {
+  .tooltip-close {
+    display: none;
+  }
+}
+
+.tooltip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tooltip-description {
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.tooltip-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tooltip-section strong {
+  color: var(--primary-gold);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tooltip-section p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .hormone-tooltip {
+    width: 280px;
+    left: 0;
+    transform: none;
+    margin-top: 12px;
+  }
+
+  .hormone-tooltip::before {
+    left: 20px;
+    transform: none;
+  }
+
+  /* For tooltips that would go off-screen, position them differently */
+  .hormone-tooltip-wrapper:last-child .hormone-tooltip {
+    left: auto;
+    right: 0;
+  }
+
+  .hormone-tooltip-wrapper:last-child .hormone-tooltip::before {
+    left: auto;
+    right: 20px;
+  }
+}
+
+/* Ensure tooltip is visible on touch devices */
+@media (hover: none) {
+  .hormone-tooltip {
+    pointer-events: auto;
+  }
+}
+

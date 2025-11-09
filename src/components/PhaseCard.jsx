@@ -1,4 +1,5 @@
 import './PhaseCard.css'
+import HormoneTooltip from './HormoneTooltip'
 
 function PhaseCard({ phase, daysInCycle, cycleLength }) {
   const progress = (phase.day / cycleLength) * 100
@@ -36,19 +37,25 @@ function PhaseCard({ phase, daysInCycle, cycleLength }) {
           <h4>Current Hormonal State</h4>
           <div className="hormones-grid">
             <div className="hormone-item">
-              <span className="hormone-label">Estrogen</span>
+              <HormoneTooltip hormone="estrogen">
+                <span className="hormone-label">Estrogen</span>
+              </HormoneTooltip>
               <span className="hormone-value" style={{ color: phase.color }}>
                 {phase.hormones.estrogen}
               </span>
             </div>
             <div className="hormone-item">
-              <span className="hormone-label">Progesterone</span>
+              <HormoneTooltip hormone="progesterone">
+                <span className="hormone-label">Progesterone</span>
+              </HormoneTooltip>
               <span className="hormone-value" style={{ color: phase.color }}>
                 {phase.hormones.progesterone}
               </span>
             </div>
             <div className="hormone-item">
-              <span className="hormone-label">Testosterone</span>
+              <HormoneTooltip hormone="testosterone">
+                <span className="hormone-label">Testosterone</span>
+              </HormoneTooltip>
               <span className="hormone-value" style={{ color: phase.color }}>
                 {phase.hormones.testosterone}
               </span>

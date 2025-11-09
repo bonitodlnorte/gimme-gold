@@ -112,6 +112,13 @@
   font-size: 0.9rem;
 }
 
+.hormone-name {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
 .hormone-badge strong {
   font-size: 1rem;
   font-weight: 700;

@@ -1,4 +1,5 @@
 import './EducationalContent.css'
+import HormoneTooltip from './HormoneTooltip'
 
 function EducationalContent() {
   const phases = [
@@ -92,10 +93,12 @@ function EducationalContent() {
   return (
     <div className="educational-content">
       <div className="education-header">
-        <h3>📚 Understanding Your Hormonal Cycle</h3>
+        <h3>📚 Understanding Hormonal Cycles</h3>
         <p className="education-intro">
-          Based on Dr. Mindy Pelz's research, your menstrual cycle is divided into four distinct phases, 
-          each with unique hormonal patterns that affect your energy, mood, cognition, and performance.
+          Based on Dr. Mindy Pelz's research, the menstrual cycle is divided into four distinct phases, 
+          each with unique hormonal patterns that affect energy, mood, cognition, and performance. 
+          Understanding these phases helps both women and their partners, colleagues, and loved ones 
+          work together more effectively and build stronger, more supportive relationships.
         </p>
       </div>
 
@@ -118,15 +121,21 @@ function EducationalContent() {
               <h5>Hormonal State:</h5>
               <div className="hormones-list">
                 <div className="hormone-badge">
-                  <span>Estrogen:</span>
+                  <HormoneTooltip hormone="estrogen">
+                    <span className="hormone-name">Estrogen:</span>
+                  </HormoneTooltip>
                   <strong style={{ color: phase.color }}>{phase.hormones.estrogen}</strong>
                 </div>
                 <div className="hormone-badge">
-                  <span>Progesterone:</span>
+                  <HormoneTooltip hormone="progesterone">
+                    <span className="hormone-name">Progesterone:</span>
+                  </HormoneTooltip>
                   <strong style={{ color: phase.color }}>{phase.hormones.progesterone}</strong>
                 </div>
                 <div className="hormone-badge">
-                  <span>Testosterone:</span>
+                  <HormoneTooltip hormone="testosterone">
+                    <span className="hormone-name">Testosterone:</span>
+                  </HormoneTooltip>
                   <strong style={{ color: phase.color }}>{phase.hormones.testosterone}</strong>
                 </div>
               </div>
@@ -152,11 +161,12 @@ function EducationalContent() {
       <div className="key-takeaways">
         <h4>💡 Key Takeaways</h4>
         <ul>
-          <li><strong>Your cycle is a superpower, not a limitation.</strong> Understanding your phases helps you work with your body, not against it.</li>
-          <li><strong>Plan strategically.</strong> Schedule important meetings, presentations, and high-stakes activities during your Manifestation Phase (Days 11-15).</li>
-          <li><strong>Honor your Nurture Phase.</strong> Rest and self-care during Days 20-28 are essential for hormonal balance and long-term health.</li>
-          <li><strong>Every phase has value.</strong> Each phase offers unique strengths - from building energy to peak performance to deep focus to rest.</li>
-          <li><strong>Share with your support system.</strong> When partners, colleagues, and loved ones understand your cycle, they can better support you.</li>
+          <li><strong>The cycle is a superpower, not a limitation.</strong> Understanding these phases helps work with the body's natural rhythms, not against them.</li>
+          <li><strong>Plan strategically.</strong> Schedule important meetings, presentations, and high-stakes activities during the Manifestation Phase (Days 11-15) when cognitive function and confidence peak.</li>
+          <li><strong>Honor the Nurture Phase.</strong> Rest and self-care during Days 20-28 are essential for hormonal balance and long-term health. This is a time for recovery, not pushing through.</li>
+          <li><strong>Every phase has value.</strong> Each phase offers unique strengths - from building energy to peak performance to deep focus to rest. There's no "bad" phase, only different opportunities.</li>
+          <li><strong>Knowledge empowers everyone.</strong> When partners, colleagues, and loved ones understand hormonal cycles, they can provide better support, plan collaborative activities more effectively, and build stronger relationships based on empathy and understanding.</li>
+          <li><strong>This should be taught in high school.</strong> Understanding hormonal cycles is fundamental knowledge that benefits everyone - women, men, partners, and society as a whole.</li>
         </ul>
       </div>
     </div>

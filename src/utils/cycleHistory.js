@@ -110,8 +110,11 @@ export function calculateAverageCycleLength(history) {
   // Only include entries with cycle length (exclude first entry and current period)
   const entriesWithLength = history.filter(entry => entry.cycleLength !== null)
   if (entriesWithLength.length === 0) return null
-  const total = entriesWithLength.reduce((sum, entry) => sum + entry.cycleLength, 0)
-  return Math.round((total / entriesWithLength.length) * 10) / 10 // Round to 1 decimal
+  
+  // Use only the latest 4 measurements
+  const latest4 = entriesWithLength.slice(0, 4)
+  const total = latest4.reduce((sum, entry) => sum + entry.cycleLength, 0)
+  return Math.round((total / latest4.length) * 10) / 10 // Round to 1 decimal
 }
 
 export function calculateCycleTrend(history) {

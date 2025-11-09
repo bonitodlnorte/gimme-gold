@@ -143,6 +143,7 @@ function CycleLog() {
             <div className="stat-card">
               <div className="stat-label">Average Cycle Length</div>
               <div className="stat-value">{averageLength} days</div>
+              <div className="stat-note">Based on latest 4 measurements</div>
             </div>
             <div className="stat-card">
               <div className="stat-label">Trend</div>
