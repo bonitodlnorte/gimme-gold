@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import EducationalContent from './EducationalContent'
 import './LearnPage.css'
 
 function LearnPage() {
+  const { t } = useTranslation()
   const location = useLocation()
 
   // Scroll to top when component mounts
@@ -18,18 +20,17 @@ function LearnPage() {
   return (
     <div className="learn-page">
       <div className="learn-page-header">
-        <h1>📚 Understanding Hormonal Cycles</h1>
+        <h1>{t('learnPage.title')}</h1>
         <p className="learn-page-subtitle">
-          Learn how hormonal cycles work and why understanding them matters for everyone
+          {t('learnPage.subtitle')}
         </p>
       </div>
 
       <div className="video-section">
-        <h2>🎥 Introduction by Dr. Mindy Pelz</h2>
-        <p className="video-description">
-          Watch Dr. Mindy Pelz explain the concept of hormonal cycle intelligence and why she says 
-          <strong> "I'm going to give you gold"</strong> when teaching about these powerful phases.
-        </p>
+        <h2>{t('learnPage.videoTitle')}</h2>
+        <p className="video-description" dangerouslySetInnerHTML={{
+          __html: t('learnPage.videoDescription')
+        }} />
         <div className="video-container">
           <iframe
             width="560"
@@ -49,7 +50,7 @@ function LearnPage() {
             rel="noopener noreferrer"
             className="video-link"
           >
-            Watch on YouTube ↗
+            {t('learnPage.watchOnYouTube')}
           </a>
         </p>
       </div>
@@ -57,35 +58,29 @@ function LearnPage() {
       <EducationalContent />
 
       <div className="why-this-matters">
-        <h2>💡 Why This Matters for Everyone</h2>
+        <h2>{t('learnPage.whyThisMatters')}</h2>
         <div className="matters-grid">
           <div className="matters-card">
-            <h3>👩 For Women</h3>
+            <h3>{t('learnPage.forWomen')}</h3>
             <ul>
-              <li>Understand your body's natural rhythms and work with them, not against them</li>
-              <li>Plan important activities during your peak performance phases</li>
-              <li>Honor your need for rest during the Nurture Phase</li>
-              <li>Make informed decisions about work, relationships, and self-care</li>
-              <li>Recognize that your cycle is a superpower, not a limitation</li>
+              {t('learnPage.womenPoints', { returnObjects: true }).map((point, index) => (
+                <li key={index}>{point}</li>
+              ))}
             </ul>
           </div>
           <div className="matters-card">
-            <h3>👨 For Men & Partners</h3>
+            <h3>{t('learnPage.forMenPartners')}</h3>
             <ul>
-              <li>Better understand and support the women in your life</li>
-              <li>Recognize that hormonal changes are natural and powerful</li>
-              <li>Plan collaborative activities during peak performance phases</li>
-              <li>Provide understanding and support during rest phases</li>
-              <li>Build stronger relationships through empathy and knowledge</li>
+              {t('learnPage.menPoints', { returnObjects: true }).map((point, index) => (
+                <li key={index}>{point}</li>
+              ))}
             </ul>
           </div>
         </div>
         <div className="education-note">
-          <p>
-            <strong>This is knowledge that should be taught in high school.</strong> Understanding hormonal cycles 
-            helps everyone work together more effectively, build stronger relationships, and create more supportive 
-            environments at home and in the workplace.
-          </p>
+          <p dangerouslySetInnerHTML={{
+            __html: t('learnPage.educationNote')
+          }} />
         </div>
       </div>
     </div>

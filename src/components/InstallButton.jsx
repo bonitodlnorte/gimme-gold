@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import './InstallButton.css'
 
 function InstallButton() {
+  const { t } = useTranslation()
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [showIOSInstructions, setShowIOSInstructions] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
@@ -65,7 +67,7 @@ function InstallButton() {
       >
         <span className="install-icon">📱</span>
         <span className="install-text">
-          {isIOS ? 'Add to Home Screen' : 'Install App'}
+          {isIOS ? t('installButton.addToHomeScreen') : t('installButton.installApp')}
         </span>
       </button>
 
@@ -78,12 +80,11 @@ function InstallButton() {
           >
             ×
           </button>
-          <h3>📱 Add to Home Screen</h3>
+          <h3>{t('installButton.title')}</h3>
           <ol>
-            <li>Tap the <strong>Share</strong> button <span className="ios-icon">📤</span> at the bottom of your screen</li>
-            <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
-            <li>Tap <strong>"Add"</strong> in the top right corner</li>
-            <li>Enjoy Gimme Gold as an app! 🎉</li>
+            {t('installButton.instructions', { returnObjects: true }).map((instruction, index) => (
+              <li key={index} dangerouslySetInnerHTML={{ __html: instruction }} />
+            ))}
           </ol>
         </div>
       )}

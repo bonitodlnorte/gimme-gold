@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   getCycleHistory,
   addCycleEntry,
@@ -14,6 +15,7 @@ import {
 import './CycleLog.css'
 
 function CycleLog() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [history, setHistory] = useState([])
   const [editingId, setEditingId] = useState(null)
@@ -71,7 +73,7 @@ function CycleLog() {
   }
 
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this cycle entry?')) {
+    if (window.confirm(t('cycleLog.deleteConfirm'))) {
       deleteCycleEntry(id)
       loadHistory()
     }
@@ -107,7 +109,7 @@ function CycleLog() {
 
   const handleAddEntry = () => {
     if (!newEntryDate) {
-      alert('Please fill in the date')
+      alert(t('cycleLog.pleaseFillDate'))
       return
     }
     
@@ -122,38 +124,38 @@ function CycleLog() {
     <div className="cycle-log">
       <div className="cycle-log-header">
         <button className="back-button" onClick={() => navigate(-1)}>
-          ← Back
+          {t('common.back')}
         </button>
-        <h1>📊 Cycle Log</h1>
-        <p className="cycle-log-subtitle">Track your cycle history and patterns</p>
+        <h1>{t('cycleLog.title')}</h1>
+        <p className="cycle-log-subtitle">{t('cycleLog.subtitle')}</p>
       </div>
 
       {history.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">📅</div>
-          <h2>No Cycle History Yet</h2>
-          <p>Start tracking by recording your periods in the main tracker.</p>
+          <h2>{t('cycleLog.noHistory')}</h2>
+          <p>{t('cycleLog.noHistoryMessage')}</p>
           <button className="primary-button" onClick={() => navigate('/')}>
-            Go to Cycle Tracker
+            {t('cycleLog.goToTracker')}
           </button>
         </div>
       ) : (
         <>
           <div className="cycle-statistics">
             <div className="stat-card">
-              <div className="stat-label">Average Cycle Length</div>
-              <div className="stat-value">{averageLength} days</div>
-              <div className="stat-note">Based on latest 4 measurements</div>
+              <div className="stat-label">{t('cycleLog.averageCycleLength')}</div>
+              <div className="stat-value">{averageLength} {t('common.days')}</div>
+              <div className="stat-note">{t('cycleLog.basedOnLatest')}</div>
             </div>
             <div className="stat-card">
-              <div className="stat-label">Trend</div>
+              <div className="stat-label">{t('cycleLog.trend')}</div>
               <div className="stat-value trend-value">
                 <span className="trend-icon">{getTrendIcon(trend)}</span>
                 {getTrendText(trend)}
               </div>
             </div>
             <div className="stat-card">
-              <div className="stat-label">Total Cycles Recorded</div>
+              <div className="stat-label">{t('cycleLog.totalCyclesRecorded')}</div>
               <div className="stat-value">{history.length}</div>
             </div>
           </div>
@@ -164,16 +166,16 @@ function CycleLog() {
                 className="add-entry-button"
                 onClick={() => setShowAddDialog(true)}
               >
-                ➕ Add Past Cycle
+                {t('cycleLog.addPastCycle')}
               </button>
             </div>
             <table className="cycle-log-table">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Cycle Length</th>
-                  <th>Note</th>
-                  <th>Actions</th>
+                  <th>{t('cycleLog.date')}</th>
+                  <th>{t('cycleLog.cycleLength')}</th>
+                  <th>{t('cycleLog.note')}</th>
+                  <th>{t('cycleLog.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -182,7 +184,7 @@ function CycleLog() {
                     <td className="date-cell">
                       <div className="date-display">
                         {format(currentPeriodDate, 'EEEE, MMMM d, yyyy')}
-                        <span className="current-badge">Current</span>
+                        <span className="current-badge">{t('common.current')}</span>
                       </div>
                     </td>
                     <td className="length-cell">
@@ -190,7 +192,7 @@ function CycleLog() {
                     </td>
                     <td className="note-cell">
                       <div className="note-display">
-                        <span className="no-note">Current period</span>
+                        <span className="no-note">{t('cycleLog.currentPeriod')}</span>
                       </div>
                     </td>
                     <td className="actions-cell">
@@ -224,7 +226,7 @@ function CycleLog() {
                     </td>
                     <td className="length-cell">
                       {entry.cycleLength !== null ? (
-                        <span className="cycle-length-badge">{entry.cycleLength} days</span>
+                        <span className="cycle-length-badge">{entry.cycleLength} {t('common.days')}</span>
                       ) : (
                         <span className="cycle-length-badge empty">—</span>
                       )}
@@ -235,7 +237,7 @@ function CycleLog() {
                           <textarea
                             value={editNote}
                             onChange={(e) => setEditNote(e.target.value)}
-                            placeholder="Add a note..."
+                            placeholder={t('common.addNote')}
                             rows="2"
                             className="note-input"
                           />
@@ -243,7 +245,7 @@ function CycleLog() {
                       ) : (
                         <div className="note-display">
                           {entry.note || (
-                            <span className="no-note">No note</span>
+                            <span className="no-note">{t('common.noNote')}</span>
                           )}
                         </div>
                       )}
@@ -294,9 +296,9 @@ function CycleLog() {
           {showAddDialog && (
             <div className="add-dialog-overlay" onClick={() => setShowAddDialog(false)}>
               <div className="add-dialog" onClick={(e) => e.stopPropagation()}>
-                <h3>➕ Add Past Cycle</h3>
+                <h3>{t('cycleLog.addDialogTitle')}</h3>
                 <div className="add-dialog-section">
-                  <label htmlFor="new-entry-date">Period Start Date:</label>
+                  <label htmlFor="new-entry-date">{t('cycleLog.periodStartDate')}</label>
                   <input
                     id="new-entry-date"
                     type="date"
@@ -313,16 +315,16 @@ function CycleLog() {
                 </div>
                 <div className="add-dialog-section">
                   <p className="dialog-info">
-                    Cycle length will be calculated automatically from the previous period.
+                    {t('cycleLog.cycleLengthAuto')}
                   </p>
                 </div>
                 <div className="add-dialog-section">
-                  <label htmlFor="new-entry-note">Note (optional):</label>
+                  <label htmlFor="new-entry-note">{t('common.addNote')} ({t('common.optional')}):</label>
                   <textarea
                     id="new-entry-note"
                     value={newEntryNote}
                     onChange={(e) => setNewEntryNote(e.target.value)}
-                    placeholder="Add a note..."
+                    placeholder={t('common.addNote')}
                     rows="3"
                     className="add-dialog-textarea"
                   />
@@ -336,13 +338,13 @@ function CycleLog() {
                       setNewEntryNote('')
                     }}
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                   <button
                     className="dialog-confirm-button"
                     onClick={handleAddEntry}
                   >
-                    ✓ Add Entry
+                    {t('cycleLog.addEntry')}
                   </button>
                 </div>
               </div>

@@ -46,6 +46,11 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
   // Calculate next period date
   const nextPeriodDate = addDays(lastPeriodDate, cycleLength)
   
+  // Calculate ovulation day (typically 14 days before next period, or around day 14 for standard cycle)
+  // Ovulation window: typically cycleLength - 14, but can vary by ±2 days
+  const ovulationDay = Math.round(cycleLength - 14)
+  const ovulationDate = addDays(lastPeriodDate, ovulationDay - 1)
+  
   // Get calendar month to display (current month or month containing cycle start)
   const today = new Date()
   const cycleStartMonth = startOfMonth(lastPeriodDate)
@@ -86,13 +91,14 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
             const libidoIndicator = cycleDay ? getLibidoIndicator(cycleDay) : null
             const isToday = isSameDay(date, today)
             const isNextPeriod = isSameDay(date, nextPeriodDate)
+            const isOvulation = isSameDay(date, ovulationDate)
             const isCurrentMonth = isSameMonth(date, displayMonth)
             const isPhaseTransition = cycleDay && [1, 11, 16, 20].includes(cycleDay)
 
             return (
               <div
                 key={index}
-                className={`calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isNextPeriod ? 'next-period' : ''} ${phase ? 'has-phase' : ''} ${isPhaseTransition ? 'phase-transition' : ''}`}
+                className={`calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${isNextPeriod ? 'next-period' : ''} ${isOvulation ? 'ovulation-day' : ''} ${phase ? 'has-phase' : ''} ${isPhaseTransition ? 'phase-transition' : ''}`}
                 style={{
                   backgroundColor: phase ? `${phase.color}30` : 'transparent',
                   borderColor: phase ? phase.color : 'transparent'
@@ -101,10 +107,14 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
                 <div className="calendar-day-number">
                   {format(date, 'd')}
                   {isNextPeriod && <span className="next-period-emoji">🩸</span>}
+                  {isOvulation && <span className="ovulation-emoji">🥚</span>}
                 </div>
                 {cycleDay && (
                   <div className="calendar-day-info">
                     <div className="calendar-day-cycle">Day {cycleDay}</div>
+                    {isOvulation && (
+                      <div className="ovulation-label">Ovulation</div>
+                    )}
                     {libidoIndicator && (
                       <div className="calendar-day-libido">{libidoIndicator}</div>
                     )}
