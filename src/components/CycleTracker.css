@@ -107,6 +107,39 @@
   box-shadow: 0 0 0 3px rgba(244, 208, 63, 0.15);
 }
 
+.cycle-length-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.set-average-button {
+  background: linear-gradient(135deg, var(--accent-blue) 0%, #7fb3d3 100%);
+  border: 2px solid var(--accent-blue);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(176, 224, 230, 0.2);
+  white-space: nowrap;
+}
+
+.set-average-button:hover {
+  background: var(--accent-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(176, 224, 230, 0.3);
+}
+
+.cycle-length-note {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
 .date-display {
   color: var(--text-secondary);
   font-size: 0.9rem;

@@ -112,6 +112,13 @@
   font-weight: 700;
 }
 
+.stat-note {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
 .trend-value {
   display: flex;
   align-items: center;

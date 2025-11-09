@@ -19,6 +19,7 @@ function CycleTracker({
   const [showRecordDialog, setShowRecordDialog] = useState(false)
   const [recordNote, setRecordNote] = useState('')
   const [recordDate, setRecordDate] = useState(format(new Date(), 'yyyy-MM-dd'))
+  const [averageCycleLength, setAverageCycleLength] = useState(null)
 
   // Update cycle length to average when component loads or history changes
   useEffect(() => {
