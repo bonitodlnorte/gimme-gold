@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { format, addDays, differenceInDays } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import PhaseCard from './PhaseCard'
@@ -21,6 +21,64 @@ function CycleTracker({
   const [showRecordDialog, setShowRecordDialog] = useState(false)
   const [recordNote, setRecordNote] = useState('')
   const [recordDate, setRecordDate] = useState(format(new Date(), 'yyyy-MM-dd'))
+
+  // Update cycle length to average when component loads or history changes
+  useEffect(() => {
+    const updateCycleLengthFromAverage = () => {
+      const history = getCycleHistory()
+      if (history.length > 0) {
+        // Get current period date to calculate the most recent entry's cycle length
+        const savedDate = localStorage.getItem('gimmeGold_lastPeriodDate')
+        let currentDate = null
+        if (savedDate) {
+          currentDate = new Date(savedDate)
+        }
+        
+        // Sort by date (most recent first)
+        const sortedHistory = [...history].sort((a, b) => b.date - a.date)
+        
+        // Calculate cycle length for the most recent entry using current period date
+        const historyWithCurrentPeriod = sortedHistory.map((entry, index) => {
+          if (index === 0 && currentDate && entry.cycleLength === null) {
+            const currentPeriodDate = new Date(currentDate)
+            currentPeriodDate.setHours(0, 0, 0, 0)
+            const entryDate = new Date(entry.date)
+            entryDate.setHours(0, 0, 0, 0)
+            const diffTime = currentPeriodDate - entryDate
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+            if (diffDays > 0 && diffDays < 100) {
+              return { ...entry, cycleLength: diffDays }
+            }
+          }
+          return entry
+        })
+        
+        const average = calculateAverageCycleLength(historyWithCurrentPeriod)
+        if (average && average !== cycleLength) {
+          onCycleLengthChange(Math.round(average))
+        }
+      }
+    }
+
+    updateCycleLengthFromAverage()
+    
+    // Listen for storage changes (when cycle log is updated)
+    const handleStorageChange = (e) => {
+      if (e.key === 'gimmeGold_cycleHistory') {
+        updateCycleLengthFromAverage()
+      }
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    
+    // Also check periodically (for same-tab updates)
+    const interval = setInterval(updateCycleLengthFromAverage, 1000)
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      clearInterval(interval)
+    }
+  }, [cycleLength, onCycleLengthChange])
 
   const handleDateChange = (e) => {
     const date = new Date(e.target.value)
@@ -60,13 +118,35 @@ function CycleTracker({
     onPeriodStart(newPeriodDate)
     
     // Update cycle length to the average of all recorded cycles
-    const history = getCycleHistory()
-    if (history.length > 0) {
-      const newAverage = calculateAverageCycleLength(history)
-      if (newAverage) {
-        onCycleLengthChange(Math.round(newAverage))
+    // Wait a bit for the history to be saved, then recalculate
+    setTimeout(() => {
+      const history = getCycleHistory()
+      if (history.length > 0) {
+        // Sort by date (most recent first)
+        const sortedHistory = [...history].sort((a, b) => b.date - a.date)
+        
+        // Calculate cycle length for the most recent entry using new period date
+        const historyWithCurrentPeriod = sortedHistory.map((entry, index) => {
+          if (index === 0 && entry.cycleLength === null) {
+            const currentPeriodDate = new Date(newPeriodDate)
+            currentPeriodDate.setHours(0, 0, 0, 0)
+            const entryDate = new Date(entry.date)
+            entryDate.setHours(0, 0, 0, 0)
+            const diffTime = currentPeriodDate - entryDate
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+            if (diffDays > 0 && diffDays < 100) {
+              return { ...entry, cycleLength: diffDays }
+            }
+          }
+          return entry
+        })
+        
+        const newAverage = calculateAverageCycleLength(historyWithCurrentPeriod)
+        if (newAverage) {
+          onCycleLengthChange(Math.round(newAverage))
+        }
       }
-    }
+    }, 100)
     
     setShowRecordDialog(false)
     setRecordNote('')
