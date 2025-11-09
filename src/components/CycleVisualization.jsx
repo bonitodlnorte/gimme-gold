@@ -1,4 +1,4 @@
-import { addDays, format } from 'date-fns'
+import { addDays, format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, isSameMonth, startOfWeek, endOfWeek } from 'date-fns'
 import { getFertilityInfo } from '../utils/cycleCalculator'
 import './CycleVisualization.css'
 
@@ -12,109 +12,125 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
     { name: 'Nurture Phase', displayName: 'Nurture Phase', days: [20, cycleLength], color: '#FFB6C1', icon: '🌙' }
   ]
 
-  // Get libido levels for each phase
-  const getLibidoLevel = (phaseName) => {
-    const phase = { name: phaseName }
-    const fertilityInfo = getFertilityInfo(phase, cycleLength)
-    return fertilityInfo?.libido?.level || 'low'
+  // Get phase for a specific day in the cycle
+  const getPhaseForDay = (dayNumber) => {
+    if (dayNumber >= 1 && dayNumber <= 10) return phases[0]
+    if (dayNumber >= 11 && dayNumber <= 15) return phases[1]
+    if (dayNumber >= 16 && dayNumber <= 19) return phases[2]
+    if (dayNumber >= 20 && dayNumber <= cycleLength) return phases[3]
+    return null
   }
 
-  // Get libido indicator for each phase
-  const getLibidoIndicator = (phaseName) => {
-    const level = getLibidoLevel(phaseName)
+  // Get libido indicator for a specific day
+  const getLibidoIndicator = (dayNumber) => {
+    const phase = getPhaseForDay(dayNumber)
+    if (!phase) return null
+    
+    const fertilityInfo = getFertilityInfo(phase, cycleLength)
+    const level = fertilityInfo?.libido?.level || 'low'
+    
     if (level === 'peak') return '🌶️🌶️'
     if (level === 'moderate-high' || level === 'moderate') return '🌶️'
     if (level === 'low') return '💀'
     return null
   }
 
-  const getPhaseWidth = (startDay, endDay) => {
-    return ((endDay - startDay + 1) / cycleLength) * 100
+  // Calculate which day of the cycle a date falls on
+  const getCycleDay = (date) => {
+    const diffTime = date - lastPeriodDate
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1
+    if (diffDays < 1 || diffDays > cycleLength) return null
+    return diffDays
   }
 
-  const getPhasePosition = (startDay) => {
-    return ((startDay - 1) / cycleLength) * 100
-  }
+  // Get calendar month to display (current month or month containing cycle start)
+  const today = new Date()
+  const cycleStartMonth = startOfMonth(lastPeriodDate)
+  const currentMonth = startOfMonth(today)
+  
+  // Show current month if we're in it, otherwise show the month with the cycle start
+  const displayMonth = isSameMonth(today, lastPeriodDate) || 
+                       today > lastPeriodDate ? currentMonth : cycleStartMonth
 
-  const currentDayPosition = ((daysInCycle - 1) / cycleLength) * 100
+  const monthStart = startOfWeek(startOfMonth(displayMonth), { weekStartsOn: 1 }) // Monday
+  const monthEnd = endOfWeek(endOfMonth(displayMonth), { weekStartsOn: 1 })
+  const calendarDays = eachDayOfInterval({ start: monthStart, end: monthEnd })
+
+  const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
   return (
     <div className="cycle-visualization">
       <h3>Your Cycle Overview</h3>
-      <div className="cycle-bar-container">
-        {/* Phase segments bar */}
-        <div className="cycle-bar">
-          {phases.map((phase, index) => {
-            const width = getPhaseWidth(phase.days[0], phase.days[1])
-            const position = getPhasePosition(phase.days[0])
-            const isActive = daysInCycle >= phase.days[0] && daysInCycle <= phase.days[1]
-            const startDate = addDays(lastPeriodDate, phase.days[0] - 1)
-            const endDate = addDays(lastPeriodDate, phase.days[1] - 1)
+      <div className="cycle-calendar-container">
+        <div className="calendar-header">
+          <h4 className="calendar-month-title">
+            {format(displayMonth, 'MMMM yyyy')}
+          </h4>
+        </div>
+        
+        <div className="calendar-grid">
+          {/* Week day headers */}
+          {weekDays.map((day) => (
+            <div key={day} className="calendar-weekday">
+              {day}
+            </div>
+          ))}
+
+          {/* Calendar days */}
+          {calendarDays.map((date, index) => {
+            const cycleDay = getCycleDay(date)
+            const phase = cycleDay ? getPhaseForDay(cycleDay) : null
+            const libidoIndicator = cycleDay ? getLibidoIndicator(cycleDay) : null
+            const isToday = isSameDay(date, today)
+            const isCurrentMonth = isSameMonth(date, displayMonth)
+            const isPhaseTransition = cycleDay && [1, 11, 16, 20].includes(cycleDay)
 
             return (
               <div
                 key={index}
-                className={`phase-bar-segment ${isActive ? 'active' : ''}`}
+                className={`calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''} ${phase ? 'has-phase' : ''} ${isPhaseTransition ? 'phase-transition' : ''}`}
                 style={{
-                  left: `${position}%`,
-                  width: `${width}%`,
-                  backgroundColor: phase.color,
-                  borderColor: phase.color
+                  backgroundColor: phase ? `${phase.color}30` : 'transparent',
+                  borderColor: phase ? phase.color : 'transparent'
                 }}
               >
-                <div className="phase-bar-content">
-                  <div className="phase-bar-header">
-                    <span className="phase-bar-icon">{phase.icon}</span>
-                    <span className="phase-bar-name">{phase.displayName}</span>
-                    {getLibidoIndicator(phase.name) && (
-                      <span className="phase-bar-libido">{getLibidoIndicator(phase.name)}</span>
+                <div className="calendar-day-number">
+                  {format(date, 'd')}
+                </div>
+                {cycleDay && (
+                  <div className="calendar-day-info">
+                    <div className="calendar-day-cycle">Day {cycleDay}</div>
+                    {libidoIndicator && (
+                      <div className="calendar-day-libido">{libidoIndicator}</div>
+                    )}
+                    {isPhaseTransition && phase && (
+                      <div className="calendar-day-phase">{phase.icon} {phase.displayName}</div>
                     )}
                   </div>
-                  <div className="phase-bar-dates">
-                    <span className="phase-date">{format(startDate, 'MMM d')}</span>
-                    <span className="phase-date-separator">→</span>
-                    <span className="phase-date">{format(endDate, 'MMM d')}</span>
-                  </div>
-                </div>
+                )}
               </div>
             )
           })}
-          
-          {/* Current day indicator */}
-          <div 
-            className="current-day-indicator"
-            style={{ left: `${currentDayPosition}%` }}
-          >
-            <div className="current-day-line"></div>
-            <div className="current-day-badge">
-              <div className="current-day-dot"></div>
-              <span>Today</span>
-            </div>
-          </div>
         </div>
 
-        {/* Phase transition markers */}
-        <div className="phase-transitions">
-          {[1, 11, 16, 20, cycleLength].map((day) => {
-            if (day > cycleLength) return null
-            const date = addDays(lastPeriodDate, day - 1)
-            const position = ((day - 1) / cycleLength) * 100
-            const isPhaseTransition = [1, 11, 16, 20].includes(day)
-            
-            return (
-              <div
-                key={`transition-${day}`}
-                className={`transition-marker ${isPhaseTransition ? 'major' : ''}`}
-                style={{ left: `${position}%` }}
-              >
-                <div className="transition-line"></div>
-                <div className="transition-label">
-                  <span className="transition-day">Day {day}</span>
-                  <span className="transition-date">{format(date, 'MMM d')}</span>
-                </div>
-              </div>
-            )
-          })}
+        {/* Legend */}
+        <div className="calendar-legend">
+          <div className="legend-item">
+            <div className="legend-color" style={{ backgroundColor: '#B0E0E6' }}></div>
+            <span>Power Phase 1</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-color" style={{ backgroundColor: '#F4D03F' }}></div>
+            <span>Manifestation</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-color" style={{ backgroundColor: '#98D8C8' }}></div>
+            <span>Power Phase 2</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-color" style={{ backgroundColor: '#FFB6C1' }}></div>
+            <span>Nurture Phase</span>
+          </div>
         </div>
       </div>
     </div>
@@ -122,4 +138,3 @@ function CycleVisualization({ currentPhase, cycleLength, daysInCycle, lastPeriod
 }
 
 export default CycleVisualization
-
