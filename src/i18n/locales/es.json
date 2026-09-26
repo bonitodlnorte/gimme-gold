@@ -550,6 +550,18 @@
         "testosterone": "Bajo"
       }
     }
+  },
+  "exportBanner": {
+    "title": "Estamos preparando una nueva versión de Gimme Gold",
+    "text": "Guarda ahora una copia de tu historial para poder llevarlo a la nueva app. Se queda contigo: no se sube a ningún sitio.",
+    "save": "Guardar copia",
+    "copy": "Copiar texto",
+    "later": "Ahora no",
+    "shareTitle": "Gimme Gold – historial del ciclo",
+    "savedTitle": "Copia guardada",
+    "savedText": "Conserva ese archivo: podrás importarlo en la nueva versión.",
+    "error": "No se ha podido guardar la copia. Prueba con «Copiar texto» y pégalo en una nota o en un email a ti misma.",
+    "copiedTitle": "Copiado",
+    "copiedText": "Pégalo en una nota o en un email a ti misma y consérvalo: podrás importarlo en la nueva versión."
   }
 }
-

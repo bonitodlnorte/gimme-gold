@@ -8,6 +8,7 @@ import WorkCareerReportPage from './components/WorkCareerReportPage'
 import CycleLogPage from './components/CycleLogPage'
 import LearnPage from './components/LearnPage'
 import InstallButton from './components/InstallButton'
+import ExportBanner from './components/ExportBanner'
 import { getCyclePhase, getDaysInCycle } from './utils/cycleCalculator'
 import './App.css'
 
@@ -138,6 +139,8 @@ function App() {
           )}
         </div>
       </header>
+
+      <ExportBanner />
 
       <main className="app-main">
         <Routes>
