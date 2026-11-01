@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { cycleStatus, type CycleSettings, type Period } from './cycle'
 import { addDays } from './dates'
-import { forecast, goalWindows, typicalPeriodDays, upcomingChanges } from './plan'
+import { forecast, goalWindows, typicalPeriodDays, upcomingChanges, onFire, type ForecastDay } from './plan'
 
 const settings: CycleSettings = { declaredLength: null, contraception: 'no' }
 // Three regular 28-day cycles; the current one started on 1 Oct.
@@ -60,5 +60,24 @@ describe('typicalPeriodDays', () => {
     expect(typicalPeriodDays(periods)).toBe(5)
     expect(typicalPeriodDays([{ start: '2026-10-01' }])).toBe(5)
     expect(typicalPeriodDays([{ start: '2026-10-01', end: '2026-10-03' }])).toBe(3)
+  })
+})
+
+describe('onFire', () => {
+  const day = (cycleDay: number, phase: ForecastDay['phase']): ForecastDay => ({
+    date: '2026-11-01',
+    cycleIndex: 0,
+    cycleDay,
+    phase,
+    state: phase,
+    period: null,
+    confidence: 'alta',
+  })
+
+  it('covers Manifestación, the days around ovulation', () => {
+    expect(onFire(day(12, 'manifestacion'))).toBe(true)
+    expect(onFire(day(14, 'manifestacion'))).toBe(true)
+    expect(onFire(day(9, 'poder1'))).toBe(false)
+    expect(onFire(day(17, 'poder2'))).toBe(false)
   })
 })

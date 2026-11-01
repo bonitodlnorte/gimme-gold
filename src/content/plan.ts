@@ -33,3 +33,5 @@ export const AVISO_PLAN =
   'Es una guía, no una norma: la ciencia dice que la fase influye poco en el rendimiento y cambia mucho de una persona a otra. Cuanto más lejos, menos fiable.'
 
 export const AVISO_RETRASO = 'Tu regla se está retrasando, así que el calendario es aproximado hasta que la apuntes.'
+
+export const AVISO_FERTIL_PLAN = 'Es una estimación: la ovulación se adelanta o se retrasa. Si no buscas embarazo, usa protección todo el ciclo.'

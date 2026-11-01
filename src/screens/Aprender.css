@@ -162,3 +162,10 @@
   font-size: 22px;
   line-height: 1.15;
 }
+
+/* Neutral grey, so the warnings don't read as the blue info notes. */
+.aprender__ojo {
+  border-color: var(--line);
+  background: var(--surface-soft);
+  color: var(--ink);
+}

@@ -138,6 +138,15 @@ export function suits(day: ForecastDay, goal: GoalId, cycleLength: number): bool
   }
 }
 
+/**
+ * "On fire": the days around ovulation, when libido and fertility both peak (all of Manifestación,
+ * as the partner sees it). One mark instead of separate libido, fertile and ovulation emojis.
+ * An estimate, never contraception.
+ */
+export function onFire(day: ForecastDay): boolean {
+  return day.phase === 'manifestacion'
+}
+
 /** Runs of consecutive days that suit a goal. */
 export function goalWindows(fc: Forecast, goal: GoalId): { from: LocalDate; to: LocalDate }[] {
   const windows: { from: LocalDate; to: LocalDate }[] = []
