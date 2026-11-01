@@ -10,7 +10,7 @@ import './Aprender.css'
 // G-Aprender: the four phases with her own days, plus fertility and contraception sheets.
 
 const PHASES: Phase[] = ['poder1', 'manifestacion', 'poder2', 'mimos']
-const MOODS: Record<Phase, BillyMood> = { poder1: 'normal', manifestacion: 'fiesta', poder2: 'alerta', mimos: 'muerto' }
+const MOODS: Record<Phase, BillyMood> = { poder1: 'orador', manifestacion: 'bailando', poder2: 'artificiero', mimos: 'muerto' }
 const EXTRAS: Record<string, FichaExtra> = { 'ventana-fertil': FICHA_FERTIL, anticonceptivos: FICHA_ANTICONCEPTIVOS }
 
 interface Props {

@@ -88,7 +88,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
               <span className="ciclo__phase">{PHASE_NAMES[phase]}</span>
               <p className="ciclo__headline">{copy.headline}</p>
             </div>
-            <Billy mood={onPeriod ? 'zen' : moodFor(phase, status.cycleDay)} size={96} />
+            <Billy mood={onPeriod ? 'meditando' : moodFor(phase, status.cycleDay)} size={96} />
           </section>
 
           <p className="ciclo__billy">

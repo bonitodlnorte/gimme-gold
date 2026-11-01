@@ -1,0 +1,118 @@
+/* Billy's animations. Gentle and looping; off when she asked for reduced motion. */
+.billy * {
+  transform-box: view-box;
+}
+
+.billy-float {
+  animation: billy-float 4s ease-in-out infinite;
+}
+
+@keyframes billy-float {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.billy-aura {
+  transform-origin: 60px 62px;
+  animation: billy-pulse 4s ease-in-out infinite;
+  opacity: 0.55;
+}
+
+@keyframes billy-pulse {
+  50% {
+    opacity: 0.15;
+    transform: scale(1.06);
+  }
+}
+
+.billy-twinkle {
+  animation: billy-twinkle 1.6s ease-in-out infinite;
+}
+
+@keyframes billy-twinkle {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.billy-wave {
+  transform-origin: 37px 92px;
+  animation: billy-wave 1.8s ease-in-out infinite;
+}
+
+@keyframes billy-wave {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+.billy-waves {
+  animation: billy-twinkle 1.2s ease-out infinite;
+}
+
+.billy-dance {
+  transform-origin: 60px 119px;
+  animation: billy-dance 0.8s ease-in-out infinite;
+}
+
+@keyframes billy-dance {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg) translateY(-3px);
+  }
+}
+
+.billy-flame {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: billy-flame 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes billy-flame {
+  to {
+    transform: scaleY(0.8);
+  }
+}
+
+.billy-tremble {
+  animation: billy-tremble 0.3s linear infinite;
+}
+
+@keyframes billy-tremble {
+  25% {
+    transform: translateX(-0.6px);
+  }
+  75% {
+    transform: translateX(0.6px);
+  }
+}
+
+.billy-sweat {
+  animation: billy-sweat 2s ease-in infinite;
+}
+
+@keyframes billy-sweat {
+  80%,
+  100% {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}
+
+.billy-spark {
+  animation: billy-twinkle 0.4s steps(2) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .billy * {
+    animation: none !important;
+  }
+}

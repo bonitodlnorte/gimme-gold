@@ -24,10 +24,10 @@ function whenText(seg: PartnerSegment): string {
 }
 
 const MOODS: Record<Exclude<PartnerState, 'codigo-rojo'>, BillyMood> = {
-  regla: 'zen',
-  poder1: 'normal',
-  manifestacion: 'fiesta',
-  poder2: 'alerta',
+  regla: 'meditando',
+  poder1: 'orador',
+  manifestacion: 'bailando',
+  poder2: 'artificiero',
   mimos: 'muerto',
 }
 

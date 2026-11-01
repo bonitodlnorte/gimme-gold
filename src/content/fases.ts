@@ -14,30 +14,30 @@ export const PARA_ELLA: Record<Phase | 'regla', PhaseCopy> = {
   regla: {
     headline: 'Modo recarga',
     billy:
-      'Arranca un ciclo nuevo y tu cuerpo está en modo recarga. Eso merece trato VIP: manta, algo calentito y el móvil en silencio. En casa ya están avisados: hoy no se negocia nada.',
+      'Arranca un ciclo nuevo y tu cuerpo está en modo recarga. Eso merece trato VIP: manta, algo calentito y el móvil en silencio. Al resto del mundo ya le he dicho que estás en una reunión muy importante contigo misma.',
     goodFor: ['Manta', 'Algo calentito', 'Paseo suave'],
   },
   poder1: {
     headline: 'Vuelve la energía',
     billy:
-      'Se abre la ventana de las conversaciones difíciles, y dura toda esta fase. Si tienes algo pendiente que hablar, este es el momento. Yo aprovecho para salir de debajo del sofá.',
+      'Vuelve el estrógeno y vuelves tú, en modo dragón. ¿Esa conversación que llevas semanas guardándote? Ahora: hoy argumentas como una abogada de serie americana. Yo voy saliendo de debajo del sofá… despacito.',
     goodFor: ['Conversaciones pendientes', 'Entreno fuerte', 'Planes con gente'],
   },
   manifestacion: {
     headline: 'Estás en tu mejor momento',
-    billy: 'Estás en tu mejor momento y yo me desmayo de la emoción. Aprovecha para lanzar eso que llevas semanas rumiando.',
+    billy: '¡Alerta de purpurina! Estás en tu mejor momento: brillas, convences y te ríes de tus propios chistes (y son buenos). Lanza el proyecto, pide el aumento, organiza la cena.',
     goodFor: ['Cena fuera', 'Entreno fuerte', 'Lanzar proyecto'],
   },
   poder2: {
     headline: 'Bajón hormonal a la vista',
     billy:
-      'Las hormonas se han ido de vacaciones sin avisar. Hoy mejor no decidir nada gordo ni discutir con nadie. Yo me escondo en el armario, por si acaso.',
+      'Las hormonas se han ido de vacaciones sin avisar. Puede que hoy todo te irrite un poco más, yo incluido. Decisiones gordas, al congelador. Yo me escondo en el armario con un táper y una linterna, por si esto va para largo.',
     goodFor: ['Entreno fuerte, todavía', 'Plan tranquilo', 'Cero discusiones'],
   },
   mimos: {
     headline: 'Semana antes de la regla',
     billy:
-      'Hoy ni ayuno ni entreno a muerte: tu cuerpo pide hidratos y sofá, y yo le doy la razón. Si alguien te lleva la contraria, me avisas y me desmayo encima de él.',
+      'Semana de mimos. Tu cuerpo pide hidratos, sofá y cero dramas ajenos (los míos no cuentan). Ni ayunos ni entrenos a muerte: aquí el único que se hace el muerto soy yo. Y si alguien te lleva la contraria, me avisas y me desmayo encima de él.',
     goodFor: ['Hidratos', 'Sofá y series', 'Dormir pronto'],
   },
 }
