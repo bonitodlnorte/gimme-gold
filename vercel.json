@@ -1,9 +1,12 @@
 {
   "rewrites": [
     {
+      "source": "/pareja/:token/manifest.webmanifest",
+      "destination": "/manifest-pareja.json"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
 }
-

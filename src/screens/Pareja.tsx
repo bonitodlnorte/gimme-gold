@@ -26,37 +26,6 @@ function whenText(seg: PartnerSegment): string {
   return `${fmt(dayShortMonth, seg.from)} – ${fmt(dayShortMonth, seg.to)}`
 }
 
-/** On his page, installing should open his link, not her sign-in: point the manifest here. */
-function usePartnerManifest() {
-  useEffect(() => {
-    const link = document.querySelector<HTMLLinkElement>('link[rel="manifest"]')
-    if (!link) return
-    const original = link.href
-    const origin = window.location.origin
-    const manifest = {
-      name: 'Billy · Pareja',
-      short_name: 'Billy',
-      start_url: window.location.pathname,
-      scope: window.location.pathname,
-      display: 'standalone',
-      background_color: '#FFFFFF',
-      theme_color: '#FFFFFF',
-      lang: 'es',
-      icons: [
-        { src: `${origin}/icons/icon-192.png?v=2`, sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: `${origin}/icons/icon-512.png?v=2`, sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: `${origin}/icons/maskable-512.png?v=2`, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-      ],
-    }
-    const url = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' }))
-    link.href = url
-    return () => {
-      link.href = original
-      URL.revokeObjectURL(url)
-    }
-  }, [])
-}
-
 // What Billy suggests he does, not how she is (her avatars come from moodFor).
 const MOODS: Record<Exclude<PartnerState, 'codigo-rojo'>, BillyMood> = {
   regla: 'mayordomo',
@@ -71,7 +40,6 @@ export function ParejaScreen() {
   const [view, setView] = useState<PartnerView | null | undefined>(undefined)
   const [failed, setFailed] = useState(false)
   const [showAll, setShowAll] = useState(false)
-  usePartnerManifest()
 
   useEffect(() => {
     fetchPartnerView(token).then(setView, () => setFailed(true))
