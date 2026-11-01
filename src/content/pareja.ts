@@ -54,6 +54,16 @@ export const PARA_PAREJA: Record<PartnerState, PartnerCopy> = {
   },
 }
 
+/** What to plan in each stretch ahead (Lo que viene). Concrete, bookable ideas. */
+export const PLANES_PAREJA: Record<PartnerState, { titulo: string; ideas: string[] }> = {
+  regla: { titulo: 'Día de recarga', ideas: ['Dale espacio', 'Cena en casa y cocinas tú', 'Ibuprofeno y chocolate a mano'] },
+  poder1: { titulo: 'Vuelve la energía', ideas: ['Esa conversación pendiente', 'Deporte juntos', 'Plan con amigos'] },
+  manifestacion: { titulo: 'Su mejor momento', ideas: ['Reserva una cena romántica', 'Escapada o plan nuevo', 'Fiesta con amigos'] },
+  poder2: { titulo: 'Las hormonas bajan', ideas: ['Planes tranquilos', 'Cocinar algo rico juntos', 'Nada de decisiones gordas'] },
+  mimos: { titulo: 'Semana de mimos', ideas: ['Noche de sofá y series', 'Flores o su capricho favorito', 'Masaje de pies'] },
+  'codigo-rojo': { titulo: 'Código rojo', ideas: ['Llena la nevera de lo que le gusta', 'Plan en casa', 'Cero «tenemos que hablar»'] },
+}
+
 type Upcoming = 'regla' | 'manifestacion' | 'poder2' | 'mimos'
 
 export function avisoProximo(to: Upcoming, inDays: number): string {

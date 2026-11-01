@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
-import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, PARA_PAREJA, avisoProximo } from '../content/pareja'
+import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, PARA_PAREJA, PLANES_PAREJA, avisoProximo } from '../content/pareja'
 import { PHASE_NAMES } from '../domain/cycle'
 import { toJsDate, today } from '../domain/dates'
-import { partnerStatus, type PartnerState } from '../domain/partner'
+import { partnerStatus, type PartnerSegment, type PartnerState } from '../domain/partner'
 import { fetchPartnerView, type PartnerView } from '../data/store'
 import './Ciclo.css'
 import './Pareja.css'
@@ -12,7 +12,16 @@ import './Pareja.css'
 // The partner's read-only page (D10), opened from the link she shares. No account needed.
 
 const dateLabel = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })
-const weekday = new Intl.DateTimeFormat('es-ES', { weekday: 'narrow' })
+const dayMonth = new Intl.DateTimeFormat('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })
+
+function whenText(seg: PartnerSegment): string {
+  const from = dayMonth.format(toJsDate(seg.from))
+  const to = dayMonth.format(toJsDate(seg.to))
+  if (seg.current) return `Hasta el ${to}`
+  if (seg.open) return `Desde el ${from}`
+  if (seg.from === seg.to) return `El ${from}`
+  return `Del ${from} al ${to}`
+}
 
 const MOODS: Record<Exclude<PartnerState, 'codigo-rojo'>, BillyMood> = {
   regla: 'zen',
@@ -109,16 +118,17 @@ export function ParejaScreen() {
           </section>
 
           <section>
-            <h2 className="eyebrow">Esta semana</h2>
-            <ol className="ciclo__days">
-              {status.days.map((day, i) => (
-                <li
-                  key={day.date}
-                  data-phase={day.phase}
-                  className={[i === 0 && 'is-today', day.predicted && 'is-uncertain'].filter(Boolean).join(' ')}
-                  aria-label={`${dateLabel.format(toJsDate(day.date))}: ${PHASE_NAMES[day.phase]}${day.predicted ? ', estimado' : ''}`}
-                >
-                  {weekday.format(toJsDate(day.date)).toUpperCase()}
+            <h2 className="eyebrow">Lo que viene</h2>
+            <p className="pareja__lead">Para que lo planees con tiempo.</p>
+            <ol className="pareja__ahead">
+              {status.ahead.map((seg) => (
+                <li key={seg.from} data-phase={seg.phase}>
+                  <span className="pareja__when">
+                    {whenText(seg)}
+                    {seg.estimated && ' (aprox.)'}
+                  </span>
+                  <span className="pareja__what">{PLANES_PAREJA[seg.state].titulo}</span>
+                  <span className="pareja__ideas">{PLANES_PAREJA[seg.state].ideas.join(' · ')}</span>
                 </li>
               ))}
             </ol>

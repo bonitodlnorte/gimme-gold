@@ -85,6 +85,19 @@ Se muestra debajo cuando la fase cambia en los próximos 3 días:
 - **Llega Mimos:** En {n} días empieza la semana de mimos. Ve llenando la nevera.
 - **Llega la regla:** La regla llega en unos {n} días. Revisa que haya ibuprofeno en casa. Y chocolate.
 
+## Lo que viene: planes con fecha
+
+Las próximas ~6 semanas por tramos, con fechas («aprox.» desde el ciclo siguiente) y planes concretos para organizarse con tiempo. Si la regla se retrasa, se muestra como el último día de Código rojo, todo aproximado, para no delatar el retraso.
+
+| Tramo | Título | Ideas |
+|---|---|---|
+| Recarga | Día de recarga | Dale espacio · Cena en casa y cocinas tú · Ibuprofeno y chocolate a mano |
+| Poder 1 | Vuelve la energía | Esa conversación pendiente · Deporte juntos · Plan con amigos |
+| Manifestación | Su mejor momento | Reserva una cena romántica · Escapada o plan nuevo · Fiesta con amigos |
+| Poder 2 | Las hormonas bajan | Planes tranquilos · Cocinar algo rico juntos · Nada de decisiones gordas |
+| Mimos | Semana de mimos | Noche de sofá y series · Flores o su capricho favorito · Masaje de pies |
+| Código rojo | Código rojo | Llena la nevera de lo que le gusta · Plan en casa · Cero «tenemos que hablar» |
+
 ## Aviso orientativo
 
 Cuando las fases son solo orientativas, la pareja ve:

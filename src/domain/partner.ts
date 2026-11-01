@@ -15,11 +15,21 @@ export const COUNTDOWN_DAYS = 3
 /** How far ahead the "what's coming" notice looks. */
 export const UPCOMING_WINDOW = 3
 
-export interface PartnerDay {
-  date: LocalDate
+/** How far ahead the partner can plan: about six weeks. */
+export const PLAN_AHEAD_DAYS = 42
+
+/** A run of days in the same state, for planning ahead. */
+export interface PartnerSegment {
+  state: PartnerState
   phase: Phase
-  /** In the next predicted cycle, so only an estimate. */
-  predicted: boolean
+  from: LocalDate
+  to: LocalDate
+  /** Continues today's state. */
+  current: boolean
+  /** Falls in a predicted cycle, not the current one. */
+  estimated: boolean
+  /** Runs past the planning horizon. */
+  open: boolean
 }
 
 export interface PartnerStatus {
@@ -27,7 +37,8 @@ export interface PartnerStatus {
   phase: Phase
   /** The next change within UPCOMING_WINDOW days; null when there is none or the period is late. */
   upcoming: { to: 'regla' | Exclude<Phase, 'poder1'>; inDays: number } | null
-  days: PartnerDay[]
+  /** What's coming, by segments. When late, it reads like the last countdown day, so it cannot give the delay away. */
+  ahead: PartnerSegment[]
   orientative: boolean
 }
 
@@ -40,7 +51,6 @@ function stateFor(cycleDay: number, length: number): PartnerState {
 export function partnerStatus(
   view: { cycleStart: LocalDate; cycleLength: number; orientative: boolean },
   on: LocalDate,
-  days = 7,
 ): PartnerStatus {
   const length = view.cycleLength
   const cycleDay = daysBetween(view.cycleStart, on) + 1
@@ -66,16 +76,33 @@ export function partnerStatus(
     }
   }
 
-  const strip: PartnerDay[] = []
-  for (let i = 0; i < days; i++) {
-    const day = cycleDay + i
-    const predicted = late || day > length
-    strip.push({
-      date: addDays(on, i),
-      phase: late ? 'mimos' : phaseForCycleDay(((day - 1) % length) + 1, length),
-      predicted,
-    })
+  const ahead: PartnerSegment[] = []
+  {
+    // A late cycle is shown as if today were its last day: the next one starts tomorrow.
+    const fromDay = late ? length : cycleDay
+    for (let i = 1; i <= PLAN_AHEAD_DAYS; i++) {
+      const day = fromDay + i
+      const inCycle = ((day - 1) % length) + 1
+      const dayState = stateFor(inCycle, length)
+      const date = addDays(on, i)
+      const last = ahead[ahead.length - 1]
+      if (last && last.state === dayState && inCycle !== 1) {
+        last.to = date
+        continue
+      }
+      ahead.push({
+        state: dayState,
+        phase: phaseForCycleDay(inCycle, length),
+        from: date,
+        to: date,
+        current: i === 1 && dayState === state,
+        estimated: late || day > length,
+        open: false,
+      })
+    }
+    const last = ahead[ahead.length - 1]
+    if (last) last.open = true
   }
 
-  return { state, phase, upcoming, days: strip, orientative: view.orientative }
+  return { state, phase, upcoming, ahead, orientative: view.orientative }
 }
