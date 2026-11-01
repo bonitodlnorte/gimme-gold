@@ -141,7 +141,7 @@ export function App() {
           />
         }
       />
-      <Route path="/plan" element={<PlanScreen status={status} periods={data.periods} />} />
+      <Route path="/plan" element={<PlanScreen status={status} periods={data.periods} contraception={data.profile.contraception} />} />
       <Route path="/aprender" element={<AprenderScreen cycleLength={status.estimate.length} currentPhase={status.phase} />} />
       <Route path="/aprender/:tema" element={<FichaScreen cycleLength={status.estimate.length} currentPhase={status.phase} />} />
       <Route path="/compartir" element={<CompartirScreen userId={userId} />} />

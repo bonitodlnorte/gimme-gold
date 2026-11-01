@@ -4,10 +4,11 @@ import { Sheet } from '../components/Sheet'
 import { TabBar } from '../components/TabBar'
 import { FICHAS_FASE } from '../content/aprender'
 import { PARA_ELLA } from '../content/fases'
-import { AVISO_PLAN, AVISO_RETRASO, CONSEJO_FECHA, OBJETIVOS, STATE_NAMES } from '../content/plan'
-import type { CycleStatus, Period } from '../domain/cycle'
+import { AVISO_FERTIL_PLAN, AVISO_PLAN, AVISO_RETRASO, CONSEJO_FECHA, OBJETIVOS, STATE_NAMES } from '../content/plan'
+import type { Contraception, CycleStatus, Period } from '../domain/cycle'
 import { addDays, toJsDate, type LocalDate } from '../domain/dates'
-import { HORIZON_DAYS, forecast, goalWindows, suits, type ForecastDay, type GoalId } from '../domain/plan'
+import { HORIZON_DAYS, dayMarks, forecast, goalWindows, suits, type DayMarks, type ForecastDay, type GoalId } from '../domain/plan'
+import type { BackTo } from './Aprender'
 import './Alta.css'
 import './Ciclo.css'
 import './Plan.css'
@@ -32,16 +33,32 @@ const PERIOD_TEXT = {
   posible: 'Puede que te venga la regla',
 } as const
 
+/** A "maybe" period is not drawn on the calendar: only the expected days get a drop. */
+function showsDrop(day: ForecastDay): boolean {
+  return day.period === 'en_curso' || day.period === 'probable'
+}
+
+const NO_MARKS: DayMarks = { ovulation: false, fertile: false, libido: false }
+
+function marksText(m: DayMarks): string {
+  return [m.libido && 'libido a tope', m.fertile && 'muy fértil', m.ovulation && 'ovulación estimada'].filter(Boolean).join(', ')
+}
+
 interface Props {
   status: CycleStatus
   periods: Period[]
+  contraception: Contraception
 }
 
-export function PlanScreen({ status, periods }: Props) {
+export function PlanScreen({ status, periods, contraception }: Props) {
   const fc = useMemo(() => forecast(status, periods), [status, periods])
   const [goal, setGoal] = useState<GoalId | null>(null)
   const [open, setOpen] = useState<{ day: ForecastDay; planned: boolean } | null>(null)
   const [pickDate, setPickDate] = useState(false)
+  const [picked, setPicked] = useState('')
+  // No ovulation with hormonal contraception, and while the period is late the dates are only a guess.
+  const showMarks = contraception !== 'si' && !fc.late
+  const marksFor = (day: ForecastDay) => (showMarks ? dayMarks(day, fc.cycleLength) : NO_MARKS)
 
   const byDate = useMemo(() => new Map(fc.days.map((d) => [d.date, d])), [fc])
   const months = useMemo(() => {
@@ -80,7 +97,7 @@ export function PlanScreen({ status, periods }: Props) {
       </header>
 
       <button type="button" className="btn btn--ghost" onClick={() => setPickDate(true)}>
-        Tengo una fecha
+        ¿Cómo estaré tal día?
       </button>
 
       <section aria-labelledby="plan-goal">
@@ -143,10 +160,13 @@ export function PlanScreen({ status, periods }: Props) {
           <i className="plan__drop" />
           Regla
         </span>
-        <span>
-          <i className="plan__drop plan__drop--maybe" />
-          Quizá regla
-        </span>
+        {showMarks && (
+          <>
+            <span>🌶️ Libido a tope</span>
+            <span>🍼 Más fértil</span>
+            <span>🥚 Ovulación</span>
+          </>
+        )}
         {objetivo && (
           <>
             <span className="plan__legend-goal">
@@ -174,6 +194,8 @@ export function PlanScreen({ status, periods }: Props) {
               if (!date) return <span key={`e${i}`} />
               const day = byDate.get(date)!
               const good = goal ? suits(day, goal, fc.cycleLength) : null
+              const marks = marksFor(day)
+              const extra = marksText(marks)
               return (
                 <button
                   key={date}
@@ -188,7 +210,7 @@ export function PlanScreen({ status, periods }: Props) {
                   ]
                     .filter(Boolean)
                     .join(' ')}
-                  aria-label={`${longDate.format(toJsDate(date))}: ${STATE_NAMES[day.state]}${day.period ? `, ${PERIOD_TEXT[day.period].toLowerCase()}` : ''}${good ? ', buen día' : ''}`}
+                  aria-label={`${longDate.format(toJsDate(date))}: ${STATE_NAMES[day.state]}${showsDrop(day) ? `, ${PERIOD_TEXT[day.period!].toLowerCase()}` : ''}${extra ? `, ${extra}` : ''}${good ? ', buen día' : ''}`}
                   onClick={() => setOpen({ day, planned: false })}
                 >
                   {good && (
@@ -197,7 +219,14 @@ export function PlanScreen({ status, periods }: Props) {
                     </b>
                   )}
                   {Number(date.slice(8))}
-                  {day.period && <i className={`plan__drop${day.period === 'posible' ? ' plan__drop--maybe' : ''}`} />}
+                  {showsDrop(day) && <i className="plan__drop" />}
+                  {(marks.libido || marks.fertile || marks.ovulation) && (
+                    <span className="plan__marks" aria-hidden="true">
+                      {marks.libido && '🌶️'}
+                      {marks.fertile && '🍼'}
+                      {marks.ovulation && '🥚'}
+                    </span>
+                  )}
                 </button>
               )
             })}
@@ -210,32 +239,56 @@ export function PlanScreen({ status, periods }: Props) {
       <TabBar />
 
       {pickDate && (
-        <Sheet label="Tengo una fecha" onClose={() => setPickDate(false)}>
-          <h2 className="plan__sheet-title">¿Qué día es?</h2>
-          <p className="plan__sheet-text">Un viaje, una competición, una presentación… Te digo cómo te pillará.</p>
+        <Sheet label="¿Cómo estaré tal día?" onClose={() => setPickDate(false)}>
+          <h2 className="plan__sheet-title">¿Qué día quieres mirar?</h2>
+          <p className="plan__sheet-text">Un viaje, una competición, una cita… Elige la fecha y te digo cómo te pillará.</p>
+          {/* Wait for the button: iPhone and desktop pickers fire change while she browses months. */}
           <input
             type="date"
             className="field"
             min={status.date}
             max={last}
             aria-label="Fecha"
-            onChange={(e) => {
-              const day = byDate.get(e.target.value)
+            value={picked}
+            onChange={(e) => setPicked(e.target.value)}
+          />
+          <button
+            type="button"
+            className="btn btn--go"
+            disabled={!byDate.has(picked)}
+            onClick={() => {
+              const day = byDate.get(picked)
               if (day) {
                 setPickDate(false)
                 setOpen({ day, planned: true })
               }
             }}
-          />
+          >
+            Ver cómo estaré
+          </button>
         </Sheet>
       )}
 
-      {open && <DaySheet day={open.day} planned={open.planned} cycleLength={fc.cycleLength} onClose={() => setOpen(null)} />}
+      {open && (
+        <DaySheet day={open.day} planned={open.planned} cycleLength={fc.cycleLength} marks={marksFor(open.day)} onClose={() => setOpen(null)} />
+      )}
     </main>
   )
 }
 
-function DaySheet({ day, planned, cycleLength, onClose }: { day: ForecastDay; planned: boolean; cycleLength: number; onClose: () => void }) {
+function DaySheet({
+  day,
+  planned,
+  cycleLength,
+  marks,
+  onClose,
+}: {
+  day: ForecastDay
+  planned: boolean
+  cycleLength: number
+  marks: DayMarks
+  onClose: () => void
+}) {
   const goodFor = OBJETIVOS.filter((o) => suits(day, o.id, cycleLength))
   const summary = day.state === 'recarga' ? PARA_ELLA.regla.headline : FICHAS_FASE[day.phase].resumen
   return (
@@ -248,6 +301,12 @@ function DaySheet({ day, planned, cycleLength, onClose }: { day: ForecastDay; pl
         </h2>
         <p className="plan__sheet-text">{summary}</p>
         {day.period && <p className="plan__period">{PERIOD_TEXT[day.period]}</p>}
+        {marks.libido && <p className="plan__sheet-text">🌶️ Días de libido a tope: el estrógeno y la testosterona están en lo más alto.</p>}
+        {(marks.fertile || marks.ovulation) && (
+          <p className="ciclo__note ciclo__note--info">
+            {marks.ovulation ? '🥚 Ovulación estimada.' : '🍼 De los días más fértiles.'} {AVISO_FERTIL_PLAN}
+          </p>
+        )}
         {day.confidence === 'baja' && <p className="plan__sheet-text">Queda lejos: tómatelo como una idea, no como una cita.</p>}
         {planned && <p className="ciclo__billy plan__advice"><span>Billy</span>{CONSEJO_FECHA[day.state]}</p>}
         {goodFor.length > 0 && (
@@ -262,7 +321,7 @@ function DaySheet({ day, planned, cycleLength, onClose }: { day: ForecastDay; pl
             </ul>
           </>
         )}
-        <Link to={`/aprender/${day.phase}`} className="alta__link plan__more">
+        <Link to={`/aprender/${day.phase}`} state={{ back: '/plan', backLabel: 'Plan' } satisfies BackTo} className="alta__link plan__more">
           Saber más de {STATE_NAMES[day.phase]}
         </Link>
       </div>

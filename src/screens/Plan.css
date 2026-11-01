@@ -73,7 +73,7 @@
 
 .plan__swatch--recarga {
   border-color: var(--period-strong);
-  background: var(--recarga-soft);
+  background: var(--surface);
 }
 
 .plan__swatch--dim {
@@ -151,9 +151,11 @@
   cursor: pointer;
 }
 
+/* White with a pink edge, so it can't be mistaken for Mimos, which is pink too. */
 .plan__day.is-recarga {
-  background: var(--recarga-soft);
+  background: var(--surface);
   color: var(--period-strong-edge);
+  box-shadow: inset 0 0 0 2px var(--period-strong);
 }
 
 .plan__day.is-today {
@@ -186,6 +188,7 @@
 .plan__day.is-dim {
   background: var(--surface-soft);
   color: #767676;
+  box-shadow: none;
 }
 
 /* The period mark: a drop under the number. Hollow when it is only possible. */
@@ -195,7 +198,8 @@
   height: 8px;
   border-radius: 50% 50% 50% 0;
   background: var(--period-strong);
-  transform: rotate(-45deg);
+  /* Point up, like a real drop. */
+  transform: rotate(135deg);
 }
 
 .plan__day .plan__drop {
@@ -203,10 +207,6 @@
   bottom: 5px;
 }
 
-.plan__drop--maybe {
-  border: 2px solid var(--period-strong);
-  background: transparent;
-}
 
 .plan__fine {
   margin: 0;
@@ -262,4 +262,13 @@
 .plan__more {
   align-self: flex-start;
   margin-left: -12px;
+}
+
+/* Ovulation, fertile and libido emojis under the number, where the drop goes (they never share a day). */
+.plan__marks {
+  position: absolute;
+  bottom: 2px;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: -2px;
 }

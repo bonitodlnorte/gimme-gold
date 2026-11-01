@@ -1,4 +1,4 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
 import { TabBar } from '../components/TabBar'
 import { FICHA_ANTICONCEPTIVOS, FICHA_FERTIL, FICHAS_FASE, FUENTE, type FichaExtra } from '../content/aprender'
@@ -27,10 +27,17 @@ function Chevron() {
   )
 }
 
+/** Where the back arrow goes: the screen she came from (Hoy, Plan), or Aprender. */
+export interface BackTo {
+  back: string
+  backLabel: string
+}
+
 function BackHeader({ title }: { title: string }) {
+  const from = useLocation().state as BackTo | null
   return (
     <header className="historial__head">
-      <Link to="/aprender" className="historial__back" aria-label="Volver a Aprender">
+      <Link to={from?.back ?? '/aprender'} className="historial__back" aria-label={`Volver a ${from?.backLabel ?? 'Aprender'}`}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M15 18l-6-6 6-6" />
         </svg>
@@ -169,7 +176,7 @@ export function FichaScreen({ cycleLength, currentPhase }: Props) {
         <p className="aprender__p">{ficha.pareja}</p>
       </section>
 
-      <section className="ciclo__note ciclo__note--info aprender__ojo">
+      <section className="ciclo__note aprender__ojo">
         <h2>Ojo</h2>
         <ul>
           {ficha.ojo.map((o) => (

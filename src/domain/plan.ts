@@ -138,6 +138,24 @@ export function suits(day: ForecastDay, goal: GoalId, cycleLength: number): bool
   }
 }
 
+/** Calendar marks: ovulation, the most fertile days and peak libido. Estimates, never contraception. */
+export interface DayMarks {
+  ovulation: boolean
+  fertile: boolean
+  libido: boolean
+}
+
+export function dayMarks(day: ForecastDay, cycleLength: number): DayMarks {
+  const o = ovulationDay(cycleLength)
+  return {
+    ovulation: day.cycleDay === o,
+    // The two days before ovulation; ovulation day itself shows the egg.
+    fertile: day.cycleDay >= o - 2 && day.cycleDay < o,
+    // Estrogen and testosterone peak around ovulation: the whole of Manifestación, as the partner sees it.
+    libido: day.phase === 'manifestacion',
+  }
+}
+
 /** Runs of consecutive days that suit a goal. */
 export function goalWindows(fc: Forecast, goal: GoalId): { from: LocalDate; to: LocalDate }[] {
   const windows: { from: LocalDate; to: LocalDate }[] = []

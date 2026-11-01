@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { cycleStatus, type CycleSettings, type Period } from './cycle'
 import { addDays } from './dates'
-import { forecast, goalWindows, typicalPeriodDays, upcomingChanges } from './plan'
+import { dayMarks, forecast, goalWindows, typicalPeriodDays, upcomingChanges, type ForecastDay } from './plan'
 
 const settings: CycleSettings = { declaredLength: null, contraception: 'no' }
 // Three regular 28-day cycles; the current one started on 1 Oct.
@@ -60,5 +60,24 @@ describe('typicalPeriodDays', () => {
     expect(typicalPeriodDays(periods)).toBe(5)
     expect(typicalPeriodDays([{ start: '2026-10-01' }])).toBe(5)
     expect(typicalPeriodDays([{ start: '2026-10-01', end: '2026-10-03' }])).toBe(3)
+  })
+})
+
+describe('dayMarks', () => {
+  const day = (cycleDay: number, phase: ForecastDay['phase']): ForecastDay => ({
+    date: '2026-11-01',
+    cycleIndex: 0,
+    cycleDay,
+    phase,
+    state: phase,
+    period: null,
+    confidence: 'alta',
+  })
+
+  it('marks ovulation at L−14, the two days before as most fertile, and Manifestación as peak libido', () => {
+    expect(dayMarks(day(14, 'manifestacion'), 28)).toEqual({ ovulation: true, fertile: false, libido: true })
+    expect(dayMarks(day(12, 'manifestacion'), 28)).toEqual({ ovulation: false, fertile: true, libido: true })
+    expect(dayMarks(day(15, 'manifestacion'), 28)).toEqual({ ovulation: false, fertile: false, libido: true })
+    expect(dayMarks(day(9, 'poder1'), 28)).toEqual({ ovulation: false, fertile: false, libido: false })
   })
 })

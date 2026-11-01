@@ -8,8 +8,11 @@ import { PHASE_NAMES, type Contraception, type CycleStatus, type Period } from '
 import { daysBetween, toJsDate } from '../domain/dates'
 import { forecast, upcomingChanges } from '../domain/plan'
 import { TabBar } from '../components/TabBar'
+import type { BackTo } from './Aprender'
 import { PeriodSheet } from './PeriodSheet'
 import './Ciclo.css'
+
+const FROM_HOY: BackTo = { back: '/', backLabel: 'Hoy' }
 
 const dateLabel = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })
 const shortDate = new Intl.DateTimeFormat('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })
@@ -85,7 +88,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
       <div className="ciclo__body">
         <div className="ciclo__col">
           {/* The recharge has no card of its own in Aprender: it is the start of Poder 1. */}
-          <Link to={`/aprender/${phase}`} className="ciclo__hero" aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
+          <Link to={`/aprender/${phase}`} state={FROM_HOY} className="ciclo__hero" aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
             <div className="ciclo__hero-text">
               <span className="ciclo__phase">{phaseName}</span>
               <p className="ciclo__headline">{copy.headline}</p>
@@ -133,6 +136,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
                 <li key={c.date} data-phase={c.state === 'recarga' ? 'poder1' : c.state}>
                   <Link
                     to={`/aprender/${c.state === 'recarga' ? 'poder1' : c.state}`}
+                    state={FROM_HOY}
                     aria-label={`${c.state === 'recarga' ? 'Recarga' : PHASE_NAMES[c.state]}, desde el ${shortDate.format(toJsDate(c.date))}. Ver qué significa`}
                   >
                     <i aria-hidden="true" />

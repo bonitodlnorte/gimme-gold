@@ -61,6 +61,8 @@ export function ParejaScreen() {
 
   const status = partnerStatus(view, today())
   const copy = PARA_PAREJA[status.state]
+  // Peak libido, with no legend: whoever wants to get it, gets it. Not when phases are only orientative.
+  const chili = (state: string) => (state === 'manifestacion' && !status.orientative ? ' 🌶️🌶️🌶️' : '')
 
   return (
     <main className="screen ciclo pareja" data-phase={status.phase}>
@@ -73,7 +75,10 @@ export function ParejaScreen() {
         <div className="ciclo__col">
           <section className="ciclo__hero" aria-label={`Fase: ${PHASE_NAMES[status.phase]}`}>
             <div className="ciclo__hero-text">
-              <span className="ciclo__phase">{PHASE_NAMES[status.phase]}</span>
+              <span className="ciclo__phase">
+                {PHASE_NAMES[status.phase]}
+                {chili(status.state)}
+              </span>
               <p className="ciclo__headline">{copy.headline}</p>
             </div>
             {status.state !== 'codigo-rojo' && <Billy mood={MOODS[status.state]} size={96} />}
@@ -128,7 +133,10 @@ export function ParejaScreen() {
                     {whenText(seg)}
                     {seg.estimated && ' (aprox.)'}
                   </span>
-                  <span className="pareja__what">{PLANES_PAREJA[seg.state].titulo}</span>
+                  <span className="pareja__what">
+                    {PLANES_PAREJA[seg.state].titulo}
+                    {chili(seg.state)}
+                  </span>
                   <span className="pareja__ideas">{PLANES_PAREJA[seg.state].ideas.join(' · ')}</span>
                 </li>
               ))}
