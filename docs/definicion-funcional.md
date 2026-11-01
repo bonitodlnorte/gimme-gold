@@ -7,6 +7,8 @@
 
 Gimme Gold es una app para entender el propio ciclo menstrual según las cuatro fases de la Dra. Mindy Pelz, y para saber qué conviene hacer en cada momento: comida, ayuno, ejercicio, trabajo y vida social.
 
+**Lo que la hace distinta:** apps para registrar la regla hay millones, incluido el propio iPhone. Gimme Gold no compite ahí. Sirve para **entender qué pasa con tus hormonas en cada momento y planificarte con ello**: cuándo apretar, cuándo descansar, cuándo reflexionar, cuándo salir de fiesta y conectar, y si la regla te pillará en un viaje o una competición. Todo basado en la ciencia de una doctora y con humor. El registro de la regla es solo el medio.
+
 Tiene dos públicos:
 
 - **La usuaria**, que registra su ciclo y consulta en qué fase está y qué le viene.
@@ -33,13 +35,16 @@ Lo que la diferencia es el tono: **el humor es la base de la app**, no un adorno
 | D13 | **Acceso con código de 6 dígitos por email, Apple y Google.** Sin enlace mágico. | El código funciona igual en la web, en la pantalla de inicio y en la app nativa (ver §9). |
 | D14 | **La duración del ciclo es la mediana de los últimos 6 ciclos.** Si es nueva, la que ella indique, o 28 días. | Un ciclo raro no descoloca las fases (ver §5). |
 | D15 | **En la v1 solo se registra la regla y una nota libre.** | Síntomas y ánimo quedan para más adelante. Registro pasa a ser solo el historial de reglas (ver §4). |
-| D16 | **Dos pestañas: Ciclo · Aprender.** El historial de reglas se abre desde Ciclo. | Si más adelante se registran síntomas y ánimo, Registro puede volver como pestaña (ver §4). |
+| D16 | ~~Dos pestañas: Ciclo · Aprender.~~ Sustituida por D23. | |
 | D17 | **La mascota es Billy, una zarigüeya dramática.** Viene del chiste de que hay momentos del ciclo en los que lo mejor que puede hacer él es hacerse el muerto, como la zarigüeya. | Coach de supervivencia para él, cómplice para ella. Se combina con fotos reales de zarigüeyas (ver §7). |
 | D18 | **Alta inicial en cuatro pasos:** cuenta, última regla, duración del ciclo y anticonceptivos. | Las usuarias actuales importan sus datos y se saltan dos pasos (ver §6). |
 | D19 | **La v1 es para familia y amigos.** | Se pueden usar fotos sin licencia por ahora; antes de abrirla al público hay que resolverlo, igual que la revisión legal del RGPD. |
 | D20 | **Dirección visual: Gominola**, a tope. | Estilo cercano a Duolingo: blanco, colores saturados, botones con volumen, Nunito en negrita. Lienzo: https://claude.ai/artifact/Gv2z4bavNRCh7KBjktVfqS |
 | D21 | **Las fases se llaman Poder 1, Manifestación, Poder 2 y Mimos.** Cada una tiene su color: azul, amarillo, verde y rosa. | Mimos sustituye a *Nurture*. |
 | D22 | **Los emails salen de `billy.korokota.com` a través de Resend, región UE.** | No se usa el SMTP de Happyforce: es un proyecto personal y no debe compartir contrato ni reputación de envío con la empresa. Plantillas en `supabase/templates/`. |
+| D23 | **Tres pestañas: Hoy · Plan · Aprender.** Plan es un calendario para planificarse con el ciclo, el corazón de la app. | Hoy (antes Ciclo) muestra el día y «Lo que viene»; el historial se abre desde Hoy (ver §4). |
+| D24 | **El calendario de Plan mira 6 meses.** | El margen de la regla prevista crece con cada ciclo (raíz del número de ciclos). Más allá de 6 meses engaña más que ayuda. |
+| D25 | **La regla es recarga, no una desgracia.** | Billy nunca se lamenta ni llora con la regla: aparece en modo zen. El Billy triste queda para errores. |
 
 ## 3. Usuarios
 
@@ -59,13 +64,16 @@ Lo que la diferencia es el tono: **el humor es la base de la app**, no un adorno
 
 ## 4. Arquitectura de información
 
-**Pestañas (D16):**
+**Pestañas (D23):**
 
-1. **Ciclo.** Arriba, el día de hoy: fase, cómo te sientes probablemente y qué te conviene. Debajo, el ciclo proyectado hacia delante, mostrando la incertidumbre de la predicción. Desde aquí:
-   - Se puede preguntar al revés: "¿cuándo me conviene hacer X?"
+1. **Hoy.** El día de hoy: fase, cómo te sientes probablemente y qué te conviene, y «Lo que viene» (los próximos cambios de fase y la regla prevista). Desde aquí:
    - Hay un acceso directo para registrar la regla.
    - Se abre el **historial de reglas**. Es la única fuente de verdad: la fase actual se calcula a partir de él.
-2. **Aprender.** Las fases explicadas en profundidad.
+2. **Plan.** Calendario de 6 meses con las fases y la regla prevista, mostrando la incertidumbre (D24):
+   - **¿Cuándo me conviene…?** Eliges un objetivo (entrenar fuerte, competir, una conversación difícil, decidir, salir y conectar, descansar, un viaje sin regla) y marca los mejores días.
+   - **Tengo una fecha:** dice en qué fase caerá un día concreto, si es probable la regla y cómo llegar bien.
+   - Es una guía, no una norma: la evidencia dice que la fase influye poco en el rendimiento y varía mucho entre personas.
+3. **Aprender.** Las fases explicadas en profundidad, con lo que respalda la evidencia y lo que no.
 
 **Fuera de las pestañas:**
 
@@ -127,8 +135,8 @@ La ovulación se estima en el día **O = L − 14**, donde L es la duración del
 | Importar los datos del navegador de la app actual | Decidido |
 | Registrar el inicio de la regla | Decidido |
 | Ver la fase de hoy y sus recomendaciones | Decidido |
-| Ver el ciclo proyectado | Decidido |
-| Preguntar "¿cuándo me conviene X?" | Decidido |
+| Calendario de 6 meses para planificar (D23, D24) | Hecho |
+| Preguntar "¿cuándo me conviene X?" y "Tengo una fecha" | Hecho |
 | Ventana fértil estimada | Decidido (ver §8) |
 | Contenido para aprender sobre las fases | Decidido |
 | Vista de pareja con enlace revocable | Decidido |

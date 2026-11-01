@@ -2,14 +2,15 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Billy, moodFor } from '../components/Billy'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
-import { PHASE_NAMES, projectDays, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
+import { PHASE_NAMES, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
 import { daysBetween, toJsDate } from '../domain/dates'
+import { forecast, upcomingChanges } from '../domain/plan'
 import { TabBar } from '../components/TabBar'
 import { PeriodSheet } from './PeriodSheet'
 import './Ciclo.css'
 
 const dateLabel = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })
-const weekday = new Intl.DateTimeFormat('es-ES', { weekday: 'narrow' })
+const shortDate = new Intl.DateTimeFormat('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })
 
 function nextPeriodText(status: CycleStatus): string {
   const { expected, earliest, latest } = status.nextPeriod
@@ -47,7 +48,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
   }
   const onPeriod = phase === 'poder1' && status.periodOngoing
   const copy = PARA_ELLA[onPeriod ? 'regla' : phase]
-  const days = projectDays(status, 7)
+  const changes = upcomingChanges(forecast(status, periods, 60), 3)
 
   return (
     <main className="screen ciclo" data-phase={phase}>
@@ -116,26 +117,21 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
 
           <section>
             <div className="ciclo__days-head">
-              <h2 className="eyebrow">Próximos días</h2>
-              <Link to="/historial">Ver historial</Link>
+              <h2 className="eyebrow">Lo que viene</h2>
+              <Link to="/plan">Ver calendario</Link>
             </div>
-            <ol className="ciclo__days">
-              {days.map((day, i) => (
-                <li
-                  key={day.date}
-                  data-phase={day.phase}
-                  className={[i === 0 && 'is-today', day.uncertain && 'is-uncertain'].filter(Boolean).join(' ')}
-                  aria-label={`${dateLabel.format(toJsDate(day.date))}: día ${day.cycleDay}, ${PHASE_NAMES[day.phase]}${day.uncertain ? ', estimado' : ''}`}
-                >
-                  <span>
-                    {day.cycleDay}
-                    {day.uncertain && day.cycleDay <= 2 ? '?' : ''}
-                  </span>
-                  <small aria-hidden="true">{weekday.format(toJsDate(day.date)).toUpperCase()}</small>
+            <ol className="ciclo__next">
+              {changes.map((c) => (
+                <li key={c.date} data-phase={c.state === 'recarga' ? 'poder1' : c.state}>
+                  <i aria-hidden="true" />
+                  <span className="ciclo__next-name">{c.state === 'recarga' ? 'Recarga (regla)' : PHASE_NAMES[c.state]}</span>
+                  <span className="ciclo__next-date">{shortDate.format(toJsDate(c.date))}</span>
                 </li>
               ))}
             </ol>
-            <p className="ciclo__footnote">{nextPeriodText(status)}</p>
+            <p className="ciclo__footnote">
+              {nextPeriodText(status)} <Link to="/historial">Ver historial</Link>
+            </p>
           </section>
 
           <div className="ciclo__actions">

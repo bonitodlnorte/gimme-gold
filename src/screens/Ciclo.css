@@ -314,3 +314,46 @@
   font-weight: 900;
   text-decoration: none;
 }
+
+/* "Lo que viene": the next three phase changes. */
+.ciclo__next {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ciclo__next li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--ph-soft);
+  color: var(--ph-ink);
+  font-size: 15px;
+}
+
+.ciclo__next i {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--ph);
+}
+
+.ciclo__next-name {
+  flex: 1;
+  font-weight: 900;
+}
+
+.ciclo__next-date {
+  font-weight: 800;
+}
+
+.ciclo__footnote a {
+  font-weight: 800;
+  text-decoration: none;
+}

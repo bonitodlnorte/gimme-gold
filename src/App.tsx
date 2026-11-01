@@ -26,6 +26,7 @@ import { CicloScreen } from './screens/Ciclo'
 import { CompartirScreen } from './screens/Compartir'
 import { HistorialScreen } from './screens/Historial'
 import { LoginScreen } from './screens/Login'
+import { PlanScreen } from './screens/Plan'
 
 type UserData = { profile: Profile | null; periods: Period[] }
 
@@ -140,6 +141,7 @@ export function App() {
           />
         }
       />
+      <Route path="/plan" element={<PlanScreen status={status} periods={data.periods} />} />
       <Route path="/aprender" element={<AprenderScreen cycleLength={status.estimate.length} currentPhase={status.phase} />} />
       <Route path="/aprender/:tema" element={<FichaScreen cycleLength={status.estimate.length} currentPhase={status.phase} />} />
       <Route path="/compartir" element={<CompartirScreen userId={userId} />} />

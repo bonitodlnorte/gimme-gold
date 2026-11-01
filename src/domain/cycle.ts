@@ -142,6 +142,8 @@ export interface CycleStatus {
   periodOngoing: boolean
   /** She already logged the last day of the current period. */
   periodEndLogged: boolean
+  /** That last day, when logged. */
+  periodEnd: LocalDate | null
   /** null when the fertile window is not shown (hormonal contraception or late period). */
   fertile: boolean | null
   nextPeriod: { expected: LocalDate; earliest: LocalDate; latest: LocalDate }
@@ -184,6 +186,7 @@ export function cycleStatus(periods: Period[], settings: CycleSettings, on: Loca
     daysLate,
     periodOngoing,
     periodEndLogged: Boolean(current.end),
+    periodEnd: current.end ?? null,
     fertile,
     nextPeriod: { expected, earliest: addDays(expected, -margin), latest: addDays(expected, margin) },
     showWarning: settings.contraception === 'si' || estimate.irregular,
