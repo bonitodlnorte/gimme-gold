@@ -101,7 +101,7 @@ export function PeriodSheet({ mode, periods, initial, onSave, onDelete, onClose 
       <div className="psheet__head">
         {mode === 'ha-llegado' && (
           <div className="psheet__billy">
-            <Billy mood="zen" size={84} />
+            <Billy mood="meditando" size={84} />
           </div>
         )}
         <div>
