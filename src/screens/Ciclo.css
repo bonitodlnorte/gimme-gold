@@ -172,6 +172,51 @@
   font-size: 14px;
 }
 
+.ciclo__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ciclo__col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* On a phone the side column fills the screen so the button sits at the bottom, under the thumb. */
+.ciclo__col--side {
+  flex: 1;
+}
+
 .ciclo__actions {
   margin-top: auto;
+}
+
+@media (min-width: 600px) {
+  .ciclo__actions {
+    margin-top: 8px;
+  }
+}
+
+@media (min-width: 960px) {
+  .ciclo.screen {
+    max-width: 920px;
+  }
+
+  .ciclo__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .ciclo h1 {
+    font-size: 32px;
+  }
+
+  .ciclo__headline {
+    font-size: 32px;
+  }
 }

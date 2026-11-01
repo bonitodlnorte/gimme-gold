@@ -89,6 +89,24 @@ a {
   gap: 16px;
 }
 
+/* From tablet width up the screen becomes a card on a soft background instead of a stretched phone. */
+@media (min-width: 600px) {
+  body {
+    background: var(--surface-soft);
+  }
+
+  .screen {
+    max-width: 560px;
+    min-height: 0;
+    margin: 40px auto;
+    padding: 28px;
+    border: 2px solid var(--line);
+    border-bottom-width: 6px;
+    border-radius: 32px;
+    background: var(--surface);
+  }
+}
+
 .eyebrow {
   margin: 0;
   font-size: 14px;
@@ -113,6 +131,12 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   cursor: pointer;
+}
+
+@media (hover: hover) {
+  .btn:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
 }
 
 .btn:active {

@@ -36,69 +36,76 @@ export function CicloScreen({ status, contraception, onPeriodStarted, onPeriodEn
         </h1>
       </header>
 
-      <section className="ciclo__hero" aria-label={`Fase: ${PHASE_NAMES[phase]}`}>
-        <div className="ciclo__hero-text">
-          <span className="ciclo__phase">{PHASE_NAMES[phase]}</span>
-          <p className="ciclo__headline">{copy.headline}</p>
+      {/* Two columns on wide screens: how she is today, then what's next. */}
+      <div className="ciclo__body">
+        <div className="ciclo__col">
+          <section className="ciclo__hero" aria-label={`Fase: ${PHASE_NAMES[phase]}`}>
+            <div className="ciclo__hero-text">
+              <span className="ciclo__phase">{PHASE_NAMES[phase]}</span>
+              <p className="ciclo__headline">{copy.headline}</p>
+            </div>
+            <Billy mood={moodFor(phase, status.cycleDay)} size={96} />
+          </section>
+
+          <p className="ciclo__billy">
+            <span>Billy</span>
+            {copy.billy}
+          </p>
+
+          {status.fertile && (
+            <p className="ciclo__note ciclo__note--info">
+              <strong>Dato serio:</strong> {DATO_FERTIL}
+            </p>
+          )}
+          {status.showWarning && (
+            <p className="ciclo__note ciclo__note--warn">
+              {contraception === 'si' ? AVISO_ORIENTATIVO.anticonceptivos : AVISO_ORIENTATIVO.irregular}
+            </p>
+          )}
         </div>
-        <Billy mood={moodFor(phase, status.cycleDay)} size={96} />
-      </section>
 
-      <p className="ciclo__billy">
-        <span>Billy</span>
-        {copy.billy}
-      </p>
+        <div className="ciclo__col ciclo__col--side">
+          <section>
+            <h2 className="eyebrow">Hoy te viene bien</h2>
+            <ul className="ciclo__chips">
+              {copy.goodFor.map((item) => (
+                <li key={item} className="chip">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
 
-      {status.fertile && (
-        <p className="ciclo__note ciclo__note--info">
-          <strong>Dato serio:</strong> {DATO_FERTIL}
-        </p>
-      )}
-      {status.showWarning && (
-        <p className="ciclo__note ciclo__note--warn">
-          {contraception === 'si' ? AVISO_ORIENTATIVO.anticonceptivos : AVISO_ORIENTATIVO.irregular}
-        </p>
-      )}
+          <section>
+            <h2 className="eyebrow">Próximos días</h2>
+            <ol className="ciclo__days">
+              {days.map((day, i) => (
+                <li
+                  key={day.date}
+                  data-phase={day.phase}
+                  className={[i === 0 && 'is-today', day.uncertain && 'is-uncertain'].filter(Boolean).join(' ')}
+                  aria-label={`${dateLabel.format(toJsDate(day.date))}: día ${day.cycleDay}, ${PHASE_NAMES[day.phase]}${day.uncertain ? ', estimado' : ''}`}
+                >
+                  {day.cycleDay}
+                  {day.uncertain && day.cycleDay <= 2 ? '?' : ''}
+                </li>
+              ))}
+            </ol>
+            <p className="ciclo__footnote">{nextPeriodText(status)}</p>
+          </section>
 
-      <section>
-        <h2 className="eyebrow">Hoy te viene bien</h2>
-        <ul className="ciclo__chips">
-          {copy.goodFor.map((item) => (
-            <li key={item} className="chip">
-              {item}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2 className="eyebrow">Próximos días</h2>
-        <ol className="ciclo__days">
-          {days.map((day, i) => (
-            <li
-              key={day.date}
-              data-phase={day.phase}
-              className={[i === 0 && 'is-today', day.uncertain && 'is-uncertain'].filter(Boolean).join(' ')}
-              aria-label={`${dateLabel.format(toJsDate(day.date))}: día ${day.cycleDay}, ${PHASE_NAMES[day.phase]}${day.uncertain ? ', estimado' : ''}`}
-            >
-              {day.cycleDay}
-              {day.uncertain && day.cycleDay <= 2 ? '?' : ''}
-            </li>
-          ))}
-        </ol>
-        <p className="ciclo__footnote">{nextPeriodText(status)}</p>
-      </section>
-
-      <div className="ciclo__actions">
-        {status.periodOngoing ? (
-          <button type="button" className="btn btn--ghost" onClick={onPeriodEnded}>
-            Ya terminó la regla
-          </button>
-        ) : (
-          <button type="button" className="btn btn--period" onClick={onPeriodStarted}>
-            Me ha venido la regla
-          </button>
-        )}
+          <div className="ciclo__actions">
+            {status.periodOngoing ? (
+              <button type="button" className="btn btn--ghost" onClick={onPeriodEnded}>
+                Ya terminó la regla
+              </button>
+            ) : (
+              <button type="button" className="btn btn--period" onClick={onPeriodStarted}>
+                Me ha venido la regla
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </main>
   )
