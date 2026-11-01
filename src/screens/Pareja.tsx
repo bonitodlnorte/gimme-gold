@@ -25,7 +25,7 @@ function whenText(seg: PartnerSegment): string {
 
 const MOODS: Record<Exclude<PartnerState, 'codigo-rojo'>, BillyMood> = {
   regla: 'meditando',
-  poder1: 'orador',
+  poder1: 'pesas',
   manifestacion: 'bailando',
   poder2: 'artificiero',
   mimos: 'muerto',

@@ -13,7 +13,7 @@
 - **Propuesta:** Modo recarga activado. Tu cuerpo está haciendo limpieza general y eso es trabajo de élite. Hoy tu único objetivo es la manta. Al resto del mundo ya le he dicho que estás en una reunión muy importante contigo misma.
 - **Final:** Arranca un ciclo nuevo y tu cuerpo está en modo recarga. Eso merece trato VIP: manta, algo calentito y el móvil en silencio. Al resto del mundo ya le he dicho que estás en una reunión muy importante contigo misma.
 
-### 2. Poder 1 · Billy orador
+### 2. Poder 1 · Billy levantando pesas
 
 - **Actual:** Se abre la ventana de las conversaciones difíciles, y dura toda esta fase. Si tienes algo pendiente que hablar, este es el momento. Yo aprovecho para salir de debajo del sofá.
 - **Propuesta:** Vuelve el estrógeno y vuelves tú, en modo dragón. ¿Esa conversación que llevas semanas guardándote? Ahora: hoy argumentas como una abogada de serie americana. Yo voy saliendo de debajo del sofá… despacito.
@@ -47,7 +47,7 @@
 - **Propuesta:** Tranquilidad: esto no es una emergencia, es mantenimiento de alta tecnología. Tu misión hoy es ser un mueble útil. Un mueble que trae la manta, el ibuprofeno y la cena, y que no pregunta «¿qué te pasa?». Si dudas, hazte el muerto como yo, pero con la cena hecha.
 - **Final:** Empieza un ciclo nuevo y su cuerpo está en modo recarga. Hoy necesita espacio, calma y cero explicaciones. Tú haz lo que yo: hazte el muerto, pero un muerto útil que trae la manta, el ibuprofeno y la cena.
 
-### 7. Vuelve la energía (Poder 1) · Billy orador
+### 7. Vuelve la energía (Poder 1) · Billy levantando pesas
 
 - **Actual:** Se abre la ventana de las conversaciones pendientes. Si tienes algo que hablar, este es el momento: hoy te va a escuchar con calma. Yo aprovecho para salir de debajo del sofá. Por fin.
 - **Propuesta:** ¡Buenas noticias, superviviente! Se abre la ventana de las conversaciones pendientes: hoy te escucha con calma y hasta puede que te dé la razón (no te acostumbres). Si tienes algo que hablar, es ahora o dentro de tres semanas. Yo que tú, ahora.

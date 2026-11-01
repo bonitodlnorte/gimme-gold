@@ -36,23 +36,18 @@
   }
 }
 
-.billy-wave {
-  transform-origin: 37px 92px;
-  animation: billy-wave 1.8s ease-in-out infinite;
+.billy-lift {
+  animation: billy-lift 1.4s ease-in-out infinite;
 }
 
-@keyframes billy-wave {
+@keyframes billy-lift {
   0%,
   100% {
-    transform: rotate(-6deg);
+    transform: translateY(0);
   }
   50% {
-    transform: rotate(8deg);
+    transform: translateY(7px);
   }
-}
-
-.billy-waves {
-  animation: billy-twinkle 1.2s ease-out infinite;
 }
 
 .billy-dance {

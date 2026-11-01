@@ -12,7 +12,7 @@ export type BillyMood =
   | 'muerto'
   // One per phase (Hoy, pareja, Aprender). Animated, unless she asked for reduced motion.
   | 'meditando'
-  | 'orador'
+  | 'pesas'
   | 'bailando'
   | 'artificiero'
 
@@ -23,14 +23,14 @@ const LABELS: Record<BillyMood, string> = {
   desolado: 'Billy, desolado',
   muerto: 'Billy, haciéndose el muerto',
   meditando: 'Billy, meditando en modo recarga',
-  orador: 'Billy, dando un discurso',
+  pesas: 'Billy, levantando pesas',
   bailando: 'Billy, bailando en la tarima',
   artificiero: 'Billy, de artificiero, con muchísimo cuidado',
 }
 
 export function moodFor(phase: Phase, cycleDay: number): BillyMood {
   // The period is a recharge, not a tragedy: Billy meditates, never cries (desolado is for errors).
-  if (phase === 'poder1') return cycleDay <= 2 ? 'meditando' : 'orador'
+  if (phase === 'poder1') return cycleDay <= 2 ? 'meditando' : 'pesas'
   if (phase === 'manifestacion') return 'bailando'
   if (phase === 'poder2') return 'artificiero'
   return 'muerto'
@@ -195,35 +195,30 @@ function Meditating() {
   )
 }
 
-/** Poder 1: brilliant and eloquent, at the lectern with glasses and a microphone. */
-function Speaker() {
+/** Poder 1: the energy is back. Pressing a barbell overhead, sweatband on, teeth gritted. */
+function Lifting() {
   return (
     <>
-      <path d="M92 100 C112 104 114 82 102 76" fill="none" stroke={PINK} strokeWidth="7" strokeLinecap="round" />
-      <ellipse cx="60" cy="100" rx="30" ry="24" fill={GREY} />
-      <g className="billy-wave">
-        <path d="M37 92 L19 70" stroke={GREY} strokeWidth="9" strokeLinecap="round" />
-        <circle cx="18" cy="68" r="5.5" fill={PINK} />
+      <path d="M90 108 C110 112 112 92 100 86" fill="none" stroke={PINK} strokeWidth="7" strokeLinecap="round" />
+      <path d="M48 114 L41 127 M72 114 L79 127" stroke={GREY} strokeWidth="8" strokeLinecap="round" />
+      <ellipse cx="60" cy="102" rx="28" ry="20" fill={GREY} />
+      <g className="billy-lift">
+        <path d="M38 94 L27 24 M82 94 L93 24" stroke={GREY} strokeWidth="8" strokeLinecap="round" />
+        <path d="M4 20 H116" stroke={DARK} strokeWidth="4" strokeLinecap="round" />
+        <rect x="8" y="6" width="9" height="28" rx="3" fill="#6B2FD6" />
+        <rect x="18" y="10" width="5" height="20" rx="2" fill="#4E1FA3" />
+        <rect x="103" y="6" width="9" height="28" rx="3" fill="#6B2FD6" />
+        <rect x="97" y="10" width="5" height="20" rx="2" fill="#4E1FA3" />
+        <circle cx="27" cy="21" r="5" fill={PINK} />
+        <circle cx="93" cy="21" r="5" fill={PINK} />
       </g>
       <Head>
-        <circle cx="48" cy="58" r="4.5" fill={EYE} />
-        <circle cx="72" cy="58" r="4.5" fill={EYE} />
-        <circle cx="49.6" cy="56.4" r="1.5" fill="#fff" />
-        <circle cx="73.6" cy="56.4" r="1.5" fill="#fff" />
-        <circle cx="48" cy="58" r="9" fill="none" stroke={DARK} strokeWidth="2.5" />
-        <circle cx="72" cy="58" r="9" fill="none" stroke={DARK} strokeWidth="2.5" />
-        <path d="M57 57 h6" stroke={DARK} strokeWidth="2.5" />
-        <ellipse cx="60" cy="83" rx="5" ry="4" fill={EYE} />
+        <path d="M31 50 Q60 40 89 50 L88 57 Q60 47 32 57 Z" fill="#D92C6E" />
+        <path d="M43 61 l9 2.5 -9 2.5 M77 61 l-9 2.5 9 2.5" fill="none" stroke={EYE} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="51" y="79" width="18" height="7" rx="2" fill="#fff" stroke={EYE} strokeWidth="2" />
+        <path d="M57 79 v7 M63 79 v7" stroke={EYE} strokeWidth="1.5" />
       </Head>
-      <g className="billy-waves" fill="none" stroke="#6B2FD6" strokeWidth="2.2" strokeLinecap="round">
-        <path d="M82 76 q4 4 0 8" />
-        <path d="M87 72 q7 8 0 16" />
-      </g>
-      <path d="M72 96 L70 88" stroke={DARK} strokeWidth="2.5" strokeLinecap="round" />
-      <ellipse cx="69.5" cy="86" rx="3.5" ry="4.5" fill={DARK} />
-      <rect x="24" y="94" width="72" height="7" rx="3" fill="#4E1FA3" />
-      <path d="M28 101 L92 101 L86 130 L34 130 Z" fill="#6B2FD6" />
-      <circle cx="60" cy="115" r="6" fill="#FFC800" />
+      <path className="billy-sweat" d="M94 46 q-4 7 0 10 q4 -3 0 -10 z" fill="#1CB0F6" />
     </>
   )
 }
@@ -302,7 +297,7 @@ function BombSquad() {
   )
 }
 
-const POSES = { meditando: Meditating, orador: Speaker, bailando: Dancing, artificiero: BombSquad } as const
+const POSES = { meditando: Meditating, pesas: Lifting, bailando: Dancing, artificiero: BombSquad } as const
 
 function BillyBody({ mood }: { mood: Exclude<BillyMood, 'muerto'> }) {
   if (mood in POSES) {
