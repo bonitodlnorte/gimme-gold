@@ -11,17 +11,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Gimme Gold" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=2" />
     <script>
-      // On a partner link, install his page, not her app: a manifest whose start_url is his link
+      // On a partner link, install his page, not her app, with his own name and icon: a manifest whose start_url is his link
       // (served by the rewrite in vercel.json). Set before anything reads the manifest.
       ;(function () {
         var m = location.pathname.match(/^\/pareja\/([^/]+)/)
         if (!m) return
         document.querySelector('link[rel="manifest"]').href = '/pareja/' + m[1] + '/manifest.webmanifest'
         document.querySelector('meta[name="apple-mobile-web-app-title"]').content = 'Billy'
+        // His icon is Billy playing dead; hers is Billy with a heart.
+        document.querySelector('link[rel="apple-touch-icon"]').href = '/icons/pareja-apple-touch-icon.png'
       })()
     </script>
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=2" />
     <meta name="theme-color" content="#FFFFFF" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
