@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Billy } from '../components/Billy'
+import { MonthPicker } from '../components/MonthPicker'
 import { AVISO_NO_ANTICONCEPTIVO } from '../content/fases'
 import { DEFAULT_LENGTH, MAX_LENGTH, MIN_LENGTH, sortedStarts, type Contraception } from '../domain/cycle'
-import { addDays, daysBetween, toJsDate, today, type LocalDate } from '../domain/dates'
+import { addDays, toJsDate, today, type LocalDate } from '../domain/dates'
 import type { LegacyData } from '../domain/legacyImport'
 import type { Onboarding } from '../data/store'
 import './Alta.css'
@@ -211,75 +212,5 @@ export function AltaScreen({ legacy, onDone }: Props) {
         </button>
       </div>
     </main>
-  )
-}
-
-const WEEKDAYS = ['L', 'M', 'X', 'J', 'V', 'S', 'D']
-/** How far back the last period can be picked. Older than this, she is already late or irregular. */
-const MAX_MONTHS_BACK = 3
-
-function monthIndex(date: LocalDate): number {
-  return Number(date.slice(0, 4)) * 12 + Number(date.slice(5, 7)) - 1
-}
-
-function monthStart(index: number): LocalDate {
-  return `${Math.floor(index / 12)}-${String((index % 12) + 1).padStart(2, '0')}-01`
-}
-
-function MonthPicker({ value, onChange }: { value: LocalDate | null; onChange: (date: LocalDate) => void }) {
-  const now = today()
-  const [month, setMonth] = useState(monthIndex(value ?? now))
-  const monthsBack = monthIndex(now) - month
-
-  // Hoy/Ayer can pick a day in another month: show it.
-  useEffect(() => {
-    if (value) setMonth(monthIndex(value))
-  }, [value])
-
-  const cells = useMemo(() => {
-    const start = monthStart(month)
-    const offset = (toJsDate(start).getDay() + 6) % 7 // Monday first
-    const daysInMonth = daysBetween(start, monthStart(month + 1))
-    return [...Array<null>(offset).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => addDays(start, i))]
-  }, [month])
-
-  const shift = (by: number) => setMonth(month + by)
-
-  return (
-    <div className="month">
-      <div className="month__head">
-        <button type="button" aria-label="Mes anterior" disabled={monthsBack >= MAX_MONTHS_BACK} onClick={() => shift(-1)}>
-          ‹
-        </button>
-        <span className="month__name">{monthYear.format(toJsDate(monthStart(month)))}</span>
-        <button type="button" aria-label="Mes siguiente" disabled={monthsBack <= 0} onClick={() => shift(1)}>
-          ›
-        </button>
-      </div>
-      <div className="month__grid">
-        {WEEKDAYS.map((d) => (
-          <span key={d} className="month__wd">
-            {d}
-          </span>
-        ))}
-        {cells.map((date, i) =>
-          date ? (
-            <button
-              key={date}
-              type="button"
-              className={`month__day${date === value ? ' is-on' : ''}${date === now ? ' is-today' : ''}`}
-              disabled={date > now}
-              aria-pressed={date === value}
-              aria-label={shortDate.format(toJsDate(date))}
-              onClick={() => onChange(date)}
-            >
-              {Number(date.slice(8))}
-            </button>
-          ) : (
-            <span key={`empty-${i}`} />
-          ),
-        )}
-      </div>
-    </div>
   )
 }

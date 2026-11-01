@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Billy, moodFor } from '../components/Billy'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
-import { PHASE_NAMES, projectDays, type Contraception, type CycleStatus } from '../domain/cycle'
+import { PHASE_NAMES, projectDays, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
 import { daysBetween, toJsDate } from '../domain/dates'
+import { PeriodSheet } from './PeriodSheet'
 import './Ciclo.css'
 
 const dateLabel = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })
@@ -19,13 +21,15 @@ function nextPeriodText(status: CycleStatus): string {
 interface Props {
   status: CycleStatus
   contraception: Contraception
-  onPeriodStarted: () => Promise<void>
+  periods: Period[]
+  onPeriodStarted: (period: Period) => Promise<void>
   onPeriodEnded: () => Promise<void>
   /** Temporary until the Ajustes screen exists. */
   onSignOut: () => void
 }
 
-export function CicloScreen({ status, contraception, onPeriodStarted, onPeriodEnded, onSignOut }: Props) {
+export function CicloScreen({ status, contraception, periods, onPeriodStarted, onPeriodEnded, onSignOut }: Props) {
+  const [registering, setRegistering] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(false)
   const phase = status.phase
@@ -94,7 +98,10 @@ export function CicloScreen({ status, contraception, onPeriodStarted, onPeriodEn
           </section>
 
           <section>
-            <h2 className="eyebrow">Próximos días</h2>
+            <div className="ciclo__days-head">
+              <h2 className="eyebrow">Próximos días</h2>
+              <Link to="/historial">Ver historial</Link>
+            </div>
             <ol className="ciclo__days">
               {days.map((day, i) => (
                 <li
@@ -118,7 +125,7 @@ export function CicloScreen({ status, contraception, onPeriodStarted, onPeriodEn
                 Ya terminó la regla
               </button>
             ) : (
-              <button type="button" className="btn btn--period" disabled={busy} onClick={() => run(onPeriodStarted)}>
+              <button type="button" className="btn btn--period" disabled={busy} onClick={() => setRegistering(true)}>
                 Me ha venido la regla
               </button>
             )}
@@ -126,6 +133,9 @@ export function CicloScreen({ status, contraception, onPeriodStarted, onPeriodEn
               Cerrar sesión
             </button>
           </div>
+          {registering && (
+            <PeriodSheet mode="ha-llegado" periods={periods} onSave={onPeriodStarted} onClose={() => setRegistering(false)} />
+          )}
         </div>
       </div>
     </main>

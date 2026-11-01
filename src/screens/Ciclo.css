@@ -244,3 +244,15 @@
   font-weight: 800;
   cursor: pointer;
 }
+
+.ciclo__days-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.ciclo__days-head a {
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}

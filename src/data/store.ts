@@ -62,14 +62,22 @@ export async function saveOnboarding(userId: string, { settings, periods, import
   if (saved.error) throw saved.error
 }
 
-export async function addPeriod(userId: string, start: LocalDate): Promise<void> {
-  const { error } = await supabase
-    .from('periods')
-    .upsert({ user_id: userId, start_date: start }, { onConflict: 'user_id,start_date', ignoreDuplicates: true })
+function periodRow(period: Period) {
+  return { start_date: period.start, end_date: period.end ?? null, note: period.note?.trim() || null }
+}
+
+export async function addPeriod(userId: string, period: Period): Promise<void> {
+  const { error } = await supabase.from('periods').insert({ user_id: userId, ...periodRow(period) })
   if (error) throw error
 }
 
-export async function endPeriod(userId: string, start: LocalDate, end: LocalDate): Promise<void> {
-  const { error } = await supabase.from('periods').update({ end_date: end }).eq('user_id', userId).eq('start_date', start)
+/** Periods are identified by their start date, which is unique per user. */
+export async function updatePeriod(userId: string, start: LocalDate, period: Period): Promise<void> {
+  const { error } = await supabase.from('periods').update(periodRow(period)).eq('user_id', userId).eq('start_date', start)
+  if (error) throw error
+}
+
+export async function deletePeriod(userId: string, start: LocalDate): Promise<void> {
+  const { error } = await supabase.from('periods').delete().eq('user_id', userId).eq('start_date', start)
   if (error) throw error
 }

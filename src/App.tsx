@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { Billy } from './components/Billy'
-import { addPeriod, endPeriod, loadPeriods, loadProfile, saveOnboarding, type Onboarding, type Profile } from './data/store'
+import {
+  addPeriod,
+  deletePeriod,
+  loadPeriods,
+  loadProfile,
+  saveOnboarding,
+  updatePeriod,
+  type Onboarding,
+  type Profile,
+} from './data/store'
 import { cycleStatus, type Period } from './domain/cycle'
 import { today } from './domain/dates'
 import { readLegacyStorage } from './domain/legacyImport'
 import { supabase } from './lib/supabase'
 import { AltaScreen } from './screens/Alta'
 import { CicloScreen } from './screens/Ciclo'
+import { HistorialScreen } from './screens/Historial'
 import { LoginScreen } from './screens/Login'
 
 type UserData = { profile: Profile | null; periods: Period[] }
@@ -87,19 +98,44 @@ export function App() {
     )
   }
 
+  // Every change goes to Supabase and then reloads, so the cycle is always computed from what is saved.
+  const saved =
+    <A extends unknown[]>(action: (...args: A) => Promise<void>) =>
+    async (...args: A) => {
+      await action(...args)
+      await reload()
+    }
+  const current = data.periods.find((p) => p.start === status.cycleStart) ?? { start: status.cycleStart }
+
   return (
-    <CicloScreen
-      status={status}
-      contraception={data.profile.contraception}
-      onPeriodStarted={async () => {
-        await addPeriod(userId, today())
-        await reload()
-      }}
-      onPeriodEnded={async () => {
-        await endPeriod(userId, status.cycleStart, today())
-        await reload()
-      }}
-      onSignOut={() => void supabase.auth.signOut()}
-    />
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <CicloScreen
+            status={status}
+            contraception={data.profile.contraception}
+            periods={data.periods}
+            onPeriodStarted={saved((period) => addPeriod(userId, period))}
+            onPeriodEnded={saved(() => updatePeriod(userId, status.cycleStart, { ...current, end: today() }))}
+            onSignOut={() => void supabase.auth.signOut()}
+          />
+        }
+      />
+      <Route
+        path="/historial"
+        element={
+          <HistorialScreen
+            periods={data.periods}
+            estimate={status.estimate}
+            periodOngoing={status.periodOngoing}
+            onAdd={saved((period) => addPeriod(userId, period))}
+            onUpdate={saved((start, period) => updatePeriod(userId, start, period))}
+            onDelete={saved((start) => deletePeriod(userId, start))}
+          />
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
