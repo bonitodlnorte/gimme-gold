@@ -199,7 +199,10 @@ export function AltaScreen({ legacy, onDone }: Props) {
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
         <span>
           Acepto que Gimme Gold guarde mis datos de salud (fechas de regla y notas) para calcular mi ciclo. Puedo borrarlos
-          cuando quiera. {AVISO_NO_ANTICONCEPTIVO}
+          cuando quiera. {AVISO_NO_ANTICONCEPTIVO} {/* New tab, so the steps she has filled in are not lost. */}
+          <a href="/privacidad" target="_blank" rel="noreferrer">
+            Cómo cuidamos tus datos
+          </a>
         </span>
       </label>
       {error && <p className="alta__error">{error}</p>}

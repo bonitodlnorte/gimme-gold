@@ -236,7 +236,9 @@ export function AjustesScreen({ email, settings, periods, estimate, onSaveSettin
         </button>
       </section>
 
-      <p className="alta__fine">{AVISO_NO_ANTICONCEPTIVO} Tus datos de salud se guardan en la UE y solo los ves tú.</p>
+      <p className="alta__fine">
+        {AVISO_NO_ANTICONCEPTIVO} Tus datos de salud se guardan en la UE y solo los ves tú. <Link to="/privacidad">Privacidad</Link>
+      </p>
     </main>
   )
 }

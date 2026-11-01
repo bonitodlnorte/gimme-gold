@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { Billy } from '../components/Billy'
+import { Mudanza } from '../components/Mudanza'
 import { supabase } from '../lib/supabase'
 import { Progress } from './Alta'
 import './Alta.css'
@@ -46,6 +48,7 @@ export function LoginScreen() {
   return (
     <main className="screen alta">
       <Progress step={1} />
+      <Mudanza signedIn={false} />
 
       <div className="alta__billy">
         <Billy mood="normal" size={120} />
@@ -108,7 +111,7 @@ export function LoginScreen() {
       )}
 
       <p className="alta__fine">
-        <strong>Tus datos de salud se guardan en la UE y solo los ves tú.</strong>
+        <strong>Tus datos de salud se guardan en la UE y solo los ves tú.</strong> <Link to="/privacidad">Privacidad</Link>
       </p>
     </main>
   )

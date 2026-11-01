@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Billy, moodFor } from '../components/Billy'
+import { Mudanza } from '../components/Mudanza'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
 import { PHASE_NAMES, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
 import { daysBetween, toJsDate } from '../domain/dates'
@@ -74,6 +75,8 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
           </svg>
         </Link>
       </header>
+
+      <Mudanza signedIn />
 
       {/* Two columns on wide screens: how she is today, then what's next. */}
       <div className="ciclo__body">
