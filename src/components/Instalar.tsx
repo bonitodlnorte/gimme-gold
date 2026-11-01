@@ -20,11 +20,24 @@ window.addEventListener('beforeinstallprompt', (e) => {
   listeners.forEach((fn) => fn())
 })
 
-const DISMISSED_KEY = 'gimmeGold_instalarCerrado'
+const DISMISSED_KEY = { ella: 'gimmeGold_instalarCerrado', pareja: 'gimmeGold_instalarParejaCerrado' }
 
-function dismissed(): boolean {
+const COPY = {
+  ella: {
+    title: 'Llévame en el bolsillo',
+    text: 'Añádeme a tu pantalla de inicio y me abrirás como una app. Prometo no hacerme el muerto cuando me necesites.',
+  },
+  pareja: {
+    title: 'Que no te pille desprevenido',
+    text: 'Guárdame en la pantalla de inicio y tendrás el parte a un toque. El código rojo no avisa dos veces.',
+  },
+}
+
+type Variant = keyof typeof COPY
+
+function dismissed(variant: Variant): boolean {
   try {
-    return window.localStorage.getItem(DISMISSED_KEY) === '1'
+    return window.localStorage.getItem(DISMISSED_KEY[variant]) === '1'
   } catch {
     return false
   }
@@ -54,9 +67,10 @@ function ShareIcon() {
   )
 }
 
-export function Instalar() {
+/** For the partner, the tip skips the sign-in note: his page needs no account. */
+export function Instalar({ variant = 'ella' }: { variant?: Variant }) {
   const os = platform()
-  const [hidden, setHidden] = useState(() => !os || installed() || dismissed() || onOldHost())
+  const [hidden, setHidden] = useState(() => !os || installed() || dismissed(variant) || onOldHost())
   const [canPrompt, setCanPrompt] = useState(deferredPrompt !== null)
 
   useEffect(() => {
@@ -74,7 +88,7 @@ export function Instalar() {
 
   function close() {
     try {
-      window.localStorage.setItem(DISMISSED_KEY, '1')
+      window.localStorage.setItem(DISMISSED_KEY[variant], '1')
     } catch {
       // Private mode: it will show again next time, which is fine.
     }
@@ -91,8 +105,8 @@ export function Instalar() {
     <aside className="mudanza instalar" aria-label="Añadir Gimme Gold a la pantalla de inicio">
       <Billy mood="fiesta" size={56} />
       <div>
-        <p className="mudanza__title">Llévame en el bolsillo</p>
-        <p>Añádeme a tu pantalla de inicio y me abrirás como una app. Prometo no hacerme el muerto cuando me necesites.</p>
+        <p className="mudanza__title">{COPY[variant].title}</p>
+        <p>{COPY[variant].text}</p>
         {os === 'ios' && (
           <>
             <ol className="instalar__steps">
@@ -103,7 +117,9 @@ export function Instalar() {
                 Elige <strong>«Añadir a pantalla de inicio»</strong>.
               </li>
             </ol>
-            <p className="instalar__note">Al abrirme desde ahí tendrás que entrar una vez más con tu email: el iPhone guarda la sesión aparte.</p>
+            {variant === 'ella' && (
+              <p className="instalar__note">Al abrirme desde ahí tendrás que entrar una vez más con tu email: el iPhone guarda la sesión aparte.</p>
+            )}
           </>
         )}
         {os === 'android' &&

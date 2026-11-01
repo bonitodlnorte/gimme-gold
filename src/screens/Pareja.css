@@ -84,11 +84,21 @@
   color: var(--ph-ink);
 }
 
+/* Period days look as they do in her Plan: white with a pink edge, not Poder 1 blue. */
+.pareja__ahead li[data-state='regla'] {
+  border: 2px solid var(--period-strong);
+  border-left-width: 6px;
+  background: var(--surface);
+  color: var(--period-strong-edge);
+}
+
 .pareja__when {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+}
+
+.pareja__more {
+  margin-top: 10px;
 }
 
 .pareja__what {

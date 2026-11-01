@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
+import { Instalar } from '../components/Instalar'
 import { useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
 import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, PARA_PAREJA, PLANES_PAREJA, avisoProximo } from '../content/pareja'
-import { PHASE_NAMES } from '../domain/cycle'
 import { toJsDate, today } from '../domain/dates'
 import { partnerStatus, type PartnerSegment, type PartnerState } from '../domain/partner'
 import { fetchPartnerView, type PartnerView } from '../data/store'
@@ -13,14 +13,48 @@ import './Pareja.css'
 
 const dateLabel = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })
 const dayMonth = new Intl.DateTimeFormat('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })
+const dayOnly = new Intl.DateTimeFormat('es-ES', { day: 'numeric' })
+const dayShortMonth = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short' })
 
+const fmt = (f: Intl.DateTimeFormat, d: string) => f.format(toJsDate(d)).replace('.', '')
+
+/** Short ranges that scan in a list: "6–9 nov", "30 nov – 3 dic", "jue 5 nov". */
 function whenText(seg: PartnerSegment): string {
-  const from = dayMonth.format(toJsDate(seg.from))
-  const to = dayMonth.format(toJsDate(seg.to))
-  if (seg.current) return `Hasta el ${to}`
-  if (seg.open) return `Desde el ${from}`
-  if (seg.from === seg.to) return `El ${from}`
-  return `Del ${from} al ${to}`
+  if (seg.open) return `Desde el ${fmt(dayMonth, seg.from)}`
+  if (seg.from === seg.to) return fmt(dayMonth, seg.from)
+  if (seg.from.slice(0, 7) === seg.to.slice(0, 7)) return `${fmt(dayOnly, seg.from)}–${fmt(dayShortMonth, seg.to)}`
+  return `${fmt(dayShortMonth, seg.from)} – ${fmt(dayShortMonth, seg.to)}`
+}
+
+/** On his page, installing should open his link, not her sign-in: point the manifest here. */
+function usePartnerManifest() {
+  useEffect(() => {
+    const link = document.querySelector<HTMLLinkElement>('link[rel="manifest"]')
+    if (!link) return
+    const original = link.href
+    const origin = window.location.origin
+    const manifest = {
+      name: 'Billy · Pareja',
+      short_name: 'Billy',
+      start_url: window.location.pathname,
+      scope: window.location.pathname,
+      display: 'standalone',
+      background_color: '#FFFFFF',
+      theme_color: '#FFFFFF',
+      lang: 'es',
+      icons: [
+        { src: `${origin}/icons/icon-192.png?v=2`, sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: `${origin}/icons/icon-512.png?v=2`, sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: `${origin}/icons/maskable-512.png?v=2`, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+      ],
+    }
+    const url = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' }))
+    link.href = url
+    return () => {
+      link.href = original
+      URL.revokeObjectURL(url)
+    }
+  }, [])
 }
 
 // What Billy suggests he does, not how she is (her avatars come from moodFor).
@@ -36,6 +70,8 @@ export function ParejaScreen() {
   const { token = '' } = useParams()
   const [view, setView] = useState<PartnerView | null | undefined>(undefined)
   const [failed, setFailed] = useState(false)
+  const [showAll, setShowAll] = useState(false)
+  usePartnerManifest()
 
   useEffect(() => {
     fetchPartnerView(token).then(setView, () => setFailed(true))
@@ -61,6 +97,13 @@ export function ParejaScreen() {
 
   const status = partnerStatus(view, today())
   const copy = PARA_PAREJA[status.state]
+  // How long today's moment lasts: more useful to him than Pelz's phase name, and never "Poder 1" on period days.
+  const now = status.ahead[0]?.current ? status.ahead[0] : null
+  const lasts = now ? `Hasta el ${fmt(dayMonth, now.to)}` : 'Hoy es el último día'
+  // The moment he is in is already at the top; the list starts with what changes next, one cycle ahead.
+  const coming = status.ahead.filter((seg) => !seg.current)
+  const cycleEnd = coming.findIndex((seg, i) => i > 0 && seg.state === coming[0]?.state)
+  const shown = showAll || cycleEnd < 0 ? coming : coming.slice(0, cycleEnd)
   // On fire, with no legend: whoever wants to get it, gets it. Not when phases are only orientative.
   const fire = (state: string) => (state === 'manifestacion' && !status.orientative ? ' 🔥' : '')
 
@@ -73,10 +116,10 @@ export function ParejaScreen() {
 
       <div className="ciclo__body">
         <div className="ciclo__col">
-          <section className="ciclo__hero" aria-label={`Fase: ${PHASE_NAMES[status.phase]}`}>
+          <section className="ciclo__hero" aria-label={`Hoy: ${copy.headline}. ${lasts}`}>
             <div className="ciclo__hero-text">
               <span className="ciclo__phase">
-                {PHASE_NAMES[status.phase]}
+                {lasts}
                 {fire(status.state)}
               </span>
               <p className="ciclo__headline">{copy.headline}</p>
@@ -127,8 +170,8 @@ export function ParejaScreen() {
             <h2 className="eyebrow">Lo que viene</h2>
             <p className="pareja__lead">Para que lo planees con tiempo.</p>
             <ol className="pareja__ahead">
-              {status.ahead.map((seg) => (
-                <li key={seg.from} data-phase={seg.phase}>
+              {shown.map((seg) => (
+                <li key={seg.from} data-phase={seg.phase} data-state={seg.state}>
                   <span className="pareja__when">
                     {whenText(seg)}
                     {seg.estimated && ' (aprox.)'}
@@ -141,7 +184,14 @@ export function ParejaScreen() {
                 </li>
               ))}
             </ol>
+            {shown.length < coming.length && (
+              <button type="button" className="btn btn--ghost pareja__more" onClick={() => setShowAll(true)}>
+                Ver las semanas siguientes
+              </button>
+            )}
           </section>
+
+          <Instalar variant="pareja" />
 
           <p className="pareja__footer">Te lo ha compartido ella desde Gimme Gold, y puede retirarlo cuando quiera.</p>
         </div>
