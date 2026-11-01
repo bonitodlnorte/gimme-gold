@@ -21,6 +21,7 @@ import { readLegacyStorage } from './domain/legacyImport'
 import { supabase } from './lib/supabase'
 import { AjustesScreen } from './screens/Ajustes'
 import { AltaScreen } from './screens/Alta'
+import { AprenderScreen, FichaScreen } from './screens/Aprender'
 import { CicloScreen } from './screens/Ciclo'
 import { CompartirScreen } from './screens/Compartir'
 import { HistorialScreen } from './screens/Historial'
@@ -139,6 +140,8 @@ export function App() {
           />
         }
       />
+      <Route path="/aprender" element={<AprenderScreen cycleLength={status.estimate.length} currentPhase={status.phase} />} />
+      <Route path="/aprender/:tema" element={<FichaScreen cycleLength={status.estimate.length} currentPhase={status.phase} />} />
       <Route path="/compartir" element={<CompartirScreen userId={userId} />} />
       <Route
         path="/ajustes"

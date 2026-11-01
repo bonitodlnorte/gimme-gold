@@ -15,7 +15,7 @@ const dateLabel = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'nume
 const weekday = new Intl.DateTimeFormat('es-ES', { weekday: 'narrow' })
 
 const MOODS: Record<Exclude<PartnerState, 'codigo-rojo'>, BillyMood> = {
-  regla: 'desolado',
+  regla: 'zen',
   poder1: 'normal',
   manifestacion: 'fiesta',
   poder2: 'alerta',

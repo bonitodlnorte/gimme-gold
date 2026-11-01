@@ -11,9 +11,9 @@ export interface PartnerCopy {
 
 export const PARA_PAREJA: Record<PartnerState, PartnerCopy> = {
   regla: {
-    headline: 'Ha llegado la regla',
+    headline: 'Día de recarga',
     billy:
-      'Abandonen el barco. Es broma: no abandones nada, que es justo lo que no toca. Hoy tiene poca energía y cero ganas de explicaciones. Tú haz lo que yo: hazte el muerto, pero un muerto útil que trae la manta, el ibuprofeno y la cena.',
+      'Empieza un ciclo nuevo y su cuerpo está en modo recarga. Hoy necesita espacio, calma y cero explicaciones. Tú haz lo que yo: hazte el muerto, pero un muerto útil que trae la manta, el ibuprofeno y la cena.',
     goodPlan: ['Cena en casa', 'Tú cocinas', 'Manta y series'],
     avoid: ['Planes con mucha gente', 'Temas pendientes', 'Preguntar «¿estás bien?» cada hora'],
   },

@@ -94,19 +94,19 @@ export function PeriodSheet({ mode, periods, initial, onSave, onDelete, onClose 
     }
   }
 
-  const title = mode === 'ha-llegado' ? 'Ha llegado' : mode === 'nueva' ? 'Apuntar una regla' : 'Editar regla'
+  const title = mode === 'ha-llegado' ? '¡Ciclo nuevo!' : mode === 'nueva' ? 'Apuntar una regla' : 'Editar regla'
 
   return (
     <Sheet label={title} onClose={onClose}>
       <div className="psheet__head">
         {mode === 'ha-llegado' && (
           <div className="psheet__billy">
-            <Billy mood="desolado" size={84} />
+            <Billy mood="zen" size={84} />
           </div>
         )}
         <div>
           <h2>{title}</h2>
-          {mode === 'ha-llegado' && <p>Lo siento muchísimo. Estoy desolado.</p>}
+          {mode === 'ha-llegado' && <p>Modo recarga activado. Apúntalo y a la manta.</p>}
           {mode === 'nueva' && <p>Para que no se me escape ninguna.</p>}
         </div>
       </div>

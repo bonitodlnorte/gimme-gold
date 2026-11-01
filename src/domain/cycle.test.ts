@@ -5,9 +5,11 @@ import {
   estimateCycleLength,
   fertileWindow,
   phaseForCycleDay,
+  phaseRanges,
   projectDays,
   type CycleSettings,
   type Period,
+  type Phase,
 } from './cycle'
 import { addDays } from './dates'
 
@@ -145,5 +147,17 @@ describe('projectDays', () => {
     expect(days.map((d) => d.cycleDay)).toEqual([25, 26, 27, 28, 1, 2, 3])
     expect(days[4]).toMatchObject({ phase: 'poder1', uncertain: true })
     expect(days[0]!.uncertain).toBe(false)
+  })
+})
+
+describe('phaseRanges', () => {
+  it('matches the day-by-day phases', () => {
+    for (const length of [24, 28, 35]) {
+      const expected = ranges(length)
+      const actual = phaseRanges(length)
+      for (const phase of Object.keys(expected) as Phase[]) {
+        expect([actual[phase].from, actual[phase].to]).toEqual(expected[phase])
+      }
+    }
   })
 })

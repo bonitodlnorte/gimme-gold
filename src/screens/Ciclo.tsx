@@ -4,6 +4,7 @@ import { Billy, moodFor } from '../components/Billy'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
 import { PHASE_NAMES, projectDays, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
 import { daysBetween, toJsDate } from '../domain/dates'
+import { TabBar } from '../components/TabBar'
 import { PeriodSheet } from './PeriodSheet'
 import './Ciclo.css'
 
@@ -81,7 +82,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
               <span className="ciclo__phase">{PHASE_NAMES[phase]}</span>
               <p className="ciclo__headline">{copy.headline}</p>
             </div>
-            <Billy mood={onPeriod ? 'desolado' : moodFor(phase, status.cycleDay)} size={96} />
+            <Billy mood={onPeriod ? 'zen' : moodFor(phase, status.cycleDay)} size={96} />
           </section>
 
           <p className="ciclo__billy">
@@ -156,6 +157,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
           )}
         </div>
       </div>
+      <TabBar />
     </main>
   )
 }

@@ -114,6 +114,17 @@ export function phaseForCycleDay(day: number, length: number): Phase {
   return 'mimos'
 }
 
+/** First and last cycle day of each phase for a cycle of the given length. */
+export function phaseRanges(length: number): Record<Phase, { from: number; to: number }> {
+  const o = ovulationDay(length)
+  return {
+    poder1: { from: 1, to: o - 4 },
+    manifestacion: { from: o - 3, to: o + 1 },
+    poder2: { from: o + 2, to: o + 5 },
+    mimos: { from: o + 6, to: clampLength(length) },
+  }
+}
+
 /** Cycle days of the estimated fertile window: five days before ovulation to the day after. */
 export function fertileWindow(length: number): { from: number; to: number } {
   const o = ovulationDay(length)

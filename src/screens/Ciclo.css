@@ -8,9 +8,8 @@
   text-transform: uppercase;
 }
 
-/* The phase drives every phase-coloured element below. */
-.ciclo[data-phase='poder1'],
-.ciclo__days [data-phase='poder1'] {
+/* data-phase drives every phase-coloured element inside it, on any screen. */
+[data-phase='poder1'] {
   --ph: var(--poder1);
   --ph-edge: var(--poder1-edge);
   --ph-soft: var(--poder1-soft);
@@ -18,8 +17,7 @@
   --ph-on: var(--poder1-on);
 }
 
-.ciclo[data-phase='manifestacion'],
-.ciclo__days [data-phase='manifestacion'] {
+[data-phase='manifestacion'] {
   --ph: var(--manifestacion);
   --ph-edge: var(--manifestacion-edge);
   --ph-soft: var(--manifestacion-soft);
@@ -27,8 +25,7 @@
   --ph-on: var(--manifestacion-on);
 }
 
-.ciclo[data-phase='poder2'],
-.ciclo__days [data-phase='poder2'] {
+[data-phase='poder2'] {
   --ph: var(--poder2);
   --ph-edge: var(--poder2-edge);
   --ph-soft: var(--poder2-soft);
@@ -36,8 +33,7 @@
   --ph-on: var(--poder2-on);
 }
 
-.ciclo[data-phase='mimos'],
-.ciclo__days [data-phase='mimos'] {
+[data-phase='mimos'] {
   --ph: var(--mimos);
   --ph-edge: var(--mimos-edge);
   --ph-soft: var(--mimos-soft);

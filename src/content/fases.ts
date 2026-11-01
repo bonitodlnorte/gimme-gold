@@ -12,15 +12,15 @@ export interface PhaseCopy {
 /** Her view. The first days of Poder 1 have their own copy (the period has just arrived). */
 export const PARA_ELLA: Record<Phase | 'regla', PhaseCopy> = {
   regla: {
-    headline: 'Ha llegado la regla',
+    headline: 'Modo recarga',
     billy:
-      'Lo siento muchísimo, estoy desolado. Hoy no le debes nada a nadie: manta, algo calentito y el móvil en silencio. A él ya le he dicho que se haga el muerto.',
+      'Arranca un ciclo nuevo y tu cuerpo está en modo recarga. Eso merece trato VIP: manta, algo calentito y el móvil en silencio. En casa ya están avisados: hoy no se negocia nada.',
     goodFor: ['Manta', 'Algo calentito', 'Paseo suave'],
   },
   poder1: {
     headline: 'Vuelve la energía',
     billy:
-      'Se abre la ventana de las conversaciones difíciles, y dura hasta el día 12. Si tienes algo pendiente que hablar, este es el momento. Yo aprovecho para salir de debajo del sofá.',
+      'Se abre la ventana de las conversaciones difíciles, y dura toda esta fase. Si tienes algo pendiente que hablar, este es el momento. Yo aprovecho para salir de debajo del sofá.',
     goodFor: ['Conversaciones pendientes', 'Entreno fuerte', 'Planes con gente'],
   },
   manifestacion: {
@@ -46,7 +46,7 @@ export const DATO_FERTIL = 'Estás en tu ventana fértil. Si no buscas embarazo,
 
 export const AVISO_ORIENTATIVO = {
   anticonceptivos:
-    'Con anticonceptivos hormonales no hay ovulación natural. Las fases son una orientación: puede que no reflejen lo que sientes.',
+    'Con la mayoría de anticonceptivos hormonales no hay ovulación natural. Las fases son una orientación: puede que no reflejen lo que sientes.',
   irregular: 'Tus ciclos varían bastante, así que las fases y la próxima regla son una estimación con mucho margen.',
 }
 

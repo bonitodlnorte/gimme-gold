@@ -191,8 +191,8 @@ export function AltaScreen({ legacy, onDone }: Props) {
       </div>
       {contraception === 'si' && (
         <p className="alta__warn">
-          <strong>Ojo:</strong> con anticonceptivos hormonales no hay ovulación natural. Te enseñaré las fases igualmente, pero
-          como orientación: puede que no reflejen lo que sientes. Y no verás ventana fértil.
+          <strong>Ojo:</strong> con la mayoría de anticonceptivos hormonales no hay ovulación natural. Te enseñaré las fases
+          igualmente, pero como orientación: puede que no reflejen lo que sientes. Y no verás ventana fértil.
         </p>
       )}
       <label className="consent">

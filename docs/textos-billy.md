@@ -20,8 +20,10 @@ Plan de hoy: manta, series y lo que ella elija. Si quieres sumar puntos, algo de
 
 ## Para ella
 
-**Día 1 · Power 1**
-Ha llegado. Lo siento muchísimo, estoy desolado. Hoy no le debes nada a nadie: manta, algo calentito y el móvil en silencio. A él ya le he dicho que se haga el muerto.
+**Día 1 · Power 1 · «Modo recarga»**
+Arranca un ciclo nuevo y tu cuerpo está en modo recarga. Eso merece trato VIP: manta, algo calentito y el móvil en silencio. En casa ya están avisados: hoy no se negocia nada.
+
+> La regla no es una desgracia, es la recarga del ciclo: Billy no se lamenta ni llora con ella. Aparece en modo zen, con manta y taza.
 
 **Día 13 · Manifestation**
 Estás en tu mejor momento y yo me desmayo de la emoción. Aprovecha para lanzar eso que llevas semanas rumiando.

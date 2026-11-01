@@ -14,11 +14,11 @@
 
 Uno por fase, más los dos primeros días de regla, que tienen texto propio. El último tramo de Mimos tiene una variante de cuenta atrás.
 
-### Ha llegado la regla · días 1–2
+### Día de recarga · días 1–2
 
-**Titular:** Ha llegado la regla
+**Titular:** Día de recarga
 
-**Billy:** Abandonen el barco. Es broma: no abandones nada, que es justo lo que no toca. Hoy tiene poca energía y cero ganas de explicaciones. Tú haz lo que yo: hazte el muerto, pero un muerto útil que trae la manta, el ibuprofeno y la cena.
+**Billy (en modo zen):** Empieza un ciclo nuevo y su cuerpo está en modo recarga. Hoy necesita espacio, calma y cero explicaciones. Tú haz lo que yo: hazte el muerto, pero un muerto útil que trae la manta, el ibuprofeno y la cena.
 
 **Buen plan:** Cena en casa · Tú cocinas · Manta y series
 
@@ -94,5 +94,5 @@ Cuando las fases son solo orientativas, la pareja ve:
 ## Decisiones
 
 - **Retraso de la regla:** la pareja no lo ve. Mientras dura, la vista se queda en «Código rojo» sin contar días. Un retraso puede ser un embarazo y es ella quien decide cuándo contarlo.
-- **Días de regla:** «Ha llegado la regla» se muestra los días 1–2, como recomienda Pelz para dar espacio. Desde el día 3, Poder 1.
+- **Días de regla:** «Día de recarga» se muestra los días 1–2, como recomienda Pelz para dar espacio. Desde el día 3, Poder 1.
 - **Nombre:** la vista dice «ella», sin nombre. No hay que pedir nada al crear el enlace.

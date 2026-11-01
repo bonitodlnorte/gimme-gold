@@ -2,10 +2,11 @@
 
 import type { Phase } from '../domain/cycle'
 
-export type BillyMood = 'normal' | 'fiesta' | 'alerta' | 'desolado' | 'muerto'
+export type BillyMood = 'normal' | 'zen' | 'fiesta' | 'alerta' | 'desolado' | 'muerto'
 
 const LABELS: Record<BillyMood, string> = {
   normal: 'Billy',
+  zen: 'Billy, en modo recarga',
   fiesta: 'Billy, de fiesta',
   alerta: 'Billy, en alerta',
   desolado: 'Billy, desolado',
@@ -13,7 +14,8 @@ const LABELS: Record<BillyMood, string> = {
 }
 
 export function moodFor(phase: Phase, cycleDay: number): BillyMood {
-  if (phase === 'poder1') return cycleDay <= 2 ? 'desolado' : 'normal'
+  // The period is a recharge, not a tragedy: Billy is calm, never sad (desolado is for errors).
+  if (phase === 'poder1') return cycleDay <= 2 ? 'zen' : 'normal'
   if (phase === 'manifestacion') return 'fiesta'
   if (phase === 'poder2') return 'alerta'
   return 'muerto'
@@ -45,6 +47,16 @@ function Sitting({ mood }: { mood: Exclude<BillyMood, 'muerto'> }) {
           <circle cx={x} cy={earY} r="6" fill={PINK} />
         </g>
       ))}
+      {mood === 'zen' && (
+        <>
+          {/* Blanket over the shoulders and a mug of something warm. */}
+          <path d="M24 96 Q60 72 96 96 L94 120 Q60 128 26 120 Z" fill="#FFDCE9" stroke={PINK} strokeWidth="3" strokeLinejoin="round" />
+          <path d="M40 104 v14 M60 98 v24 M80 104 v14" stroke={PINK} strokeWidth="2" strokeLinecap="round" />
+          <rect x="70" y="100" width="22" height="19" rx="4" fill="#fff" stroke={DARK} strokeWidth="2.5" />
+          <path d="M92 104 q7 0 7 5.5 q0 5.5 -7 5.5" fill="none" stroke={DARK} strokeWidth="2.5" />
+          <path d="M77 96 q-3 -4 0 -8 q3 -4 0 -8 M85 96 q-3 -4 0 -8 q3 -4 0 -8" fill="none" stroke="#B9BEC5" strokeWidth="2.2" strokeLinecap="round" />
+        </>
+      )}
       <ellipse cx="60" cy={mood === 'desolado' ? 64 : 62} rx="30" ry="27" fill={FACE} />
 
       {mood === 'normal' && (
@@ -54,6 +66,13 @@ function Sitting({ mood }: { mood: Exclude<BillyMood, 'muerto'> }) {
           <circle cx="49.8" cy="55.2" r="1.8" fill="#fff" />
           <circle cx="73.8" cy="55.2" r="1.8" fill="#fff" />
           <path d="M53 80 q7 6 14 0" fill="none" stroke={EYE} strokeWidth="2.6" strokeLinecap="round" />
+        </>
+      )}
+      {mood === 'zen' && (
+        <>
+          <path d="M42 58 q6 3.5 12 0" fill="none" stroke={EYE} strokeWidth="3.2" strokeLinecap="round" />
+          <path d="M66 58 q6 3.5 12 0" fill="none" stroke={EYE} strokeWidth="3.2" strokeLinecap="round" />
+          <path d="M54 80 q6 5 12 0" fill="none" stroke={EYE} strokeWidth="2.6" strokeLinecap="round" />
         </>
       )}
       {mood === 'fiesta' && (
@@ -84,7 +103,7 @@ function Sitting({ mood }: { mood: Exclude<BillyMood, 'muerto'> }) {
           <path d="M52 86 q8 -6 16 0" fill="none" stroke={EYE} strokeWidth="2.6" strokeLinecap="round" />
         </>
       )}
-      {(mood === 'normal' || mood === 'fiesta') && (
+      {(mood === 'normal' || mood === 'zen' || mood === 'fiesta') && (
         <>
           <circle cx="40" cy="70" r="4.5" fill="#F7C3CE" />
           <circle cx="80" cy="70" r="4.5" fill="#F7C3CE" />
