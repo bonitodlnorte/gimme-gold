@@ -1,0 +1,45 @@
+.pareja__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.pareja__photo {
+  margin: 0;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  border-bottom-width: 5px;
+  border-radius: var(--radius-lg);
+}
+
+.pareja__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.pareja__photo figcaption {
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.chip.pareja__yes {
+  border-color: var(--go);
+  background: var(--poder2-soft);
+  color: var(--poder2-ink);
+}
+
+.chip.pareja__no {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.pareja__footer {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  text-align: center;
+}

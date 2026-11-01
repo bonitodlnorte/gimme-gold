@@ -18,6 +18,7 @@ import { readLegacyStorage } from './domain/legacyImport'
 import { supabase } from './lib/supabase'
 import { AltaScreen } from './screens/Alta'
 import { CicloScreen } from './screens/Ciclo'
+import { CompartirScreen } from './screens/Compartir'
 import { HistorialScreen } from './screens/Historial'
 import { LoginScreen } from './screens/Login'
 
@@ -135,6 +136,7 @@ export function App() {
           />
         }
       />
+      <Route path="/compartir" element={<CompartirScreen userId={userId} />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

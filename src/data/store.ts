@@ -81,3 +81,66 @@ export async function deletePeriod(userId: string, start: LocalDate): Promise<vo
   const { error } = await supabase.from('periods').delete().eq('user_id', userId).eq('start_date', start)
   if (error) throw error
 }
+
+// Partner links (D10). Only the SHA-256 of the token is stored; the token travels in the link.
+
+function randomToken(): string {
+  const bytes = crypto.getRandomValues(new Uint8Array(24))
+  return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+}
+
+async function sha256Hex(text: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text))
+  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+export interface PartnerLink {
+  expiresAt: string
+}
+
+export async function loadPartnerLink(userId: string): Promise<PartnerLink | null> {
+  const { data, error } = await supabase
+    .from('partner_links')
+    .select('expires_at')
+    .eq('user_id', userId)
+    .is('revoked_at', null)
+    .gt('expires_at', new Date().toISOString())
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (error) throw error
+  return data ? { expiresAt: data.expires_at } : null
+}
+
+export async function revokePartnerLinks(userId: string): Promise<void> {
+  const { error } = await supabase
+    .from('partner_links')
+    .update({ revoked_at: new Date().toISOString() })
+    .eq('user_id', userId)
+    .is('revoked_at', null)
+  if (error) throw error
+}
+
+/** Creates a new link and revokes the previous one, so only one works at a time. Returns the token. */
+export async function createPartnerLink(userId: string): Promise<string> {
+  await revokePartnerLinks(userId)
+  const token = randomToken()
+  const { error } = await supabase.from('partner_links').insert({ user_id: userId, token_hash: await sha256Hex(token) })
+  if (error) throw error
+  return token
+}
+
+export interface PartnerView {
+  cycleStart: LocalDate
+  cycleLength: number
+  orientative: boolean
+}
+
+/** What a partner link may see, or null when the link is unknown, revoked or expired. */
+export async function fetchPartnerView(token: string): Promise<PartnerView | null> {
+  const { data, error } = await supabase.rpc('partner_view', { token })
+  if (error) throw error
+  const row = Array.isArray(data) ? data[0] : null
+  if (!row) return null
+  return { cycleStart: row.cycle_start, cycleLength: row.cycle_length, orientative: row.orientative }
+}
