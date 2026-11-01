@@ -264,11 +264,14 @@
   margin-left: -12px;
 }
 
-/* Ovulation, fertile and libido emojis under the number, where the drop goes (they never share a day). */
+/* The fire emoji under the number, where the drop goes (they never share a day). */
 .plan__marks {
   position: absolute;
   bottom: 2px;
   font-size: 13px;
   line-height: 1;
-  letter-spacing: -2px;
+}
+
+.plan__legend .plan__legend-fire {
+  color: var(--ink);
 }

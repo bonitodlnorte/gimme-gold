@@ -7,7 +7,7 @@ import { PARA_ELLA } from '../content/fases'
 import { AVISO_FERTIL_PLAN, AVISO_PLAN, AVISO_RETRASO, CONSEJO_FECHA, OBJETIVOS, STATE_NAMES } from '../content/plan'
 import type { Contraception, CycleStatus, Period } from '../domain/cycle'
 import { addDays, toJsDate, type LocalDate } from '../domain/dates'
-import { HORIZON_DAYS, dayMarks, forecast, goalWindows, suits, type DayMarks, type ForecastDay, type GoalId } from '../domain/plan'
+import { HORIZON_DAYS, forecast, goalWindows, onFire, suits, type ForecastDay, type GoalId } from '../domain/plan'
 import type { BackTo } from './Aprender'
 import './Alta.css'
 import './Ciclo.css'
@@ -38,12 +38,6 @@ function showsDrop(day: ForecastDay): boolean {
   return day.period === 'en_curso' || day.period === 'probable'
 }
 
-const NO_MARKS: DayMarks = { ovulation: false, fertile: false, libido: false }
-
-function marksText(m: DayMarks): string {
-  return [m.libido && 'libido a tope', m.fertile && 'muy fértil', m.ovulation && 'ovulación estimada'].filter(Boolean).join(', ')
-}
-
 interface Props {
   status: CycleStatus
   periods: Period[]
@@ -57,8 +51,8 @@ export function PlanScreen({ status, periods, contraception }: Props) {
   const [pickDate, setPickDate] = useState(false)
   const [picked, setPicked] = useState('')
   // No ovulation with hormonal contraception, and while the period is late the dates are only a guess.
-  const showMarks = contraception !== 'si' && !fc.late
-  const marksFor = (day: ForecastDay) => (showMarks ? dayMarks(day, fc.cycleLength) : NO_MARKS)
+  const showFire = contraception !== 'si' && !fc.late
+  const fireFor = (day: ForecastDay) => showFire && onFire(day)
 
   const byDate = useMemo(() => new Map(fc.days.map((d) => [d.date, d])), [fc])
   const months = useMemo(() => {
@@ -160,13 +154,7 @@ export function PlanScreen({ status, periods, contraception }: Props) {
           <i className="plan__drop" />
           Regla
         </span>
-        {showMarks && (
-          <>
-            <span>🌶️ Libido a tope</span>
-            <span>🍼 Más fértil</span>
-            <span>🥚 Ovulación</span>
-          </>
-        )}
+        {showFire && <span className="plan__legend-fire">🔥 On fire: cerca de la ovulación, libido y fertilidad a tope</span>}
         {objetivo && (
           <>
             <span className="plan__legend-goal">
@@ -194,8 +182,7 @@ export function PlanScreen({ status, periods, contraception }: Props) {
               if (!date) return <span key={`e${i}`} />
               const day = byDate.get(date)!
               const good = goal ? suits(day, goal, fc.cycleLength) : null
-              const marks = marksFor(day)
-              const extra = marksText(marks)
+              const fire = fireFor(day)
               return (
                 <button
                   key={date}
@@ -210,7 +197,7 @@ export function PlanScreen({ status, periods, contraception }: Props) {
                   ]
                     .filter(Boolean)
                     .join(' ')}
-                  aria-label={`${longDate.format(toJsDate(date))}: ${STATE_NAMES[day.state]}${showsDrop(day) ? `, ${PERIOD_TEXT[day.period!].toLowerCase()}` : ''}${extra ? `, ${extra}` : ''}${good ? ', buen día' : ''}`}
+                  aria-label={`${longDate.format(toJsDate(date))}: ${STATE_NAMES[day.state]}${showsDrop(day) ? `, ${PERIOD_TEXT[day.period!].toLowerCase()}` : ''}${fire ? ', on fire: libido y fertilidad a tope' : ''}${good ? ', buen día' : ''}`}
                   onClick={() => setOpen({ day, planned: false })}
                 >
                   {good && (
@@ -220,11 +207,9 @@ export function PlanScreen({ status, periods, contraception }: Props) {
                   )}
                   {Number(date.slice(8))}
                   {showsDrop(day) && <i className="plan__drop" />}
-                  {(marks.libido || marks.fertile || marks.ovulation) && (
+                  {fire && (
                     <span className="plan__marks" aria-hidden="true">
-                      {marks.libido && '🌶️'}
-                      {marks.fertile && '🍼'}
-                      {marks.ovulation && '🥚'}
+                      🔥
                     </span>
                   )}
                 </button>
@@ -270,7 +255,7 @@ export function PlanScreen({ status, periods, contraception }: Props) {
       )}
 
       {open && (
-        <DaySheet day={open.day} planned={open.planned} cycleLength={fc.cycleLength} marks={marksFor(open.day)} onClose={() => setOpen(null)} />
+        <DaySheet day={open.day} planned={open.planned} cycleLength={fc.cycleLength} fire={fireFor(open.day)} onClose={() => setOpen(null)} />
       )}
     </main>
   )
@@ -280,13 +265,13 @@ function DaySheet({
   day,
   planned,
   cycleLength,
-  marks,
+  fire,
   onClose,
 }: {
   day: ForecastDay
   planned: boolean
   cycleLength: number
-  marks: DayMarks
+  fire: boolean
   onClose: () => void
 }) {
   const goodFor = OBJETIVOS.filter((o) => suits(day, o.id, cycleLength))
@@ -301,10 +286,9 @@ function DaySheet({
         </h2>
         <p className="plan__sheet-text">{summary}</p>
         {day.period && <p className="plan__period">{PERIOD_TEXT[day.period]}</p>}
-        {marks.libido && <p className="plan__sheet-text">🌶️ Días de libido a tope: el estrógeno y la testosterona están en lo más alto.</p>}
-        {(marks.fertile || marks.ovulation) && (
+        {fire && (
           <p className="ciclo__note ciclo__note--info">
-            {marks.ovulation ? '🥚 Ovulación estimada.' : '🍼 De los días más fértiles.'} {AVISO_FERTIL_PLAN}
+            🔥 On fire: estás cerca de la ovulación, con la libido y la fertilidad a tope. {AVISO_FERTIL_PLAN}
           </p>
         )}
         {day.confidence === 'baja' && <p className="plan__sheet-text">Queda lejos: tómatelo como una idea, no como una cita.</p>}

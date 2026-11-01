@@ -45,7 +45,7 @@ Lo que la diferencia es el tono: **el humor es la base de la app**, no un adorno
 | D23 | **Tres pestañas: Hoy · Plan · Aprender.** Plan es un calendario para planificarse con el ciclo, el corazón de la app. | Hoy (antes Ciclo) muestra el día y «Lo que viene»; el historial se abre desde Hoy (ver §4). |
 | D24 | **El calendario de Plan mira 6 meses.** | El margen de la regla prevista crece con cada ciclo (raíz del número de ciclos). Más allá de 6 meses engaña más que ayuda. |
 | D25 | **La regla es recarga, no una desgracia.** | Billy nunca se lamenta ni llora con la regla: aparece en modo zen. El Billy triste queda para errores. |
-| D26 | **El Plan marca libido, días más fértiles y ovulación (🌶️ 🍼 🥚); la pareja solo ve las guindillas.** | Son estimaciones: nunca con anticonceptivos hormonales ni con la regla retrasada, y al pulsar un día fértil se avisa de que no sirven como método anticonceptivo. En la vista de pareja las 🌶️ van sin leyenda y se ocultan si las fases son orientativas. |
+| D26 | **El Plan marca con 🔥 los días «on fire»: cerca de la ovulación, libido y fertilidad a tope (toda Manifestación). La pareja ve el mismo 🔥, sin leyenda.** | Un solo emoji en vez de libido, días fértiles y ovulación por separado, que casi coinciden. Es una estimación: nunca con anticonceptivos hormonales ni con la regla retrasada, y al pulsar un día 🔥 se avisa de que no sirve como método anticonceptivo. En la vista de pareja se oculta si las fases son orientativas. |
 
 ## 3. Usuarios
 

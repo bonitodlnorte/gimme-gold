@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { cycleStatus, type CycleSettings, type Period } from './cycle'
 import { addDays } from './dates'
-import { dayMarks, forecast, goalWindows, typicalPeriodDays, upcomingChanges, type ForecastDay } from './plan'
+import { forecast, goalWindows, typicalPeriodDays, upcomingChanges, onFire, type ForecastDay } from './plan'
 
 const settings: CycleSettings = { declaredLength: null, contraception: 'no' }
 // Three regular 28-day cycles; the current one started on 1 Oct.
@@ -63,7 +63,7 @@ describe('typicalPeriodDays', () => {
   })
 })
 
-describe('dayMarks', () => {
+describe('onFire', () => {
   const day = (cycleDay: number, phase: ForecastDay['phase']): ForecastDay => ({
     date: '2026-11-01',
     cycleIndex: 0,
@@ -74,10 +74,10 @@ describe('dayMarks', () => {
     confidence: 'alta',
   })
 
-  it('marks ovulation at L−14, the two days before as most fertile, and Manifestación as peak libido', () => {
-    expect(dayMarks(day(14, 'manifestacion'), 28)).toEqual({ ovulation: true, fertile: false, libido: true })
-    expect(dayMarks(day(12, 'manifestacion'), 28)).toEqual({ ovulation: false, fertile: true, libido: true })
-    expect(dayMarks(day(15, 'manifestacion'), 28)).toEqual({ ovulation: false, fertile: false, libido: true })
-    expect(dayMarks(day(9, 'poder1'), 28)).toEqual({ ovulation: false, fertile: false, libido: false })
+  it('covers Manifestación, the days around ovulation', () => {
+    expect(onFire(day(12, 'manifestacion'))).toBe(true)
+    expect(onFire(day(14, 'manifestacion'))).toBe(true)
+    expect(onFire(day(9, 'poder1'))).toBe(false)
+    expect(onFire(day(17, 'poder2'))).toBe(false)
   })
 })
