@@ -51,14 +51,14 @@ export function LoginScreen() {
       <Mudanza signedIn={false} />
 
       <div className="alta__billy">
-        <Billy mood="normal" size={120} />
+        <Billy mood={sentTo ? 'normal' : 'muerto'} size={120} />
         <p className="alta__bubble">
           {sentTo ? (
             <>
               Te he mandado un código a <strong>{sentTo}</strong>. Míralo, que no muerde.
             </>
           ) : (
-            'Hola, soy Billy. Me hago el muerto profesionalmente. Te voy a ayudar a entender tu ciclo y a que en casa también lo entiendan.'
+            'Hola, soy Billy, zarigüeya y experto mundial en hacerme el muerto: cuando la cosa se pone fea, me tumbo patas arriba y aquí no ha pasado nada. Te voy a ayudar a entender tu ciclo y a que en casa también lo entiendan… y sepan cuándo hacerse el muerto como yo.'
           )}
         </p>
       </div>
