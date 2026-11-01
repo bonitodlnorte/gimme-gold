@@ -1,40 +1,105 @@
-import { useMemo, useState } from 'react'
-import { cycleStatus, type CycleSettings, type Period } from './domain/cycle'
-import { addDays, today } from './domain/dates'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { Session } from '@supabase/supabase-js'
+import { Billy } from './components/Billy'
+import { addPeriod, endPeriod, loadPeriods, loadProfile, saveOnboarding, type Onboarding, type Profile } from './data/store'
+import { cycleStatus, type Period } from './domain/cycle'
+import { today } from './domain/dates'
 import { readLegacyStorage } from './domain/legacyImport'
+import { supabase } from './lib/supabase'
+import { AltaScreen } from './screens/Alta'
 import { CicloScreen } from './screens/Ciclo'
+import { LoginScreen } from './screens/Login'
 
-// Temporary until the Supabase account and the onboarding flow exist: the cycle comes from
-// the old app's data in this browser, or from a sample, and changes live only in memory.
-function initialData(): { periods: Period[]; settings: CycleSettings } {
-  const legacy = readLegacyStorage(window.localStorage)
-  if (legacy && legacy.periods.length > 0) {
-    return { periods: legacy.periods, settings: { declaredLength: legacy.declaredLength, contraception: 'no' } }
-  }
-  const start = addDays(today(), -12)
-  return {
-    periods: [{ start: addDays(start, -56) }, { start: addDays(start, -28) }, { start }],
-    settings: { declaredLength: null, contraception: 'no' },
-  }
+type UserData = { profile: Profile | null; periods: Period[] }
+
+function Waiting({ text }: { text: string }) {
+  return (
+    <main className="screen waiting">
+      <Billy mood="muerto" size={120} />
+      <p>{text}</p>
+    </main>
+  )
 }
 
 export function App() {
-  const [{ periods, settings }, setData] = useState(initialData)
-  const status = useMemo(() => cycleStatus(periods, settings, today()), [periods, settings])
+  // undefined while Supabase restores the session from this browser.
+  const [session, setSession] = useState<Session | null | undefined>(undefined)
+  const [data, setData] = useState<UserData | null>(null)
+  const [failed, setFailed] = useState(false)
+  const userId = session?.user.id
 
-  if (!status) return null
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => setSession(next))
+    return () => sub.subscription.unsubscribe()
+  }, [])
+
+  const reload = useCallback(async () => {
+    if (!userId) return setData(null)
+    try {
+      const [profile, periods] = await Promise.all([loadProfile(userId), loadPeriods(userId)])
+      setData({ profile, periods })
+      setFailed(false)
+    } catch {
+      setFailed(true)
+    }
+  }, [userId])
+
+  useEffect(() => {
+    setData(null)
+    void reload()
+  }, [reload])
+
+  const legacy = useMemo(() => {
+    const found = readLegacyStorage(window.localStorage)
+    return found && found.periods.length > 0 ? found : null
+  }, [])
+
+  const status = useMemo(
+    () => (data?.profile ? cycleStatus(data.periods, data.profile, today()) : null),
+    [data],
+  )
+
+  if (session === undefined) return <Waiting text="Despertando a Billy…" />
+  if (!session || !userId) return <LoginScreen />
+  if (failed) {
+    return (
+      <main className="screen waiting">
+        <Billy mood="desolado" size={120} />
+        <p>No consigo traer tus datos. ¿Tienes conexión?</p>
+        <button type="button" className="btn btn--go" onClick={() => void reload()}>
+          Reintentar
+        </button>
+      </main>
+    )
+  }
+  if (!data) return <Waiting text="Cargando tu ciclo…" />
+
+  if (!data.profile || !status) {
+    return (
+      <AltaScreen
+        legacy={data.profile ? null : legacy}
+        onDone={async (onboarding: Onboarding) => {
+          await saveOnboarding(userId, onboarding)
+          await reload()
+        }}
+      />
+    )
+  }
 
   return (
     <CicloScreen
       status={status}
-      contraception={settings.contraception}
-      onPeriodStarted={() => setData((d) => ({ ...d, periods: [...d.periods, { start: today() }] }))}
-      onPeriodEnded={() =>
-        setData((d) => ({
-          ...d,
-          periods: d.periods.map((p) => (p.start === status.cycleStart ? { ...p, end: today() } : p)),
-        }))
-      }
+      contraception={data.profile.contraception}
+      onPeriodStarted={async () => {
+        await addPeriod(userId, today())
+        await reload()
+      }}
+      onPeriodEnded={async () => {
+        await endPeriod(userId, status.cycleStart, today())
+        await reload()
+      }}
+      onSignOut={() => void supabase.auth.signOut()}
     />
   )
 }

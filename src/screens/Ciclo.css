@@ -220,3 +220,27 @@
     font-size: 32px;
   }
 }
+
+.ciclo__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ciclo__error {
+  margin: 0;
+  color: var(--mimos-ink);
+  font-size: 15px;
+  text-align: center;
+}
+
+.ciclo__signout {
+  align-self: center;
+  padding: 8px;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}

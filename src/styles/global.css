@@ -181,3 +181,10 @@ a {
   outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
+
+.waiting {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 17px;
+}

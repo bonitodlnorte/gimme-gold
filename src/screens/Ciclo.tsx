@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Billy, moodFor } from '../components/Billy'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
 import { PHASE_NAMES, projectDays, type Contraception, type CycleStatus } from '../domain/cycle'
@@ -18,12 +19,28 @@ function nextPeriodText(status: CycleStatus): string {
 interface Props {
   status: CycleStatus
   contraception: Contraception
-  onPeriodStarted: () => void
-  onPeriodEnded: () => void
+  onPeriodStarted: () => Promise<void>
+  onPeriodEnded: () => Promise<void>
+  /** Temporary until the Ajustes screen exists. */
+  onSignOut: () => void
 }
 
-export function CicloScreen({ status, contraception, onPeriodStarted, onPeriodEnded }: Props) {
+export function CicloScreen({ status, contraception, onPeriodStarted, onPeriodEnded, onSignOut }: Props) {
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState(false)
   const phase = status.phase
+
+  async function run(action: () => Promise<void>) {
+    setBusy(true)
+    setError(false)
+    try {
+      await action()
+    } catch {
+      setError(true)
+    } finally {
+      setBusy(false)
+    }
+  }
   const copy = PARA_ELLA[phase === 'poder1' && status.periodOngoing ? 'regla' : phase]
   const days = projectDays(status, 7)
 
@@ -95,15 +112,19 @@ export function CicloScreen({ status, contraception, onPeriodStarted, onPeriodEn
           </section>
 
           <div className="ciclo__actions">
+            {error && <p className="ciclo__error">No se ha guardado. Prueba otra vez.</p>}
             {status.periodOngoing ? (
-              <button type="button" className="btn btn--ghost" onClick={onPeriodEnded}>
+              <button type="button" className="btn btn--ghost" disabled={busy} onClick={() => run(onPeriodEnded)}>
                 Ya terminó la regla
               </button>
             ) : (
-              <button type="button" className="btn btn--period" onClick={onPeriodStarted}>
+              <button type="button" className="btn btn--period" disabled={busy} onClick={() => run(onPeriodStarted)}>
                 Me ha venido la regla
               </button>
             )}
+            <button type="button" className="ciclo__signout" onClick={onSignOut}>
+              Cerrar sesión
+            </button>
           </div>
         </div>
       </div>

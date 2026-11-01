@@ -87,9 +87,9 @@ begin
     return;
   end if;
 
-  select array_agg(len) into lengths
+  select array_agg(len order by i) into lengths
   from (
-    select starts[i] - starts[i + 1] as len
+    select i, starts[i] - starts[i + 1] as len
     from generate_subscripts(starts, 1) as i
     where i < array_length(starts, 1)
   ) d
