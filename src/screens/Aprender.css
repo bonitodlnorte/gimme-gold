@@ -1,0 +1,164 @@
+.aprender__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.aprender__lead {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.aprender__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Rows are pressable, so they get the raised edge (see global.css). */
+.aprender__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 12px 10px 12px 14px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.aprender__item:active {
+  border-bottom-width: 2px;
+  transform: translateY(2px);
+}
+
+.aprender__num {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--ph);
+  color: var(--ph-on);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.aprender__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.aprender__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.aprender__here {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--ph-soft);
+  color: var(--ph-ink);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.aprender__days {
+  color: var(--ph-ink);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.aprender__summary {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.aprender__chevron {
+  flex: none;
+  color: var(--ink-soft);
+}
+
+.aprender__play {
+  flex: none;
+  color: var(--mimos);
+}
+
+.aprender__block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aprender__p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.aprender__tips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.aprender__tips div {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--ph-soft);
+  color: var(--ph-ink);
+}
+
+.aprender__tips dt {
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.aprender__tips dd {
+  margin: 2px 0 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.aprender__ojo h2 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.aprender__ojo ul {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* The summary is a sentence, not a short headline like on Ciclo. */
+.aprender .ciclo__headline {
+  font-size: 22px;
+  line-height: 1.15;
+}

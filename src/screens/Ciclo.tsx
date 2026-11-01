@@ -1,0 +1,162 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Billy, moodFor } from '../components/Billy'
+import { Mudanza } from '../components/Mudanza'
+import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
+import { PHASE_NAMES, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
+import { daysBetween, toJsDate } from '../domain/dates'
+import { forecast, upcomingChanges } from '../domain/plan'
+import { TabBar } from '../components/TabBar'
+import { PeriodSheet } from './PeriodSheet'
+import './Ciclo.css'
+
+const dateLabel = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })
+const shortDate = new Intl.DateTimeFormat('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })
+
+function nextPeriodText(status: CycleStatus): string {
+  const { expected, earliest, latest } = status.nextPeriod
+  if (status.daysLate > 0) return `La regla se está retrasando: ${status.daysLate} ${status.daysLate === 1 ? 'día' : 'días'}.`
+  const inDays = daysBetween(status.date, expected)
+  const min = Math.max(0, daysBetween(status.date, earliest))
+  const max = daysBetween(status.date, latest)
+  return `Regla prevista en unos ${inDays} días (entre ${min} y ${max}).`
+}
+
+interface Props {
+  status: CycleStatus
+  contraception: Contraception
+  periods: Period[]
+  onPeriodStarted: (period: Period) => Promise<void>
+  onPeriodEnded: () => Promise<void>
+}
+
+export function CicloScreen({ status, contraception, periods, onPeriodStarted, onPeriodEnded }: Props) {
+  const [registering, setRegistering] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState(false)
+  const phase = status.phase
+
+  async function run(action: () => Promise<void>) {
+    setBusy(true)
+    setError(false)
+    try {
+      await action()
+    } catch {
+      setError(true)
+    } finally {
+      setBusy(false)
+    }
+  }
+  const onPeriod = phase === 'poder1' && status.periodOngoing
+  const copy = PARA_ELLA[onPeriod ? 'regla' : phase]
+  const changes = upcomingChanges(forecast(status, periods, 60), 3)
+
+  return (
+    <main className="screen ciclo" data-phase={phase}>
+      <header className="ciclo__top">
+        <div className="ciclo__date">
+          <p className="eyebrow">{dateLabel.format(toJsDate(status.date))}</p>
+          <h1>
+            Día {status.cycleDay} de {status.estimate.length}
+          </h1>
+        </div>
+        <Link to="/compartir" className="ciclo__share">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="9" cy="8" r="3.5" />
+            <path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5" />
+            <path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.6.8 2.6 2.5 3 5.2" />
+          </svg>
+          Pareja
+        </Link>
+        <Link to="/ajustes" className="ciclo__share ciclo__settings" aria-label="Ajustes">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
+          </svg>
+        </Link>
+      </header>
+
+      <Mudanza signedIn />
+
+      {/* Two columns on wide screens: how she is today, then what's next. */}
+      <div className="ciclo__body">
+        <div className="ciclo__col">
+          <section className="ciclo__hero" aria-label={`Fase: ${PHASE_NAMES[phase]}`}>
+            <div className="ciclo__hero-text">
+              <span className="ciclo__phase">{PHASE_NAMES[phase]}</span>
+              <p className="ciclo__headline">{copy.headline}</p>
+            </div>
+            <Billy mood={onPeriod ? 'zen' : moodFor(phase, status.cycleDay)} size={96} />
+          </section>
+
+          <p className="ciclo__billy">
+            <span>Billy</span>
+            {copy.billy}
+          </p>
+
+          {status.fertile && (
+            <p className="ciclo__note ciclo__note--info">
+              <strong>Dato serio:</strong> {DATO_FERTIL}
+            </p>
+          )}
+          {status.showWarning && (
+            <p className="ciclo__note ciclo__note--warn">
+              {contraception === 'si' ? AVISO_ORIENTATIVO.anticonceptivos : AVISO_ORIENTATIVO.irregular}
+            </p>
+          )}
+        </div>
+
+        <div className="ciclo__col ciclo__col--side">
+          <section>
+            <h2 className="eyebrow">Hoy te viene bien</h2>
+            <ul className="ciclo__chips">
+              {copy.goodFor.map((item) => (
+                <li key={item} className="chip">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section>
+            <div className="ciclo__days-head">
+              <h2 className="eyebrow">Lo que viene</h2>
+              <Link to="/plan">Ver calendario</Link>
+            </div>
+            <ol className="ciclo__next">
+              {changes.map((c) => (
+                <li key={c.date} data-phase={c.state === 'recarga' ? 'poder1' : c.state}>
+                  <i aria-hidden="true" />
+                  <span className="ciclo__next-name">{c.state === 'recarga' ? 'Recarga (regla)' : PHASE_NAMES[c.state]}</span>
+                  <span className="ciclo__next-date">{shortDate.format(toJsDate(c.date))}</span>
+                </li>
+              ))}
+            </ol>
+            <p className="ciclo__footnote">
+              {nextPeriodText(status)} <Link to="/historial">Ver historial</Link>
+            </p>
+          </section>
+
+          <div className="ciclo__actions">
+            {error && <p className="ciclo__error">No se ha guardado. Prueba otra vez.</p>}
+            {status.periodOngoing && status.periodEndLogged ? (
+              <p className="ciclo__done">Apuntado: hoy es el último día de regla.</p>
+            ) : status.periodOngoing ? (
+              <button type="button" className="btn btn--ghost" disabled={busy} onClick={() => run(onPeriodEnded)}>
+                Ya terminó la regla
+              </button>
+            ) : (
+              <button type="button" className="btn btn--period" disabled={busy} onClick={() => setRegistering(true)}>
+                Me ha venido la regla
+              </button>
+            )}
+          </div>
+          {registering && (
+            <PeriodSheet mode="ha-llegado" periods={periods} onSave={onPeriodStarted} onClose={() => setRegistering(false)} />
+          )}
+        </div>
+      </div>
+      <TabBar />
+    </main>
+  )
+}

@@ -1,0 +1,58 @@
+.pareja__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.pareja__photo {
+  margin: 0;
+  overflow: hidden;
+  border: 2px solid var(--line);
+  border-bottom-width: 5px;
+  border-radius: var(--radius-lg);
+}
+
+.pareja__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.pareja__photo figcaption {
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.chip.pareja__yes {
+  background: var(--poder2-soft);
+  color: var(--poder2-ink);
+}
+
+.chip.pareja__no {
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+.pareja__yes::before,
+.pareja__no::before {
+  margin-right: 6px;
+  font-weight: 900;
+}
+
+.pareja__yes::before {
+  content: '✓';
+}
+
+.pareja__no::before {
+  content: '✕';
+  color: var(--mimos-ink);
+}
+
+.pareja__footer {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  text-align: center;
+}

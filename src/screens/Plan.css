@@ -1,0 +1,199 @@
+.plan__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.plan__lead {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.plan__goals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.plan__goals .chip--button {
+  min-height: 44px;
+}
+
+.plan__goals .chip--button.is-on {
+  border-color: var(--period-strong-edge);
+  background: var(--period-strong);
+  color: #fff;
+}
+
+.plan__answer {
+  margin-top: 10px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: var(--info-soft);
+  color: var(--info-ink);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.plan__answer p {
+  margin: 0;
+}
+
+.plan__answer p + p {
+  margin-top: 6px;
+}
+
+.plan__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.plan__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.plan__legend span[data-phase] i {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--ph);
+}
+
+.plan__month-name {
+  margin: 8px 0 8px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.plan__month-name::first-letter {
+  text-transform: uppercase;
+}
+
+.plan__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.plan__wd {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.plan__day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--ph-soft);
+  color: var(--ph-ink);
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.plan__day.is-today {
+  box-shadow: inset 0 0 0 3px var(--ink);
+}
+
+.plan__day.is-good {
+  background: var(--ph);
+  color: var(--ph-on);
+}
+
+.plan__day.is-dim {
+  background: var(--surface-soft);
+  color: #767676;
+}
+
+/* The period mark: a drop under the number. Hollow when it is only possible. */
+.plan__drop {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50% 50% 50% 0;
+  background: var(--period-strong);
+  transform: rotate(-45deg);
+}
+
+.plan__day .plan__drop {
+  position: absolute;
+  bottom: 5px;
+}
+
+.plan__drop--maybe {
+  border: 2px solid var(--period-strong);
+  background: transparent;
+}
+
+.plan__fine {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.plan__sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plan__sheet-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.plan__estimate {
+  color: var(--ink-soft);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.plan__sheet-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.plan__period {
+  align-self: flex-start;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--mimos-soft);
+  color: var(--mimos-ink);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.plan__advice {
+  margin-top: 8px;
+}
+
+.plan__advice::before {
+  display: none;
+}
+
+.plan__more {
+  align-self: flex-start;
+  margin-left: -12px;
+}

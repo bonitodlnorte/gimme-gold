@@ -1,0 +1,359 @@
+.ciclo h1 {
+  margin: 2px 0 0;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.ciclo__date .eyebrow::first-letter {
+  text-transform: uppercase;
+}
+
+/* data-phase drives every phase-coloured element inside it, on any screen. */
+[data-phase='poder1'] {
+  --ph: var(--poder1);
+  --ph-edge: var(--poder1-edge);
+  --ph-soft: var(--poder1-soft);
+  --ph-ink: var(--poder1-ink);
+  --ph-on: var(--poder1-on);
+}
+
+[data-phase='manifestacion'] {
+  --ph: var(--manifestacion);
+  --ph-edge: var(--manifestacion-edge);
+  --ph-soft: var(--manifestacion-soft);
+  --ph-ink: var(--manifestacion-ink);
+  --ph-on: var(--manifestacion-on);
+}
+
+[data-phase='poder2'] {
+  --ph: var(--poder2);
+  --ph-edge: var(--poder2-edge);
+  --ph-soft: var(--poder2-soft);
+  --ph-ink: var(--poder2-ink);
+  --ph-on: var(--poder2-on);
+}
+
+[data-phase='mimos'] {
+  --ph: var(--mimos);
+  --ph-edge: var(--mimos-edge);
+  --ph-soft: var(--mimos-soft);
+  --ph-ink: var(--mimos-ink);
+  --ph-on: var(--mimos-on);
+}
+
+.ciclo__hero {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 18px 12px 12px 18px;
+  border-radius: var(--radius-lg);
+  border-bottom: 6px solid var(--ph-edge);
+  background: var(--ph);
+}
+
+.ciclo__hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding-bottom: 8px;
+}
+
+.ciclo__phase {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ph-ink);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ciclo__headline {
+  margin: 0;
+  color: var(--ph-on);
+  font-size: 28px;
+  line-height: 1.05;
+  font-weight: 900;
+}
+
+/* Speech bubble with its tail pointing up at Billy in the card above. */
+.ciclo__billy {
+  position: relative;
+  margin: 0;
+  padding: 14px 16px;
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface-soft);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.ciclo__billy::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  right: 52px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid var(--line);
+  border-left: 2px solid var(--line);
+  background: var(--surface-soft);
+  transform: rotate(45deg);
+}
+
+.ciclo__billy span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ciclo__note {
+  margin: 0;
+  padding: 12px 16px;
+  border: 2px solid;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.ciclo__note strong {
+  font-weight: 900;
+}
+
+.ciclo__note--info {
+  border-color: var(--info);
+  background: var(--info-soft);
+  color: var(--info-ink);
+}
+
+.ciclo__note--warn {
+  border-color: var(--manifestacion);
+  background: var(--manifestacion-soft);
+  color: var(--manifestacion-ink);
+}
+
+.ciclo__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ciclo__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ciclo__days li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 6px 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--ph-soft);
+  color: var(--ph-ink);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ciclo__days small {
+  font-size: 11px;
+  font-weight: 800;
+  opacity: 0.75;
+}
+
+.ciclo__days li.is-today {
+  background: var(--ph);
+  color: var(--ph-on);
+  box-shadow: 0 0 0 3px var(--ink);
+}
+
+.ciclo__days li.is-uncertain {
+  border: 2px dashed var(--ph);
+  background: transparent;
+}
+
+.ciclo__footnote {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.ciclo__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ciclo__col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* On a phone the side column fills the screen so the button sits at the bottom, under the thumb. */
+.ciclo__col--side {
+  flex: 1;
+}
+
+.ciclo__actions {
+  margin-top: auto;
+}
+
+@media (min-width: 600px) {
+  .ciclo__actions {
+    margin-top: 8px;
+  }
+}
+
+@media (min-width: 960px) {
+  .ciclo.screen {
+    max-width: 920px;
+  }
+
+  .ciclo__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .ciclo h1 {
+    font-size: 32px;
+  }
+
+  .ciclo__headline {
+    font-size: 32px;
+  }
+}
+
+.ciclo__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ciclo__done {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+  font-size: 15px;
+  text-align: center;
+}
+
+.ciclo__error {
+  margin: 0;
+  color: var(--mimos-ink);
+  font-size: 15px;
+  text-align: center;
+}
+
+.ciclo__settings {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
+}
+
+.ciclo__days-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.ciclo__days-head a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: -12px -8px -12px 0;
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.ciclo__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ciclo__top .ciclo__date {
+  flex: 1;
+}
+
+.ciclo__share {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 14px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+/* "Lo que viene": the next three phase changes. */
+.ciclo__next {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ciclo__next li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--ph-soft);
+  color: var(--ph-ink);
+  font-size: 15px;
+}
+
+.ciclo__next i {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--ph);
+}
+
+.ciclo__next-name {
+  flex: 1;
+  font-weight: 900;
+}
+
+.ciclo__next-date {
+  font-weight: 800;
+}
+
+.ciclo__footnote a {
+  font-weight: 800;
+  text-decoration: none;
+}

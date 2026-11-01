@@ -1,0 +1,207 @@
+/* Gominola (decision D20). Values come from the Claude Design canvas. */
+:root {
+  --font: 'Nunito', system-ui, sans-serif;
+
+  --ink: #3c3c3c;
+  --ink-soft: #6f6f6f;
+  --line: #e5e5e5;
+  --surface: #ffffff;
+  --surface-soft: #f7f7f7;
+  --accent: #6b2fd6;
+
+  --go: #58cc02;
+  --go-edge: #46a302;
+  --period: #ff4b8b;
+  --period-edge: #c9286a;
+  /* Fills that carry white text. The bright --go and --period give 2.1:1 and 3.2:1, below WCAG AA. */
+  --go-strong: #358000;
+  --go-strong-edge: #275e00;
+  --period-strong: #d92c6e;
+  --period-strong-edge: #a3134e;
+  --info: #1cb0f6;
+  --info-soft: #ddf4ff;
+  --info-line: #84d8ff;
+  --info-ink: #0b4f72;
+
+  /* Phases (D21). Each has a strong fill, its pressed edge, a soft fill and the text that reads on both. */
+  --poder1: #1cb0f6;
+  --poder1-edge: #1899d6;
+  --poder1-soft: #ddf4ff;
+  --poder1-ink: #0b4f72;
+  --poder1-on: #052a40; /* white on this blue is 2.4:1; navy is 6:1 */
+
+  --manifestacion: #ffc800;
+  --manifestacion-edge: #e0a800;
+  --manifestacion-soft: #fff4c2;
+  --manifestacion-ink: #4a3300;
+  --manifestacion-on: #4a3300;
+
+  --poder2: #58cc02;
+  --poder2-edge: #46a302;
+  --poder2-soft: #d7ffb8;
+  --poder2-ink: #2b5c00;
+  --poder2-on: #1f4300;
+
+  --mimos: #d61f69;
+  --mimos-edge: #a3134e;
+  --mimos-soft: #ffdce9;
+  --mimos-ink: #8a1043;
+  --mimos-on: #ffffff;
+
+  --radius: 16px;
+  --radius-lg: 24px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--accent);
+}
+
+.screen {
+  max-width: 480px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 20px 16px calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* From tablet width up the screen becomes a card on a soft background instead of a stretched phone. */
+@media (min-width: 600px) {
+  body {
+    background: var(--surface-soft);
+  }
+
+  .screen {
+    max-width: 560px;
+    min-height: 0;
+    margin: 40px auto;
+    padding: 28px;
+    border: 2px solid var(--line);
+    border-bottom-width: 6px;
+    border-radius: 32px;
+    background: var(--surface);
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+/* Chunky button: pressing moves it down onto its own edge.
+   Rule: only things that can be pressed get the thick bottom edge. Information stays flat. */
+.btn {
+  min-height: 52px;
+  width: 100%;
+  padding: 0 18px;
+  border: 0;
+  border-bottom: 5px solid var(--btn-edge);
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  color: var(--btn-ink, #fff);
+  font-size: 17px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .btn:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
+}
+
+.btn:active {
+  border-bottom-width: 1px;
+  transform: translateY(4px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn--go {
+  --btn-bg: var(--go-strong);
+  --btn-edge: var(--go-strong-edge);
+}
+
+.btn--period {
+  --btn-bg: var(--period-strong);
+  --btn-edge: var(--period-strong-edge);
+}
+
+.btn--ghost {
+  --btn-bg: var(--surface);
+  --btn-edge: var(--line);
+  --btn-ink: var(--ink);
+  border: 2px solid var(--line);
+  border-bottom-width: 5px;
+}
+
+/* Information tag: flat, tinted with the phase when there is one. Not pressable. */
+.chip {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: var(--ph-soft, var(--surface-soft));
+  color: var(--ph-ink, var(--ink));
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* Pressable option: same size, with the raised edge. */
+.chip--button {
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.waiting {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 17px;
+}
