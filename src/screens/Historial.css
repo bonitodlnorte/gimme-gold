@@ -31,9 +31,8 @@
   flex-direction: column;
   gap: 2px;
   padding: 12px 14px;
-  border: 2px solid var(--line);
-  border-bottom-width: 5px;
   border-radius: 18px;
+  background: var(--surface-soft);
 }
 
 .stat__label {
@@ -80,10 +79,11 @@
 .historial__row {
   display: flex;
   gap: 12px;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
-  padding: 12px 14px;
+  padding: 12px 10px 12px 14px;
   border: 2px solid var(--line);
+  border-bottom-width: 4px;
   border-radius: 18px;
   background: var(--surface);
   text-align: left;
@@ -144,6 +144,16 @@
   font-size: 15px;
   font-weight: 900;
   white-space: nowrap;
+}
+
+.historial__chevron {
+  flex: none;
+  color: var(--ink-soft);
+}
+
+.historial__row:active {
+  border-bottom-width: 2px;
+  transform: translateY(2px);
 }
 
 .historial__gap {

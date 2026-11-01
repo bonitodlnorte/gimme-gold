@@ -13,6 +13,11 @@
   --go-edge: #46a302;
   --period: #ff4b8b;
   --period-edge: #c9286a;
+  /* Fills that carry white text. The bright --go and --period give 2.1:1 and 3.2:1, below WCAG AA. */
+  --go-strong: #358000;
+  --go-strong-edge: #275e00;
+  --period-strong: #d92c6e;
+  --period-strong-edge: #a3134e;
   --info: #1cb0f6;
   --info-soft: #ddf4ff;
   --info-line: #84d8ff;
@@ -23,7 +28,7 @@
   --poder1-edge: #1899d6;
   --poder1-soft: #ddf4ff;
   --poder1-ink: #0b4f72;
-  --poder1-on: #ffffff;
+  --poder1-on: #052a40; /* white on this blue is 2.4:1; navy is 6:1 */
 
   --manifestacion: #ffc800;
   --manifestacion-edge: #e0a800;
@@ -116,7 +121,8 @@ a {
   color: var(--ink-soft);
 }
 
-/* Chunky button: pressing moves it down onto its own edge. */
+/* Chunky button: pressing moves it down onto its own edge.
+   Rule: only things that can be pressed get the thick bottom edge. Information stays flat. */
 .btn {
   min-height: 52px;
   width: 100%;
@@ -150,13 +156,13 @@ a {
 }
 
 .btn--go {
-  --btn-bg: var(--go);
-  --btn-edge: var(--go-edge);
+  --btn-bg: var(--go-strong);
+  --btn-edge: var(--go-strong-edge);
 }
 
 .btn--period {
-  --btn-bg: var(--period);
-  --btn-edge: var(--period-edge);
+  --btn-bg: var(--period-strong);
+  --btn-edge: var(--period-strong-edge);
 }
 
 .btn--ghost {
@@ -167,14 +173,25 @@ a {
   border-bottom-width: 5px;
 }
 
+/* Information tag: flat, tinted with the phase when there is one. Not pressable. */
 .chip {
   display: inline-block;
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: var(--ph-soft, var(--surface-soft));
+  color: var(--ph-ink, var(--ink));
+  font-size: 15px;
+  font-weight: 800;
+}
+
+/* Pressable option: same size, with the raised edge. */
+.chip--button {
   border: 2px solid var(--line);
   border-bottom-width: 4px;
   border-radius: 14px;
-  padding: 8px 12px;
-  font-size: 15px;
-  font-weight: 800;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
 }
 
 :focus-visible {

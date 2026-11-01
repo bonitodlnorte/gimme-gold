@@ -26,15 +26,28 @@
 }
 
 .chip.pareja__yes {
-  border-color: var(--go);
   background: var(--poder2-soft);
   color: var(--poder2-ink);
 }
 
 .chip.pareja__no {
-  color: var(--ink-soft);
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+.pareja__yes::before,
+.pareja__no::before {
+  margin-right: 6px;
+  font-weight: 900;
+}
+
+.pareja__yes::before {
+  content: '✓';
+}
+
+.pareja__no::before {
+  content: '✕';
+  color: var(--mimos-ink);
 }
 
 .pareja__footer {

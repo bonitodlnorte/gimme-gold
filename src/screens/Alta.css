@@ -13,7 +13,7 @@
 }
 
 .progress span.is-done {
-  background: var(--go);
+  background: var(--go-strong);
 }
 
 .alta__billy {
@@ -120,7 +120,8 @@
 
 .alta__link {
   align-self: center;
-  padding: 8px;
+  min-height: 44px;
+  padding: 0 12px;
   border: 0;
   background: none;
   color: var(--accent);
@@ -158,14 +159,9 @@
   gap: 8px;
 }
 
-.chip--button {
-  background: var(--surface);
-  cursor: pointer;
-}
-
 .chip--button.is-on {
-  border-color: var(--period-edge);
-  background: var(--period);
+  border-color: var(--period-strong-edge);
+  background: var(--period-strong);
   color: #fff;
 }
 
@@ -248,7 +244,7 @@
   width: 22px;
   height: 22px;
   margin: 0;
-  accent-color: var(--go);
+  accent-color: var(--go-strong);
 }
 
 @media (min-width: 600px) {

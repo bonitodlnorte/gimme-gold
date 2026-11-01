@@ -145,7 +145,11 @@
 }
 
 .ciclo__days li {
-  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 6px 0;
   border: 2px solid transparent;
   border-radius: 12px;
   background: var(--ph-soft);
@@ -153,6 +157,12 @@
   text-align: center;
   font-size: 15px;
   font-weight: 900;
+}
+
+.ciclo__days small {
+  font-size: 11px;
+  font-weight: 800;
+  opacity: 0.75;
 }
 
 .ciclo__days li.is-today {
@@ -236,7 +246,8 @@
 
 .ciclo__signout {
   align-self: center;
-  padding: 8px;
+  min-height: 44px;
+  padding: 0 12px;
   border: 0;
   background: none;
   color: var(--ink-soft);
@@ -252,6 +263,11 @@
 }
 
 .ciclo__days-head a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: -12px -8px -12px 0;
+  padding: 0 8px;
   font-size: 14px;
   font-weight: 800;
   text-decoration: none;
@@ -268,7 +284,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 12px;
   border: 2px solid var(--line);
   border-bottom-width: 4px;

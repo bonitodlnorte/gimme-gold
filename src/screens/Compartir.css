@@ -8,9 +8,8 @@
 .compartir__what {
   margin: 0;
   padding: 14px 16px;
-  border: 2px solid var(--line);
-  border-bottom-width: 5px;
   border-radius: 18px;
+  background: var(--surface-soft);
 }
 
 .compartir__what dt {

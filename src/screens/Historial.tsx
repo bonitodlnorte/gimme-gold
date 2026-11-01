@@ -95,6 +95,9 @@ export function HistorialScreen({ periods, estimate, periodOngoing, onAdd, onUpd
                   <span className="historial__note">{details.join(' · ')}</span>
                 </span>
                 <span className="historial__len">{row.cycleLength === null ? 'en curso' : `${row.cycleLength} d`}</span>
+                <svg className="historial__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
               </button>
             </li>
           )

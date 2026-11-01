@@ -8,6 +8,7 @@ import { PeriodSheet } from './PeriodSheet'
 import './Ciclo.css'
 
 const dateLabel = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })
+const weekday = new Intl.DateTimeFormat('es-ES', { weekday: 'narrow' })
 
 function nextPeriodText(status: CycleStatus): string {
   const { expected, earliest, latest } = status.nextPeriod
@@ -120,8 +121,11 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
                   className={[i === 0 && 'is-today', day.uncertain && 'is-uncertain'].filter(Boolean).join(' ')}
                   aria-label={`${dateLabel.format(toJsDate(day.date))}: día ${day.cycleDay}, ${PHASE_NAMES[day.phase]}${day.uncertain ? ', estimado' : ''}`}
                 >
-                  {day.cycleDay}
-                  {day.uncertain && day.cycleDay <= 2 ? '?' : ''}
+                  <span>
+                    {day.cycleDay}
+                    {day.uncertain && day.cycleDay <= 2 ? '?' : ''}
+                  </span>
+                  <small aria-hidden="true">{weekday.format(toJsDate(day.date)).toUpperCase()}</small>
                 </li>
               ))}
             </ol>
