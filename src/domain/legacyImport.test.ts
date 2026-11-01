@@ -1,6 +1,6 @@
 // Runs with TZ=Europe/Madrid (see the test script), like the old app's users.
 import { describe, expect, it } from 'vitest'
-import { LEGACY_KEYS, parseExportFile, readLegacyStorage } from './legacyImport'
+import { buildExportFile, LEGACY_KEYS, parseExportFile, readLegacyStorage } from './legacyImport'
 
 function storage(values: Record<string, string>) {
   return { getItem: (key: string) => values[key] ?? null }
@@ -83,5 +83,25 @@ describe('parseExportFile', () => {
   it('rejects other files', () => {
     expect(parseExportFile('{"format":"otra-cosa","version":1,"data":{}}')).toBeNull()
     expect(parseExportFile('nope')).toBeNull()
+  })
+})
+
+describe('v2 export file', () => {
+  it('round-trips what Ajustes exports', () => {
+    const periods = [
+      { start: '2026-09-21', end: '2026-09-25', note: 'Dolor fuerte el día 1' },
+      { start: '2026-10-20', end: null, note: null },
+    ]
+    const text = buildExportFile({ declaredLength: 29, contraception: 'no' }, periods, new Date('2026-11-01T10:00:00Z'))
+    expect(parseExportFile(text)).toEqual({ periods, declaredLength: 29 })
+  })
+
+  it('skips malformed periods', () => {
+    const text = JSON.stringify({
+      format: 'gimme-gold-export',
+      version: 2,
+      data: { periods: [{ start: 'ayer' }, { start: '2026-10-20', end: '2026-10-01' }] },
+    })
+    expect(parseExportFile(text)).toEqual({ periods: [{ start: '2026-10-20', end: null, note: null }], declaredLength: null })
   })
 })

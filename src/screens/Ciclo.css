@@ -271,16 +271,10 @@
   text-align: center;
 }
 
-.ciclo__signout {
-  align-self: center;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 0;
-  background: none;
-  color: var(--ink-soft);
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
+.ciclo__settings {
+  justify-content: center;
+  width: 44px;
+  padding: 0;
 }
 
 .ciclo__days-head {
@@ -302,9 +296,12 @@
 
 .ciclo__top {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
+}
+
+.ciclo__top .ciclo__date {
+  flex: 1;
 }
 
 .ciclo__share {

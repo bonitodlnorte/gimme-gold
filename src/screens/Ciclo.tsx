@@ -25,11 +25,9 @@ interface Props {
   periods: Period[]
   onPeriodStarted: (period: Period) => Promise<void>
   onPeriodEnded: () => Promise<void>
-  /** Temporary until the Ajustes screen exists. */
-  onSignOut: () => void
 }
 
-export function CicloScreen({ status, contraception, periods, onPeriodStarted, onPeriodEnded, onSignOut }: Props) {
+export function CicloScreen({ status, contraception, periods, onPeriodStarted, onPeriodEnded }: Props) {
   const [registering, setRegistering] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(false)
@@ -66,6 +64,12 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
             <path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.6.8 2.6 2.5 3 5.2" />
           </svg>
           Pareja
+        </Link>
+        <Link to="/ajustes" className="ciclo__share ciclo__settings" aria-label="Ajustes">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
+          </svg>
         </Link>
       </header>
 
@@ -146,9 +150,6 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
                 Me ha venido la regla
               </button>
             )}
-            <button type="button" className="ciclo__signout" onClick={onSignOut}>
-              Cerrar sesión
-            </button>
           </div>
           {registering && (
             <PeriodSheet mode="ha-llegado" periods={periods} onSave={onPeriodStarted} onClose={() => setRegistering(false)} />

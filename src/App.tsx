@@ -4,11 +4,14 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { Billy } from './components/Billy'
 import {
   addPeriod,
+  deleteAccount,
   deletePeriod,
+  importPeriods,
   loadPeriods,
   loadProfile,
   saveOnboarding,
   updatePeriod,
+  updateProfile,
   type Onboarding,
   type Profile,
 } from './data/store'
@@ -16,6 +19,7 @@ import { cycleStatus, type Period } from './domain/cycle'
 import { today } from './domain/dates'
 import { readLegacyStorage } from './domain/legacyImport'
 import { supabase } from './lib/supabase'
+import { AjustesScreen } from './screens/Ajustes'
 import { AltaScreen } from './screens/Alta'
 import { CicloScreen } from './screens/Ciclo'
 import { CompartirScreen } from './screens/Compartir'
@@ -119,7 +123,6 @@ export function App() {
             periods={data.periods}
             onPeriodStarted={saved((period) => addPeriod(userId, period))}
             onPeriodEnded={saved(() => updatePeriod(userId, status.cycleStart, { ...current, end: today() }))}
-            onSignOut={() => void supabase.auth.signOut()}
           />
         }
       />
@@ -137,6 +140,25 @@ export function App() {
         }
       />
       <Route path="/compartir" element={<CompartirScreen userId={userId} />} />
+      <Route
+        path="/ajustes"
+        element={
+          <AjustesScreen
+            email={session.user.email ?? ''}
+            settings={data.profile}
+            periods={data.periods}
+            estimate={status.estimate}
+            onSaveSettings={saved((settings) => updateProfile(userId, settings))}
+            onImport={async (periods) => {
+              const added = await importPeriods(userId, periods, data.periods)
+              await reload()
+              return added
+            }}
+            onDeleteAccount={deleteAccount}
+            onSignOut={() => void supabase.auth.signOut()}
+          />
+        }
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

@@ -1,10 +1,11 @@
 // Reads data from the first version of Gimme Gold (decision D4): its localStorage keys
 // on gimme-gold.vercel.app, and the v1 export file produced by its export banner.
+// Also writes and reads the v2 export file from Ajustes (GDPR right to data portability).
 // Old dates are ISO timestamps written at the device's local midnight, so they are read
 // back as calendar days in the device's timezone.
 
-import { isSuspiciousLength, type Period } from './cycle'
-import { localDateOf, type LocalDate } from './dates'
+import { isSuspiciousLength, type CycleSettings, type Period } from './cycle'
+import { isLocalDate, localDateOf, type LocalDate } from './dates'
 
 export const LEGACY_KEYS = {
   lastPeriodDate: 'gimmeGold_lastPeriodDate',
@@ -80,10 +81,48 @@ export function readLegacyStorage(storage: Pick<Storage, 'getItem'>): LegacyData
   }
 }
 
-/** Contents of a `gimme-gold-YYYY-MM-DD.json` export file, or null when it is not one. */
+const EXPORT_FORMAT = 'gimme-gold-export'
+
+/** A v2 export file with everything she has saved. */
+export function buildExportFile(settings: CycleSettings, periods: Period[], exportedAt: Date): string {
+  const file = {
+    format: EXPORT_FORMAT,
+    version: 2,
+    exportedAt: exportedAt.toISOString(),
+    data: {
+      profile: { declaredCycleLength: settings.declaredLength, contraception: settings.contraception },
+      periods: periods.map((p) => ({ start: p.start, end: p.end ?? null, note: p.note ?? null })),
+    },
+  }
+  return JSON.stringify(file, null, 2)
+}
+
+function parseV2Periods(value: unknown): Period[] | null {
+  if (!Array.isArray(value)) return null
+  const periods: Period[] = []
+  for (const entry of value) {
+    const { start, end, note } = (entry ?? {}) as { start?: unknown; end?: unknown; note?: unknown }
+    if (!isLocalDate(start)) continue
+    periods.push({
+      start,
+      end: isLocalDate(end) && end >= start ? end : null,
+      note: typeof note === 'string' && note.trim() !== '' ? note.trim() : null,
+    })
+  }
+  return periods
+}
+
+/** Contents of a `gimme-gold-YYYY-MM-DD.json` export file (v1 or v2), or null when it is not one. */
 export function parseExportFile(text: string): LegacyData | null {
-  const file = parseJson(text) as { format?: unknown; version?: unknown; data?: Partial<RawData> } | null
-  if (!file || file.format !== 'gimme-gold-export' || file.version !== 1 || !file.data) return null
+  const file = parseJson(text) as { format?: unknown; version?: unknown; data?: Record<string, unknown> } | null
+  if (!file || file.format !== EXPORT_FORMAT || !file.data) return null
+  if (file.version === 2) {
+    const periods = parseV2Periods(file.data.periods)
+    if (!periods) return null
+    const profile = (file.data.profile ?? {}) as { declaredCycleLength?: unknown }
+    return { periods, declaredLength: toLength(profile.declaredCycleLength) }
+  }
+  if (file.version !== 1) return null
   return normalize({
     lastPeriodDate: file.data.lastPeriodDate,
     cycleLength: file.data.cycleLength,

@@ -62,6 +62,31 @@ export async function saveOnboarding(userId: string, { settings, periods, import
   if (saved.error) throw saved.error
 }
 
+export async function updateProfile(userId: string, settings: CycleSettings): Promise<void> {
+  const { error } = await supabase
+    .from('profiles')
+    .update({ declared_cycle_length: settings.declaredLength, contraception: settings.contraception })
+    .eq('user_id', userId)
+  if (error) throw error
+}
+
+/** Adds periods from an export file. Days she already has are left as they are. Returns how many were new. */
+export async function importPeriods(userId: string, periods: Period[], existing: Period[]): Promise<number> {
+  const known = new Set(existing.map((p) => p.start))
+  const fresh = periods.filter((p) => !known.has(p.start))
+  if (fresh.length === 0) return 0
+  const { error } = await supabase.from('periods').insert(fresh.map((p) => ({ user_id: userId, ...periodRow(p) })))
+  if (error) throw error
+  return fresh.length
+}
+
+/** Deletes her account and, by cascade, all her data (supabase/migrations/0002_delete_account.sql). */
+export async function deleteAccount(): Promise<void> {
+  const { error } = await supabase.rpc('delete_my_account')
+  if (error) throw error
+  await supabase.auth.signOut()
+}
+
 function periodRow(period: Period) {
   return { start_date: period.start, end_date: period.end ?? null, note: period.note?.trim() || null }
 }
