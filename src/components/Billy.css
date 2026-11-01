@@ -36,23 +36,18 @@
   }
 }
 
-.billy-wave {
-  transform-origin: 37px 92px;
-  animation: billy-wave 1.8s ease-in-out infinite;
+.billy-lift {
+  animation: billy-lift 1.4s ease-in-out infinite;
 }
 
-@keyframes billy-wave {
+@keyframes billy-lift {
   0%,
   100% {
-    transform: rotate(-6deg);
+    transform: translateY(0);
   }
   50% {
-    transform: rotate(8deg);
+    transform: translateY(7px);
   }
-}
-
-.billy-waves {
-  animation: billy-twinkle 1.2s ease-out infinite;
 }
 
 .billy-dance {
@@ -109,6 +104,64 @@
 
 .billy-spark {
   animation: billy-twinkle 0.4s steps(2) infinite;
+}
+
+.billy-steam {
+  animation: billy-steam 2.4s ease-out infinite;
+}
+
+@keyframes billy-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.billy-scribble {
+  transform-origin: 62px 108px;
+  animation: billy-scribble 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes billy-scribble {
+  to {
+    transform: rotate(-6deg);
+  }
+}
+
+.billy-hearts {
+  animation: billy-hearts 2.2s ease-out infinite;
+}
+
+@keyframes billy-hearts {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.billy-flag {
+  transform-origin: 102px 16px;
+  animation: billy-flag 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes billy-flag {
+  to {
+    transform: skewY(-10deg) scaleX(0.9);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -23,12 +23,13 @@ function whenText(seg: PartnerSegment): string {
   return `Del ${from} al ${to}`
 }
 
+// What Billy suggests he does, not how she is (her avatars come from moodFor).
 const MOODS: Record<Exclude<PartnerState, 'codigo-rojo'>, BillyMood> = {
-  regla: 'meditando',
-  poder1: 'orador',
-  manifestacion: 'bailando',
+  regla: 'mayordomo',
+  poder1: 'escucha',
+  manifestacion: 'elegante',
   poder2: 'artificiero',
-  mimos: 'muerto',
+  mimos: 'bandera',
 }
 
 export function ParejaScreen() {

@@ -67,12 +67,21 @@ export function PlanScreen({ status, periods }: Props) {
   const windows = goal ? goalWindows(fc, goal).slice(0, 4) : []
   const last = addDays(status.date, HORIZON_DAYS - 1)
 
+  function goToMonth(date: LocalDate) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    document.getElementById(`mes-${date.slice(0, 7)}`)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+  }
+
   return (
     <main className="screen plan">
       <header>
         <h1 className="plan__title">Plan</h1>
         <p className="plan__lead">Seis meses de tu ciclo. Dime qué quieres planificar y te marco los mejores días.</p>
       </header>
+
+      <button type="button" className="btn btn--ghost" onClick={() => setPickDate(true)}>
+        Tengo una fecha
+      </button>
 
       <section aria-labelledby="plan-goal">
         <h2 id="plan-goal" className="eyebrow">
@@ -95,9 +104,20 @@ export function PlanScreen({ status, periods }: Props) {
           <div className="plan__answer" role="status">
             <p>{objetivo.why}</p>
             {windows.length > 0 ? (
-              <p>
-                <strong>Tus mejores días:</strong> {windows.map((w) => rangeText(w.from, w.to)).join(' · ')}
-              </p>
+              <>
+                <p>
+                  <strong>Tus mejores días</strong>, marcados con ★ en el calendario:
+                </p>
+                <ul className="plan__windows">
+                  {windows.map((w) => (
+                    <li key={w.from}>
+                      <button type="button" className="plan__window" onClick={() => goToMonth(w.from)}>
+                        {rangeText(w.from, w.to)}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
             ) : (
               <p>No encuentro días buenos para esto en los próximos meses.</p>
             )}
@@ -105,16 +125,17 @@ export function PlanScreen({ status, periods }: Props) {
         )}
       </section>
 
-      <button type="button" className="btn btn--ghost" onClick={() => setPickDate(true)}>
-        Tengo una fecha
-      </button>
-
       {fc.late && <p className="ciclo__note ciclo__note--warn">{AVISO_RETRASO}</p>}
 
+      {/* Colour always means the phase; a goal only adds the star and greys out the rest. */}
       <div className="plan__legend" aria-hidden="true">
+        <span>
+          <i className="plan__swatch plan__swatch--recarga" />
+          {STATE_NAMES.recarga}
+        </span>
         {(['poder1', 'manifestacion', 'poder2', 'mimos'] as const).map((p) => (
           <span key={p} data-phase={p}>
-            <i />
+            <i className="plan__swatch" />
             {STATE_NAMES[p]}
           </span>
         ))}
@@ -126,10 +147,22 @@ export function PlanScreen({ status, periods }: Props) {
           <i className="plan__drop plan__drop--maybe" />
           Quizá regla
         </span>
+        {objetivo && (
+          <>
+            <span className="plan__legend-goal">
+              <b className="plan__star">★</b>
+              Buen día para {objetivo.label.toLowerCase()}
+            </span>
+            <span>
+              <i className="plan__swatch plan__swatch--dim" />
+              No conviene
+            </span>
+          </>
+        )}
       </div>
 
       {months.map((month) => (
-        <section key={month.key} className="plan__month" aria-label={monthYear.format(toJsDate(month.first))}>
+        <section key={month.key} id={`mes-${month.key}`} className="plan__month" aria-label={monthYear.format(toJsDate(month.first))}>
           <h2 className="plan__month-name">{monthYear.format(toJsDate(month.first))}</h2>
           <div className="plan__grid">
             {WEEKDAYS.map((d) => (
@@ -149,6 +182,7 @@ export function PlanScreen({ status, periods }: Props) {
                   className={[
                     'plan__day',
                     date === status.date && 'is-today',
+                    day.state === 'recarga' && 'is-recarga',
                     good === true && 'is-good',
                     good === false && 'is-dim',
                   ]
@@ -157,6 +191,11 @@ export function PlanScreen({ status, periods }: Props) {
                   aria-label={`${longDate.format(toJsDate(date))}: ${STATE_NAMES[day.state]}${day.period ? `, ${PERIOD_TEXT[day.period].toLowerCase()}` : ''}${good ? ', buen día' : ''}`}
                   onClick={() => setOpen({ day, planned: false })}
                 >
+                  {good && (
+                    <b className="plan__star" aria-hidden="true">
+                      ★
+                    </b>
+                  )}
                   {Number(date.slice(8))}
                   {day.period && <i className={`plan__drop${day.period === 'posible' ? ' plan__drop--maybe' : ''}`} />}
                 </button>
