@@ -50,6 +50,8 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
   }
   const onPeriod = phase === 'poder1' && status.periodOngoing
   const copy = PARA_ELLA[onPeriod ? 'regla' : phase]
+  // Same name as the Plan calendar: period days are Recarga, not Poder 1.
+  const phaseName = onPeriod ? 'Recarga' : PHASE_NAMES[phase]
   const changes = upcomingChanges(forecast(status, periods, 60), 3)
 
   return (
@@ -78,18 +80,19 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
       </header>
 
       <Mudanza signedIn />
-      <Instalar />
 
       {/* Two columns on wide screens: how she is today, then what's next. */}
       <div className="ciclo__body">
         <div className="ciclo__col">
-          <section className="ciclo__hero" aria-label={`Fase: ${PHASE_NAMES[phase]}`}>
+          {/* The recharge has no card of its own in Aprender: it is the start of Poder 1. */}
+          <Link to={`/aprender/${phase}`} className="ciclo__hero" aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
             <div className="ciclo__hero-text">
-              <span className="ciclo__phase">{PHASE_NAMES[phase]}</span>
+              <span className="ciclo__phase">{phaseName}</span>
               <p className="ciclo__headline">{copy.headline}</p>
+              <span className="ciclo__why">Por qué te sientes así →</span>
             </div>
             <Billy mood={onPeriod ? 'meditando' : moodFor(phase, status.cycleDay)} size={96} />
-          </section>
+          </Link>
 
           <p className="ciclo__billy">
             <span>Billy</span>
@@ -128,9 +131,17 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
             <ol className="ciclo__next">
               {changes.map((c) => (
                 <li key={c.date} data-phase={c.state === 'recarga' ? 'poder1' : c.state}>
-                  <i aria-hidden="true" />
-                  <span className="ciclo__next-name">{c.state === 'recarga' ? 'Recarga (regla)' : PHASE_NAMES[c.state]}</span>
-                  <span className="ciclo__next-date">{shortDate.format(toJsDate(c.date))}</span>
+                  <Link
+                    to={`/aprender/${c.state === 'recarga' ? 'poder1' : c.state}`}
+                    aria-label={`${c.state === 'recarga' ? 'Recarga' : PHASE_NAMES[c.state]}, desde el ${shortDate.format(toJsDate(c.date))}. Ver qué significa`}
+                  >
+                    <i aria-hidden="true" />
+                    <span className="ciclo__next-name">{c.state === 'recarga' ? 'Recarga (regla)' : PHASE_NAMES[c.state]}</span>
+                    <span className="ciclo__next-date">{shortDate.format(toJsDate(c.date))}</span>
+                    <span className="ciclo__chevron" aria-hidden="true">
+                      ›
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ol>
@@ -138,6 +149,8 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
               {nextPeriodText(status)} <Link to="/historial">Ver historial</Link>
             </p>
           </section>
+
+          <Instalar />
 
           <div className="ciclo__actions">
             {error && <p className="ciclo__error">No se ha guardado. Prueba otra vez.</p>}
