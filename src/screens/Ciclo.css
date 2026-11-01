@@ -1,0 +1,177 @@
+.ciclo h1 {
+  margin: 2px 0 0;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.ciclo__date .eyebrow::first-letter {
+  text-transform: uppercase;
+}
+
+/* The phase drives every phase-coloured element below. */
+.ciclo[data-phase='poder1'],
+.ciclo__days [data-phase='poder1'] {
+  --ph: var(--poder1);
+  --ph-edge: var(--poder1-edge);
+  --ph-soft: var(--poder1-soft);
+  --ph-ink: var(--poder1-ink);
+  --ph-on: var(--poder1-on);
+}
+
+.ciclo[data-phase='manifestacion'],
+.ciclo__days [data-phase='manifestacion'] {
+  --ph: var(--manifestacion);
+  --ph-edge: var(--manifestacion-edge);
+  --ph-soft: var(--manifestacion-soft);
+  --ph-ink: var(--manifestacion-ink);
+  --ph-on: var(--manifestacion-on);
+}
+
+.ciclo[data-phase='poder2'],
+.ciclo__days [data-phase='poder2'] {
+  --ph: var(--poder2);
+  --ph-edge: var(--poder2-edge);
+  --ph-soft: var(--poder2-soft);
+  --ph-ink: var(--poder2-ink);
+  --ph-on: var(--poder2-on);
+}
+
+.ciclo[data-phase='mimos'],
+.ciclo__days [data-phase='mimos'] {
+  --ph: var(--mimos);
+  --ph-edge: var(--mimos-edge);
+  --ph-soft: var(--mimos-soft);
+  --ph-ink: var(--mimos-ink);
+  --ph-on: var(--mimos-on);
+}
+
+.ciclo__hero {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 18px 12px 12px 18px;
+  border-radius: var(--radius-lg);
+  border-bottom: 6px solid var(--ph-edge);
+  background: var(--ph);
+}
+
+.ciclo__hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding-bottom: 8px;
+}
+
+.ciclo__phase {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ph-ink);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ciclo__headline {
+  margin: 0;
+  color: var(--ph-on);
+  font-size: 28px;
+  line-height: 1.05;
+  font-weight: 900;
+}
+
+.ciclo__billy {
+  margin: 0;
+  padding: 14px 16px;
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface-soft);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.ciclo__billy span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.ciclo__note {
+  margin: 0;
+  padding: 12px 16px;
+  border: 2px solid;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.ciclo__note strong {
+  font-weight: 900;
+}
+
+.ciclo__note--info {
+  border-color: var(--info);
+  background: var(--info-soft);
+  color: var(--info-ink);
+}
+
+.ciclo__note--warn {
+  border-color: var(--manifestacion);
+  background: var(--manifestacion-soft);
+  color: var(--manifestacion-ink);
+}
+
+.ciclo__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ciclo__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ciclo__days li {
+  padding: 8px 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--ph-soft);
+  color: var(--ph-ink);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.ciclo__days li.is-today {
+  background: var(--ph);
+  color: var(--ph-on);
+  box-shadow: 0 0 0 3px var(--ink);
+}
+
+.ciclo__days li.is-uncertain {
+  border: 2px dashed var(--ph);
+  background: transparent;
+}
+
+.ciclo__footnote {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.ciclo__actions {
+  margin-top: auto;
+}

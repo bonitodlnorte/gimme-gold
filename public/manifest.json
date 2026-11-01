@@ -1,11 +1,11 @@
 {
-  "name": "Gimme Gold - Hormonal Cycle Intelligence",
+  "name": "Gimme Gold",
   "short_name": "Gimme Gold",
-  "description": "Track your hormonal cycle and get personalized insights for workouts, work, and relationships",
+  "description": "Entiende tu ciclo hormonal, con Billy.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFF8F0",
-  "theme_color": "#F4D03F",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -20,6 +20,6 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "lang": "es"
 }
-

@@ -1,0 +1,159 @@
+/* Gominola (decision D20). Values come from the Claude Design canvas. */
+:root {
+  --font: 'Nunito', system-ui, sans-serif;
+
+  --ink: #3c3c3c;
+  --ink-soft: #6f6f6f;
+  --line: #e5e5e5;
+  --surface: #ffffff;
+  --surface-soft: #f7f7f7;
+  --accent: #6b2fd6;
+
+  --go: #58cc02;
+  --go-edge: #46a302;
+  --period: #ff4b8b;
+  --period-edge: #c9286a;
+  --info: #1cb0f6;
+  --info-soft: #ddf4ff;
+  --info-line: #84d8ff;
+  --info-ink: #0b4f72;
+
+  /* Phases (D21). Each has a strong fill, its pressed edge, a soft fill and the text that reads on both. */
+  --poder1: #1cb0f6;
+  --poder1-edge: #1899d6;
+  --poder1-soft: #ddf4ff;
+  --poder1-ink: #0b4f72;
+  --poder1-on: #ffffff;
+
+  --manifestacion: #ffc800;
+  --manifestacion-edge: #e0a800;
+  --manifestacion-soft: #fff4c2;
+  --manifestacion-ink: #4a3300;
+  --manifestacion-on: #4a3300;
+
+  --poder2: #58cc02;
+  --poder2-edge: #46a302;
+  --poder2-soft: #d7ffb8;
+  --poder2-ink: #2b5c00;
+  --poder2-on: #1f4300;
+
+  --mimos: #d61f69;
+  --mimos-edge: #a3134e;
+  --mimos-soft: #ffdce9;
+  --mimos-ink: #8a1043;
+  --mimos-on: #ffffff;
+
+  --radius: 16px;
+  --radius-lg: 24px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--accent);
+}
+
+.screen {
+  max-width: 480px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 20px 16px calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+/* Chunky button: pressing moves it down onto its own edge. */
+.btn {
+  min-height: 52px;
+  width: 100%;
+  padding: 0 18px;
+  border: 0;
+  border-bottom: 5px solid var(--btn-edge);
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  color: var(--btn-ink, #fff);
+  font-size: 17px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.btn:active {
+  border-bottom-width: 1px;
+  transform: translateY(4px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn--go {
+  --btn-bg: var(--go);
+  --btn-edge: var(--go-edge);
+}
+
+.btn--period {
+  --btn-bg: var(--period);
+  --btn-edge: var(--period-edge);
+}
+
+.btn--ghost {
+  --btn-bg: var(--surface);
+  --btn-edge: var(--line);
+  --btn-ink: var(--ink);
+  border: 2px solid var(--line);
+  border-bottom-width: 5px;
+}
+
+.chip {
+  display: inline-block;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 14px;
+  padding: 8px 12px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
