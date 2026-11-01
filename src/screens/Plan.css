@@ -22,9 +22,10 @@
   min-height: 44px;
 }
 
+/* Neutral when selected: pink is reserved for the period. */
 .plan__goals .chip--button.is-on {
-  border-color: var(--period-strong-edge);
-  background: var(--period-strong);
+  border-color: #000;
+  background: var(--ink);
   color: #fff;
 }
 
@@ -61,11 +62,53 @@
   gap: 6px;
 }
 
-.plan__legend span[data-phase] i {
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
-  background: var(--ph);
+/* Swatches look like the calendar days they explain. */
+.plan__swatch {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ph-edge, #d0d0d0);
+  border-radius: 5px;
+  background: var(--ph-soft, var(--surface-soft));
+}
+
+.plan__swatch--recarga {
+  border-color: var(--period-strong);
+  background: var(--recarga-soft);
+}
+
+.plan__swatch--dim {
+  border-color: #d0d0d0;
+  background: var(--surface-soft);
+}
+
+.plan__legend .plan__legend-goal {
+  color: var(--ink);
+}
+
+.plan__windows {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan__window {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 2px solid var(--info-line);
+  border-bottom-width: 4px;
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--info-ink);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.plan__month {
+  scroll-margin-top: 12px;
 }
 
 .plan__month-name {
@@ -108,13 +151,36 @@
   cursor: pointer;
 }
 
-.plan__day.is-today {
-  box-shadow: inset 0 0 0 3px var(--ink);
+.plan__day.is-recarga {
+  background: var(--recarga-soft);
+  color: var(--period-strong-edge);
 }
 
+.plan__day.is-today {
+  outline: 3px solid var(--ink);
+  outline-offset: 1px;
+}
+
+/* A good day keeps its phase colour and gains a thick edge and a star. */
 .plan__day.is-good {
-  background: var(--ph);
-  color: var(--ph-on);
+  box-shadow: inset 0 0 0 3px var(--ph-edge);
+}
+
+.plan__day.is-recarga.is-good {
+  box-shadow: inset 0 0 0 3px var(--period-strong);
+}
+
+.plan__star {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.plan__day .plan__star {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  font-size: 11px;
 }
 
 .plan__day.is-dim {
