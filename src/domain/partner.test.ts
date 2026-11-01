@@ -36,19 +36,27 @@ describe('partnerStatus', () => {
     const late = partnerStatus(view, onDay(33))
     expect(late.state).toBe('codigo-rojo')
     expect(late.upcoming).toBeNull()
-    expect(late.days.every((d) => d.phase === 'mimos' && d.predicted)).toBe(true)
+    // What's coming reads exactly like a normal last countdown day, all approximate.
+    const lastDay = partnerStatus(view, onDay(28))
+    expect(late.ahead.map((s) => [s.state, s.estimated])).toEqual(lastDay.ahead.map((s) => [s.state, true]))
+    expect(late.ahead[0]).toMatchObject({ state: 'regla', from: onDay(34) })
   })
 
-  it('rolls the strip into the next predicted cycle', () => {
-    const days = partnerStatus(view, onDay(27)).days
-    expect(days.map((d) => [d.phase, d.predicted])).toEqual([
-      ['mimos', false],
-      ['mimos', false],
-      ['poder1', true],
-      ['poder1', true],
-      ['poder1', true],
-      ['poder1', true],
-      ['poder1', true],
+  it('splits the next six weeks into segments to plan with', () => {
+    const ahead = partnerStatus(view, onDay(18)).ahead
+    expect(ahead.map((s) => [s.state, s.from, s.to, s.current, s.estimated])).toEqual([
+      ['poder2', onDay(19), onDay(19), true, false],
+      ['mimos', onDay(20), onDay(25), false, false],
+      ['codigo-rojo', onDay(26), onDay(28), false, false],
+      ['regla', onDay(29), onDay(30), false, true],
+      ['poder1', onDay(31), onDay(38), false, true],
+      ['manifestacion', onDay(39), onDay(43), false, true],
+      ['poder2', onDay(44), onDay(47), false, true],
+      ['mimos', onDay(48), onDay(53), false, true],
+      ['codigo-rojo', onDay(54), onDay(56), false, true],
+      ['regla', onDay(57), onDay(58), false, true],
+      ['poder1', onDay(59), onDay(60), false, true],
     ])
+    expect(ahead[ahead.length - 1]!.open).toBe(true)
   })
 })

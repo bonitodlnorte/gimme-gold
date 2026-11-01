@@ -56,3 +56,47 @@
   font-size: 13px;
   text-align: center;
 }
+
+.pareja__lead {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+/* Lo que viene: one card per stretch, in its phase colour. */
+.pareja__ahead {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pareja__ahead li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border-left: 6px solid var(--ph);
+  border-radius: 14px;
+  background: var(--ph-soft);
+  color: var(--ph-ink);
+}
+
+.pareja__when {
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pareja__what {
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.pareja__ideas {
+  font-size: 15px;
+  line-height: 1.35;
+}
