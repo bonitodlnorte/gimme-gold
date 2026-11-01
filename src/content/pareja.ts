@@ -20,7 +20,7 @@ export const PARA_PAREJA: Record<PartnerState, PartnerCopy> = {
   poder1: {
     headline: 'Vuelve la energía',
     billy:
-      'Se abre la ventana de las conversaciones pendientes. Si tienes algo que hablar, este es el momento: hoy te va a escuchar con calma. Yo aprovecho para salir de debajo del sofá. Por fin.',
+      '¡Buenas noticias, superviviente! Se abre la ventana de las conversaciones pendientes: hoy te escucha con calma y hasta puede que te dé la razón (no te acostumbres). Si tienes algo que hablar, es ahora o dentro de tres semanas. Yo que tú, ahora.',
     goodPlan: ['Hablar eso que tenéis pendiente', 'Hacer deporte juntos', 'Planes con amigos'],
     avoid: ['Dejar las conversaciones para la semana de Mimos (créeme)'],
   },
@@ -48,7 +48,7 @@ export const PARA_PAREJA: Record<PartnerState, PartnerCopy> = {
   'codigo-rojo': {
     headline: 'Código rojo',
     billy:
-      'Faltan pocos días para la regla. Yo que tú me tumbaba patas arriba con la lengua fuera y no me movía hasta nuevo aviso. Plan de hoy: manta, series y lo que ella elija. Si quieres sumar puntos, hidratos para cenar y masaje de pies. Si te lo pide, y si no te lo pide también.',
+      'Activa el protocolo zarigüeya: patas arriba, lengua fuera y ni un movimiento hasta nuevo aviso. Si te ve con vida, que sea trayendo chocolate. Plan de hoy: manta, series y lo que ella elija. Masaje de pies: si te lo pide, sí; si no te lo pide, también.',
     goodPlan: ['Lo que ella elija', 'Chocolate en casa', 'Dormir pronto'],
     avoid: ['Cualquier cosa que empiece por «tenemos que hablar»'],
   },
