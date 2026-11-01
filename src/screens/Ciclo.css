@@ -83,7 +83,9 @@
   font-weight: 900;
 }
 
+/* Speech bubble with its tail pointing up at Billy in the card above. */
 .ciclo__billy {
+  position: relative;
   margin: 0;
   padding: 14px 16px;
   border: 2px solid var(--line);
@@ -93,12 +95,27 @@
   line-height: 1.4;
 }
 
+.ciclo__billy::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  right: 52px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid var(--line);
+  border-left: 2px solid var(--line);
+  background: var(--surface-soft);
+  transform: rotate(45deg);
+}
+
 .ciclo__billy span {
   display: block;
   margin-bottom: 4px;
-  color: var(--accent);
+  color: var(--ink);
   font-size: 13px;
   font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .ciclo__note {
@@ -235,6 +252,16 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.ciclo__done {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+  font-size: 15px;
+  text-align: center;
 }
 
 .ciclo__error {

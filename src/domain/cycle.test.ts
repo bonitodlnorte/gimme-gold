@@ -130,6 +130,12 @@ describe('cycleStatus', () => {
     expect(cycleStatus(withEnd, settings, '2026-11-01')!.periodOngoing).toBe(false)
     expect(cycleStatus(periods, settings, '2026-11-01')!.periodOngoing).toBe(true)
   })
+
+  it('knows when the end was logged on its last day', () => {
+    const endsToday: Period[] = [...periods.slice(0, -1), { start: '2026-10-29', end: '2026-11-01' }]
+    expect(cycleStatus(endsToday, settings, '2026-11-01')).toMatchObject({ periodOngoing: true, periodEndLogged: true })
+    expect(cycleStatus(periods, settings, '2026-11-01')!.periodEndLogged).toBe(false)
+  })
 })
 
 describe('projectDays', () => {

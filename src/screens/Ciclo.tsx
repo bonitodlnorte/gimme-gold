@@ -46,7 +46,8 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
       setBusy(false)
     }
   }
-  const copy = PARA_ELLA[phase === 'poder1' && status.periodOngoing ? 'regla' : phase]
+  const onPeriod = phase === 'poder1' && status.periodOngoing
+  const copy = PARA_ELLA[onPeriod ? 'regla' : phase]
   const days = projectDays(status, 7)
 
   return (
@@ -76,7 +77,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
               <span className="ciclo__phase">{PHASE_NAMES[phase]}</span>
               <p className="ciclo__headline">{copy.headline}</p>
             </div>
-            <Billy mood={moodFor(phase, status.cycleDay)} size={96} />
+            <Billy mood={onPeriod ? 'desolado' : moodFor(phase, status.cycleDay)} size={96} />
           </section>
 
           <p className="ciclo__billy">
@@ -134,7 +135,9 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
 
           <div className="ciclo__actions">
             {error && <p className="ciclo__error">No se ha guardado. Prueba otra vez.</p>}
-            {status.periodOngoing ? (
+            {status.periodOngoing && status.periodEndLogged ? (
+              <p className="ciclo__done">Apuntado: hoy es el último día de regla.</p>
+            ) : status.periodOngoing ? (
               <button type="button" className="btn btn--ghost" disabled={busy} onClick={() => run(onPeriodEnded)}>
                 Ya terminó la regla
               </button>
