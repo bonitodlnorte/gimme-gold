@@ -39,6 +39,7 @@ Lo que la diferencia es el tono: **el humor es la base de la app**, no un adorno
 | D19 | **La v1 es para familia y amigos.** | Se pueden usar fotos sin licencia por ahora; antes de abrirla al público hay que resolverlo, igual que la revisión legal del RGPD. |
 | D20 | **Dirección visual: Gominola**, a tope. | Estilo cercano a Duolingo: blanco, colores saturados, botones con volumen, Nunito en negrita. Lienzo: https://claude.ai/artifact/Gv2z4bavNRCh7KBjktVfqS |
 | D21 | **Las fases se llaman Poder 1, Manifestación, Poder 2 y Mimos.** Cada una tiene su color: azul, amarillo, verde y rosa. | Mimos sustituye a *Nurture*. |
+| D22 | **Los emails salen de `billy.korokota.com` a través de Resend, región UE.** | No se usa el SMTP de Happyforce: es un proyecto personal y no debe compartir contrato ni reputación de envío con la empresa. Plantillas en `supabase/templates/`. |
 
 ## 3. Usuarios
 
