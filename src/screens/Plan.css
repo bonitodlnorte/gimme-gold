@@ -275,3 +275,37 @@
 .plan__legend .plan__legend-fire {
   color: var(--ink);
 }
+
+/* Days that already happened (D27): the phase colour, faded, so the future stands out. */
+.plan__day.is-past {
+  background: color-mix(in srgb, var(--ph-soft) 45%, var(--surface));
+}
+
+.plan__day.is-past {
+  color: var(--ink-soft);
+}
+
+.plan__day.is-past.is-good {
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--ph-edge) 60%, var(--surface));
+}
+
+.plan__day.is-past.is-recarga {
+  background: var(--surface);
+  color: var(--ink-soft);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--period-strong) 50%, var(--surface));
+}
+
+.plan__day.is-past.is-recarga.is-good {
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--period-strong) 60%, var(--surface));
+}
+
+/* With a goal on, a past day that did not suit it greys out like a future one. */
+.plan__day.is-past.is-dim {
+  background: var(--surface-soft);
+  color: #767676;
+  box-shadow: none;
+}
+
+.plan__prev {
+  align-self: center;
+}

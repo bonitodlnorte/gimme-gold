@@ -46,6 +46,7 @@ Lo que la diferencia es el tono: **el humor es la base de la app**, no un adorno
 | D24 | **El calendario de Plan mira 6 meses.** | El margen de la regla prevista crece con cada ciclo (raíz del número de ciclos). Más allá de 6 meses engaña más que ayuda. |
 | D25 | **La regla es recarga, no una desgracia.** | Billy nunca se lamenta ni llora con la regla: aparece en modo zen. El Billy triste queda para errores. |
 | D26 | **El Plan marca con 🔥 los días «on fire»: cerca de la ovulación, libido y fertilidad a tope (toda Manifestación). La pareja ve el mismo 🔥, sin leyenda.** | Un solo emoji en vez de libido, días fértiles y ovulación por separado, que casi coinciden. Es una estimación: nunca con anticonceptivos hormonales ni con la regla retrasada, y al pulsar un día 🔥 se avisa de que no sirve como método anticonceptivo. En la vista de pareja se oculta si las fases son orientativas. |
+| D27 | **El Plan enseña el pasado como contexto: el mes en curso desde el día 1 y, bajo demanda, el mes anterior.** Los días pasados salen apagados, con las fases, sus ★ y 🔥 y solo las reglas que ella apuntó. | Lo pidieron las usuarias: «lo que viene» se entiende mejor sabiendo de dónde vienes, y lo ya pasado es lo único seguro del calendario. En un ciclo cerrado las fases salen de su duración real. El pasado conserva sus ★ y su 🔥 (salvo en un ciclo con la regla retrasada, donde las fases son una suposición), para que pueda ver qué días le fueron bien. Pulsar un día 🔥 pasado avisa de que la estimación no sirve para saber si hubo riesgo de embarazo. |
 
 ## 3. Usuarios
 
@@ -70,7 +71,7 @@ Lo que la diferencia es el tono: **el humor es la base de la app**, no un adorno
 1. **Hoy.** El día de hoy: fase, cómo te sientes probablemente y qué te conviene, y «Lo que viene» (los próximos cambios de fase y la regla prevista). Desde aquí:
    - Hay un acceso directo para registrar la regla.
    - Se abre el **historial de reglas**. Es la única fuente de verdad: la fase actual se calcula a partir de él.
-2. **Plan.** Calendario de 6 meses con las fases y la regla prevista, mostrando la incertidumbre (D24):
+2. **Plan.** Calendario de 6 meses con las fases y la regla prevista, mostrando la incertidumbre (D24). Empieza el día 1 del mes en curso y puede abrir el mes anterior, con los días pasados apagados (D27):
    - **¿Cuándo me conviene…?** Eliges un objetivo (entrenar fuerte, competir, una conversación difícil, decidir, salir y conectar, descansar, un viaje sin regla) y marca los mejores días.
    - **Tengo una fecha:** dice en qué fase caerá un día concreto, si es probable la regla y cómo llegar bien.
    - Es una guía, no una norma: la evidencia dice que la fase influye poco en el rendimiento y varía mucho entre personas.

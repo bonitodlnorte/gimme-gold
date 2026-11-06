@@ -35,3 +35,7 @@ export const AVISO_PLAN =
 export const AVISO_RETRASO = 'Tu regla se está retrasando, así que el calendario es aproximado hasta que la apuntes.'
 
 export const AVISO_FERTIL_PLAN = 'Es una estimación: la ovulación se adelanta o se retrasa. Si no buscas embarazo, usa protección todo el ciclo.'
+
+/** On a past day near the estimated ovulation: never an answer to "was I fertile that day?". */
+export const AVISO_FERTIL_PASADO =
+  'Por las fechas, este día caía cerca de la ovulación, pero es una estimación y no sirve para saber si pudiste quedarte embarazada. Si te preocupa, consulta en una farmacia o con tu médica.'
