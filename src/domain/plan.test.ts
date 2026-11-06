@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { cycleStatus, type CycleSettings, type Period } from './cycle'
 import { addDays } from './dates'
-import { forecast, goalWindows, typicalPeriodDays, upcomingChanges, onFire, type ForecastDay } from './plan'
+import { forecast, goalWindows, pastDays, suits, typicalPeriodDays, upcomingChanges, onFire, type ForecastDay } from './plan'
 
 const settings: CycleSettings = { declaredLength: null, contraception: 'no' }
 // Three regular 28-day cycles; the current one started on 1 Oct.
@@ -79,5 +79,48 @@ describe('onFire', () => {
     expect(onFire(day(14, 'manifestacion'))).toBe(true)
     expect(onFire(day(9, 'poder1'))).toBe(false)
     expect(onFire(day(17, 'poder2'))).toBe(false)
+  })
+})
+
+describe('pastDays (D27)', () => {
+  it('fills the month before today from the logged periods', () => {
+    const days = pastDays(cycleStatus(periods, settings, on(10))!, periods, '2026-10-01')
+    expect(days).toHaveLength(9)
+    expect(days.slice(0, 5).every((d) => d.period && d.state === 'recarga')).toBe(true)
+    expect(days[5]).toMatchObject({ date: on(6), period: false, phase: 'poder1' })
+  })
+
+  it('uses the real length of a closed cycle', () => {
+    // A 32-day cycle: ovulation on day 18, so day 16 is Manifestación (with 28 days it would be Poder 2).
+    const long: Period[] = [{ start: '2026-09-01', end: '2026-09-05' }, { start: '2026-10-03', end: '2026-10-07' }]
+    const days = pastDays(cycleStatus(long, settings, '2026-10-10')!, long, '2026-09-01')
+    expect(days.find((d) => d.date === '2026-09-16')!.phase).toBe('manifestacion')
+    expect(days.find((d) => d.date === '2026-10-02')!.phase).toBe('mimos')
+  })
+
+  it('leaves out days before the first period and gaps from a missed log', () => {
+    const gap: Period[] = [{ start: '2026-07-01', end: '2026-07-05' }, { start: '2026-10-01', end: '2026-10-05' }]
+    const days = pastDays(cycleStatus(gap, settings, on(3))!, gap, '2026-06-01')
+    expect(days.map((d) => d.date)).toEqual([on(1), on(2)])
+  })
+
+  it('keeps the drop on every day of a period still running without an end', () => {
+    const running: Period[] = [...periods.slice(0, 2), { start: '2026-10-01' }]
+    const status = cycleStatus(running, settings, on(4))!
+    expect(pastDays(status, running, '2026-10-01').every((d) => d.period)).toBe(true)
+  })
+
+  it('keeps the goals and the 🔥 of past days, judged on the real cycle', () => {
+    const days = pastDays(cycleStatus(periods, settings, on(20))!, periods, '2026-10-01')
+    const day12 = days.find((d) => d.date === on(12))!
+    expect(onFire(day12)).toBe(true)
+    expect(suits(day12, 'conectar', day12.cycleLength)).toBe(true)
+    expect(suits(days[0]!, 'viaje', days[0]!.cycleLength)).toBe(false)
+    expect(days.every((d) => !d.guess)).toBe(true)
+  })
+
+  it('marks the current cycle as a guess while the period is late', () => {
+    const days = pastDays(cycleStatus(periods, settings, on(33))!, periods, '2026-10-01')
+    expect(days.every((d) => d.guess)).toBe(true)
   })
 })

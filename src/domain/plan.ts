@@ -4,7 +4,9 @@
 
 import {
   DEFAULT_PERIOD_DAYS,
+  MAX_LENGTH,
   ovulationDay,
+  sortedStarts,
   phaseForCycleDay,
   type CycleStatus,
   type Period,
@@ -113,17 +115,64 @@ export function forecast(status: CycleStatus, periods: Period[], horizon = HORIZ
   return { days, cycleLength: length, periodDays, late }
 }
 
+/** A day that already happened (D27): what she logged, with the phases around it. */
+export interface PastDay {
+  date: LocalDate
+  cycleDay: number
+  phase: Phase
+  state: DayState
+  /** Inside a period she logged (its end, when not logged, is her usual length). */
+  period: boolean
+  /** The real length of a closed cycle; the estimate for the current one. */
+  cycleLength: number
+  /** In the current cycle while the period is late: phases there are only a guess, so no 🔥. */
+  guess: boolean
+}
+
+/**
+ * Days from `from` to the day before `status.date`. A closed cycle uses its real length, so
+ * ovulation is counted back from the period that followed: better than a prediction. Days
+ * before her first logged period, or in a gap too long to be a cycle (a missed log), are left out.
+ */
+export function pastDays(status: CycleStatus, periods: Period[], from: LocalDate): PastDay[] {
+  const starts = sortedStarts(periods)
+  const ends = new Map(periods.map((p) => [p.start, p.end ?? null]))
+  const usual = typicalPeriodDays(periods)
+  const days: PastDay[] = []
+  for (let date = from; date < status.date; date = addDays(date, 1)) {
+    let i = starts.length - 1
+    while (i >= 0 && starts[i]! > date) i--
+    if (i < 0) continue
+    const start = starts[i]!
+    const next = starts[i + 1]
+    const length = next && next <= status.date ? daysBetween(start, next) : status.estimate.length
+    if (length > MAX_LENGTH && next) continue
+    const cycleDay = daysBetween(start, date) + 1
+    const phase = phaseForCycleDay(Math.min(cycleDay, length), length)
+    const end = ends.get(start)
+    // The period running today, without an end yet, covers every day since it started.
+    const ongoing = start === status.cycleStart && status.periodOngoing
+    const period = end ? date <= end : ongoing || cycleDay <= usual
+    const guess = start === status.cycleStart && status.daysLate > 0
+    days.push({ date, cycleDay, phase, state: period ? 'recarga' : phase, period, cycleLength: length, guess })
+  }
+  return days
+}
+
 export type GoalId = 'entrenar' | 'competir' | 'conversacion' | 'decidir' | 'conectar' | 'descansar' | 'viaje'
 
 /** Whether a day suits a goal, after Pelz (docs/research/mindy-pelz-doac-ciclo.md). */
-export function suits(day: ForecastDay, goal: GoalId, cycleLength: number): boolean {
+/** What `suits` needs from a day: a forecast one, or a past one (D27), whose period is what she logged. */
+type GoalDay = Pick<ForecastDay, 'state' | 'phase' | 'cycleDay'> & { period: PeriodChance | boolean }
+
+export function suits(day: GoalDay, goal: GoalId, cycleLength: number): boolean {
   const o = ovulationDay(cycleLength)
   const energetic = day.state !== 'recarga' && day.phase !== 'mimos' && day.cycleDay >= 3
   switch (goal) {
     case 'entrenar':
       return energetic
     case 'competir':
-      return energetic && day.period === null
+      return energetic && !day.period
     case 'conversacion':
       // Days 2–12 of a 28-day cycle: from day 2 to two days before ovulation.
       return day.phase !== 'mimos' && day.cycleDay >= 2 && day.cycleDay <= o - 2
@@ -134,7 +183,7 @@ export function suits(day: ForecastDay, goal: GoalId, cycleLength: number): bool
     case 'descansar':
       return day.state === 'recarga' || day.phase === 'mimos'
     case 'viaje':
-      return day.period === null
+      return !day.period
   }
 }
 
@@ -143,7 +192,7 @@ export function suits(day: ForecastDay, goal: GoalId, cycleLength: number): bool
  * as the partner sees it). One mark instead of separate libido, fertile and ovulation emojis.
  * An estimate, never contraception.
  */
-export function onFire(day: ForecastDay): boolean {
+export function onFire(day: { phase: Phase }): boolean {
   return day.phase === 'manifestacion'
 }
 
