@@ -12,10 +12,12 @@
     <script>
       // The install tags are written here, not changed afterwards: Safari can keep the manifest it saw first, so a partner link
       // that started with hers opened her login. On a partner link, his page installs with his own name and icon, and a
-      // manifest whose start_url is his link (served by the rewrite in vercel.json).
+      // manifest whose start_url is his link (served by the rewrite in vercel.json). On /instalar/<token>/ her app installs
+      // with that hand-off token in its start_url, so it opens signed in (see Traspaso.tsx).
       ;(function () {
         var m = location.pathname.match(/^\/pareja\/([^/]+)/)
-        var manifest = m ? '/pareja/' + m[1] + '/manifest.webmanifest' : '/manifest.json'
+        var h = location.pathname.match(/^\/instalar\/([^/]+)/)
+        var manifest = m ? '/pareja/' + m[1] + '/manifest.webmanifest' : h ? '/instalar/' + h[1] + '/manifest.webmanifest' : '/manifest.json'
         var title = m ? 'Billy' : 'Gimme Gold'
         // His icon is Billy playing dead; hers is Billy with a heart.
         var icon = m ? '/icons/pareja-apple-touch-icon.png' : '/icons/apple-touch-icon.png?v=2'

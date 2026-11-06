@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Billy } from './Billy'
 import { onOldHost } from './Mudanza'
+import { supabase } from '../lib/supabase'
 import '../screens/Alta.css'
 import './Mudanza.css'
 
@@ -67,11 +68,35 @@ function ShareIcon() {
   )
 }
 
-/** For the partner, the tip skips the sign-in note: his page needs no account. */
+/** True when this page loaded with a hand-off manifest, so adding it now installs her app signed in (Traspaso.tsx). */
+function prepared(): boolean {
+  return document.querySelector('link[rel="manifest"]')?.getAttribute('href')?.startsWith('/instalar/') ?? false
+}
+
+/** Reloads on /instalar/<token>/ so the manifest carries a one-time sign-in for the installed app. False if it can't. */
+async function prepare(): Promise<boolean> {
+  const { data } = await supabase.auth.getSession()
+  if (!data.session) return false
+  try {
+    const res = await fetch('/api/traspaso', { method: 'POST', headers: { authorization: `Bearer ${data.session.access_token}` } })
+    const { token } = (await res.json()) as { token?: string }
+    if (!res.ok || !token) return false
+    window.location.assign(`/instalar/${encodeURIComponent(token)}/`)
+    return true
+  } catch {
+    return false
+  }
+}
+
+/** For the partner, the tip skips the sign-in part: his page needs no account. */
 export function Instalar({ variant = 'ella' }: { variant?: Variant }) {
   const os = platform()
   const [hidden, setHidden] = useState(() => !os || installed() || dismissed(variant) || onOldHost())
   const [canPrompt, setCanPrompt] = useState(deferredPrompt !== null)
+  // On iOS her app needs the sign-in handed over first; 'manual' when that failed and she signs in again instead.
+  const [handoff, setHandoff] = useState<'todo' | 'busy' | 'ready' | 'manual'>(() =>
+    variant === 'ella' && os === 'ios' ? (prepared() ? 'ready' : 'todo') : 'ready',
+  )
 
   useEffect(() => {
     const update = () => setCanPrompt(deferredPrompt !== null)
@@ -95,6 +120,11 @@ export function Instalar({ variant = 'ella' }: { variant?: Variant }) {
     setHidden(true)
   }
 
+  async function handOver() {
+    setHandoff('busy')
+    if (!(await prepare())) setHandoff('manual')
+  }
+
   async function install() {
     await deferredPrompt?.prompt()
     deferredPrompt = null
@@ -107,21 +137,29 @@ export function Instalar({ variant = 'ella' }: { variant?: Variant }) {
       <div>
         <p className="mudanza__title">{COPY[variant].title}</p>
         <p>{COPY[variant].text}</p>
-        {os === 'ios' && (
-          <>
-            <ol className="instalar__steps">
-              <li>
-                Toca <ShareIcon /> <strong>Compartir</strong>.
-              </li>
-              <li>
-                Elige <strong>«Añadir a pantalla de inicio»</strong>.
-              </li>
-            </ol>
-            {variant === 'ella' && (
-              <p className="instalar__note">Al abrirme desde ahí tendrás que entrar una vez más con tu email: el iPhone guarda la sesión aparte.</p>
-            )}
-          </>
-        )}
+        {os === 'ios' &&
+          (handoff === 'todo' || handoff === 'busy' ? (
+            <button type="button" className="btn btn--go mudanza__go" disabled={handoff === 'busy'} onClick={handOver}>
+              Prepárame para el iPhone
+            </button>
+          ) : (
+            <>
+              <ol className="instalar__steps">
+                <li>
+                  Toca <ShareIcon /> <strong>Compartir</strong>.
+                </li>
+                <li>
+                  Elige <strong>«Añadir a pantalla de inicio»</strong>.
+                </li>
+              </ol>
+              {handoff === 'ready' && variant === 'ella' && (
+                <p className="instalar__note">Entrarás sin volver a poner tu email si me añades en la próxima hora.</p>
+              )}
+              {handoff === 'manual' && (
+                <p className="instalar__note">Al abrirme desde ahí tendrás que entrar una vez más con tu email: el iPhone guarda la sesión aparte.</p>
+              )}
+            </>
+          ))}
         {os === 'android' &&
           (canPrompt ? (
             <button type="button" className="btn btn--go mudanza__go" onClick={install}>

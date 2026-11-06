@@ -5,6 +5,10 @@
       "destination": "/manifest-pareja.json"
     },
     {
+      "source": "/instalar/:token/manifest.webmanifest",
+      "destination": "/manifest-instalar.json"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
