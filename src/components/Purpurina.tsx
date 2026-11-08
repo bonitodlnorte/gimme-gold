@@ -1,5 +1,5 @@
 // Alerta de purpurina (docs/propuesta-fantasia.md, 4.1): golden glitter falls over the whole screen
-// when she opens Hoy in Manifestación. Once a day, only CSS, never over the health notes (it is
+// when she opens Hoy in Manifestación. On every opening of the app, only CSS, never over the health notes (it is
 // pointer-events: none and gone in under three seconds).
 
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -40,25 +40,24 @@ export function reducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
+/** What has already been celebrated since the app was opened. Closing or reloading the app forgets it. */
+const celebrated = new Map<string, string>()
+
 /**
  * Whether the celebration `name` is due for `stamp` (a date, a cycle, a phase…). The first call
- * with a new stamp says yes and remembers it; the following ones say no. Without storage
- * (private mode) it fires every time. In development, ?celebrar=1 forces every celebration.
+ * since the app was opened says yes; the following ones, with the same stamp, say no. So it fires
+ * on every opening of the app (what the users asked for) but not every time she comes back to Hoy
+ * from another tab. In development, ?celebrar=1 forces every celebration.
  */
 export function celebrateOnce(name: string, stamp: string): boolean {
   if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('celebrar') === '1') return true
   if (reducedMotion()) return false
-  const key = `gimmeGold_celebrado_${name}`
-  try {
-    if (window.localStorage.getItem(key) === stamp) return false
-    window.localStorage.setItem(key, stamp)
-  } catch {
-    // No storage: celebrate anyway.
-  }
+  if (celebrated.get(name) === stamp) return false
+  celebrated.set(name, stamp)
   return true
 }
 
-/** Once a day. */
+/** Once per opening of the app, as long as it is still the same day. */
 export function celebrateToday(name: string): boolean {
   return celebrateOnce(name, today())
 }

@@ -6,6 +6,10 @@
 >
 > **Estado (8 de noviembre de 2026):** implementado al completo en la PR #15, en el orden de la sección 5.
 > En desarrollo, `?celebrar=1` en la URL fuerza todas las celebraciones.
+>
+> **Cambio del 8 de noviembre de 2026:** las usuarias pidieron los efectos en cada apertura de la app, no una
+> vez al día. Las celebraciones se recuerdan en memoria mientras la app está abierta (así no se repiten al
+> cambiar de pestaña) y vuelven a salir al abrirla de nuevo. El principio 2 queda así matizado.
 
 ---
 
