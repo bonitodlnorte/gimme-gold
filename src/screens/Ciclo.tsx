@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Billy, moodFor } from '../components/Billy'
 import { Instalar } from '../components/Instalar'
 import { Mudanza } from '../components/Mudanza'
+import { Purpurina, celebrateToday } from '../components/Purpurina'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
 import { PHASE_NAMES, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
 import { daysBetween, toJsDate } from '../domain/dates'
@@ -39,6 +40,8 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(false)
   const phase = status.phase
+  // Alerta de purpurina: once a day while she is in Manifestación.
+  const [glitter, setGlitter] = useState(() => phase === 'manifestacion' && celebrateToday('purpurina'))
 
   async function run(action: () => Promise<void>) {
     setBusy(true)
@@ -59,6 +62,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
 
   return (
     <main className="screen ciclo" data-phase={phase}>
+      {glitter && <Purpurina onDone={() => setGlitter(false)} />}
       <header className="ciclo__top">
         <div className="ciclo__date">
           <p className="eyebrow">{dateLabel.format(toJsDate(status.date))}</p>
@@ -88,7 +92,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
       <div className="ciclo__body">
         <div className="ciclo__col">
           {/* The recharge has no card of its own in Aprender: it is the start of Poder 1. */}
-          <Link to={`/aprender/${phase}`} state={FROM_HOY} className="ciclo__hero" aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
+          <Link to={`/aprender/${phase}`} state={FROM_HOY} className={`ciclo__hero${glitter ? ' is-celebrating' : ''}`} aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
             <div className="ciclo__hero-text">
               <span className="ciclo__phase">{phaseName}</span>
               <p className="ciclo__headline">{copy.headline}</p>
