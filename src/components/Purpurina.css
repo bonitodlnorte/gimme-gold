@@ -1,0 +1,71 @@
+/* Glitter over the whole screen. It never takes a tap and never covers the health notes for long. */
+.purpurina {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.purpurina__p {
+  position: absolute;
+  top: -12px;
+  width: var(--size);
+  height: var(--size);
+  background: var(--color);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: purpurina-fall var(--fall) ease-in var(--delay) 1 both;
+}
+
+.purpurina__p--diamond {
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+
+.purpurina__p--star {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  width: calc(var(--size) * 1.6);
+  height: calc(var(--size) * 1.6);
+}
+
+@keyframes purpurina-fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  8% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--drift), 100vh, 0) rotate(var(--spin));
+  }
+}
+
+/* Billy takes a little bow when the glitter is falling. */
+.ciclo__hero.is-celebrating .billy {
+  animation: purpurina-bow 0.6s ease-out 1.2s 1 both;
+}
+
+@keyframes purpurina-bow {
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .purpurina {
+    display: none;
+  }
+
+  .ciclo__hero.is-celebrating .billy {
+    animation: none;
+  }
+}

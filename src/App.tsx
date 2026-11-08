@@ -33,7 +33,7 @@ type UserData = { profile: Profile | null; periods: Period[] }
 function Waiting({ text }: { text: string }) {
   return (
     <main className="screen waiting">
-      <Billy mood="muerto" size={120} />
+      <Billy mood="muerto" size={120} waking />
       <p>{text}</p>
     </main>
   )

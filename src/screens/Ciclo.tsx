@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { Billy, moodFor } from '../components/Billy'
 import { Instalar } from '../components/Instalar'
 import { Mudanza } from '../components/Mudanza'
+import { Purpurina, celebrateOnce, celebrateToday, useThemeColor } from '../components/Purpurina'
+import { PHASE_HEX } from './Plan'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
 import { PHASE_NAMES, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
 import { daysBetween, toJsDate } from '../domain/dates'
@@ -39,6 +41,17 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(false)
   const phase = status.phase
+  const onPeriod = phase === 'poder1' && status.periodOngoing
+  // Alerta de purpurina: once a day while she is in Manifestación.
+  const [glitter, setGlitter] = useState(() => phase === 'manifestacion' && celebrateToday('purpurina'))
+  // Each phase has its own welcome the first time she opens the app in it (propuesta 4.2).
+  const [welcome, setWelcome] = useState<string | null>(() => {
+    const moment = onPeriod ? 'recarga' : phase
+    return celebrateOnce('fase', `${status.cycleStart}/${moment}`) ? moment : null
+  })
+  // Just logged a new period: the hero sweeps to blue and a line says so for a moment (propuesta 4.4).
+  const [fresh, setFresh] = useState(false)
+  useThemeColor(PHASE_HEX[phase])
 
   async function run(action: () => Promise<void>) {
     setBusy(true)
@@ -51,14 +64,15 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
       setBusy(false)
     }
   }
-  const onPeriod = phase === 'poder1' && status.periodOngoing
   const copy = PARA_ELLA[onPeriod ? 'regla' : phase]
   // Same name as the Plan calendar: period days are Recarga, not Poder 1.
   const phaseName = onPeriod ? 'Recarga' : PHASE_NAMES[phase]
   const changes = upcomingChanges(forecast(status, periods, 60), 3)
 
   return (
-    <main className="screen ciclo" data-phase={phase}>
+    <main className={`screen ciclo${welcome ? ` is-welcome-${welcome}` : ''}`} data-phase={phase} onAnimationEnd={(e) => e.target === e.currentTarget && setWelcome(null)}>
+      {glitter && <Purpurina onDone={() => setGlitter(false)} />}
+      {welcome === 'recarga' && <div className="ciclo__velo" aria-hidden="true" />}
       <header className="ciclo__top">
         <div className="ciclo__date">
           <p className="eyebrow">{dateLabel.format(toJsDate(status.date))}</p>
@@ -88,14 +102,33 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
       <div className="ciclo__body">
         <div className="ciclo__col">
           {/* The recharge has no card of its own in Aprender: it is the start of Poder 1. */}
-          <Link to={`/aprender/${phase}`} state={FROM_HOY} className="ciclo__hero" aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
+          <Link to={`/aprender/${phase}`} state={FROM_HOY} className={`ciclo__hero${glitter ? ' is-celebrating' : ''}${fresh ? ' is-fresh' : ''}`} aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
             <div className="ciclo__hero-text">
               <span className="ciclo__phase">{phaseName}</span>
               <p className="ciclo__headline">{copy.headline}</p>
               <span className="ciclo__why">Por qué te sientes así →</span>
             </div>
             <Billy mood={onPeriod ? 'meditando' : moodFor(phase, status.cycleDay)} size={96} />
+            {welcome === 'recarga' && (
+              <span className="ciclo__zzz" aria-hidden="true">
+                <i>z</i>
+                <i>z</i>
+                <i>z</i>
+              </span>
+            )}
+            {welcome === 'mimos' && (
+              <span className="ciclo__hearts" aria-hidden="true">
+                <i>♥</i>
+                <i>♥</i>
+                <i>♥</i>
+              </span>
+            )}
           </Link>
+          {fresh && (
+            <p className="ciclo__fresh" role="status">
+              Apuntado. Ciclo nuevo, cuenta a cero.
+            </p>
+          )}
 
           <p className="ciclo__billy">
             <span>Billy</span>
@@ -154,8 +187,6 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
             </p>
           </section>
 
-          <Instalar />
-
           <div className="ciclo__actions">
             {error && <p className="ciclo__error">No se ha guardado. Prueba otra vez.</p>}
             {status.periodOngoing && status.periodEndLogged ? (
@@ -170,8 +201,20 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
               </button>
             )}
           </div>
+
+          <Instalar />
+
           {registering && (
-            <PeriodSheet mode="ha-llegado" periods={periods} onSave={onPeriodStarted} onClose={() => setRegistering(false)} />
+            <PeriodSheet
+              mode="ha-llegado"
+              periods={periods}
+              onSave={async (period) => {
+                await onPeriodStarted(period)
+                setFresh(true)
+                window.setTimeout(() => setFresh(false), 3200)
+              }}
+              onClose={() => setRegistering(false)}
+            />
           )}
         </div>
       </div>

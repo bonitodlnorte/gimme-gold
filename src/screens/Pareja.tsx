@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Instalar } from '../components/Instalar'
 import { useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
+import { Purpurina, celebrateToday, useThemeColor } from '../components/Purpurina'
+import { Flame, PHASE_HEX } from './Plan'
 import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, PARA_PAREJA, PLANES_PAREJA, avisoProximo } from '../content/pareja'
 import { toJsDate, today } from '../domain/dates'
 import { partnerStatus, type PartnerSegment, type PartnerState } from '../domain/partner'
@@ -40,10 +42,17 @@ export function ParejaScreen() {
   const [view, setView] = useState<PartnerView | null | undefined>(undefined)
   const [failed, setFailed] = useState(false)
   const [showAll, setShowAll] = useState(false)
+  const [glitter, setGlitter] = useState(false)
+  useThemeColor(view ? PHASE_HEX[partnerStatus(view, today()).phase] : null)
 
   useEffect(() => {
     fetchPartnerView(token).then(setView, () => setFailed(true))
   }, [token])
+
+  // Her glitter week reaches him too, in a smaller dose: once a day while she is in Manifestación.
+  useEffect(() => {
+    if (view && partnerStatus(view, today()).state === 'manifestacion' && celebrateToday('purpurina-pareja')) setGlitter(true)
+  }, [view])
 
   if (failed || view === null) {
     return (
@@ -73,10 +82,11 @@ export function ParejaScreen() {
   const cycleEnd = coming.findIndex((seg, i) => i > 0 && seg.state === coming[0]?.state)
   const shown = showAll || cycleEnd < 0 ? coming : coming.slice(0, cycleEnd)
   // On fire, with no legend: whoever wants to get it, gets it. Not when phases are only orientative.
-  const fire = (state: string) => (state === 'manifestacion' && !status.orientative ? ' 🔥' : '')
+  const fire = (state: string) => (state === 'manifestacion' && !status.orientative ? <Flame className="plan__flame plan__flame--inline" /> : null)
 
   return (
     <main className="screen ciclo pareja" data-phase={status.phase}>
+      {glitter && <Purpurina count={25} onDone={() => setGlitter(false)} />}
       <header className="ciclo__date">
         <p className="eyebrow">{dateLabel.format(toJsDate(today()))}</p>
         <h1>Cómo está ella hoy</h1>

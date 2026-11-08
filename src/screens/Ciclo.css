@@ -381,3 +381,218 @@
   font-weight: 800;
   text-decoration: none;
 }
+
+/* Arriving (propuesta 4.3): the cards come in one after another, top to bottom. */
+.ciclo__col > * {
+  animation: hoy-in 220ms ease-out both;
+}
+
+.ciclo__col > :nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.ciclo__col > :nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.ciclo__col > :nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.ciclo__col > :nth-child(n + 4) {
+  animation-delay: 180ms;
+}
+
+.ciclo__col--side > :nth-child(1) {
+  animation-delay: 200ms;
+}
+
+.ciclo__col--side > :nth-child(2) {
+  animation-delay: 260ms;
+}
+
+.ciclo__col--side > :nth-child(n + 3) {
+  animation-delay: 320ms;
+}
+
+@keyframes hoy-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* One welcome per phase (propuesta 4.2), on the first opening. The main's own animation is a
+   silent timer: when it ends, the welcome class comes off. */
+.ciclo[class*='is-welcome-'] {
+  animation: welcome-timer 2.4s linear both;
+}
+
+@keyframes welcome-timer {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Recarga: the lights dim for a moment and three z's rise from Billy. */
+.ciclo__velo {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: #1a1030;
+  pointer-events: none;
+  animation: velo 1.8s ease-in-out both;
+}
+
+@keyframes velo {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  35%,
+  60% {
+    opacity: 0.35;
+  }
+}
+
+.ciclo__hero {
+  position: relative;
+}
+
+.ciclo__zzz,
+.ciclo__hearts {
+  position: absolute;
+  right: 28px;
+  bottom: 70px;
+  pointer-events: none;
+}
+
+.ciclo__zzz i,
+.ciclo__hearts i {
+  position: absolute;
+  bottom: 0;
+  font-style: normal;
+  font-weight: 900;
+  opacity: 0;
+  animation: rise 1.4s ease-out both;
+}
+
+.ciclo__zzz i {
+  color: var(--ph-on);
+  font-size: 16px;
+}
+
+.ciclo__hearts i {
+  color: #fff;
+  font-size: 18px;
+}
+
+.ciclo__zzz i:nth-child(2),
+.ciclo__hearts i:nth-child(2) {
+  left: 14px;
+  font-size: 20px;
+  animation-delay: 0.35s;
+}
+
+.ciclo__zzz i:nth-child(3),
+.ciclo__hearts i:nth-child(3) {
+  left: 30px;
+  font-size: 24px;
+  animation-delay: 0.7s;
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-34px);
+  }
+}
+
+/* Poder 1: the energy is back, so the hero bounces in and Billy lifts hard once. */
+.is-welcome-poder1 .ciclo__hero {
+  animation: hero-bounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes hero-bounce {
+  from {
+    transform: scale(0.92);
+  }
+}
+
+/* Poder 2: a short tremble, like Billy's own. */
+.is-welcome-poder2 .ciclo__hero {
+  animation: hero-tremble 0.3s linear 0.3s 2;
+}
+
+@keyframes hero-tremble {
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+/* Mimos: Billy drops in from above and lands on his back, with love. */
+.is-welcome-mimos .ciclo__hero .billy {
+  animation: billy-drop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes billy-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+}
+
+/* Ciclo nuevo (propuesta 4.4): the hero's colour sweeps in from the left and a line stays for a moment. */
+.ciclo__hero.is-fresh {
+  animation: hero-sweep 0.5s ease-out both;
+}
+
+@keyframes hero-sweep {
+  from {
+    clip-path: inset(0 100% 0 0 round var(--radius-lg));
+  }
+  to {
+    clip-path: inset(0 0 0 0 round var(--radius-lg));
+  }
+}
+
+.ciclo__fresh {
+  margin: -8px 0 0;
+  color: var(--ph-ink);
+  font-size: 14px;
+  font-weight: 900;
+  text-align: center;
+  animation:
+    hoy-in 220ms ease-out both,
+    fade-out 400ms ease-in 2.8s both;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ciclo__col > *,
+  .ciclo__velo,
+  .ciclo__zzz i,
+  .ciclo__hearts i,
+  .is-welcome-poder1 .ciclo__hero,
+  .is-welcome-poder2 .ciclo__hero,
+  .is-welcome-mimos .ciclo__hero .billy,
+  .ciclo__hero.is-fresh,
+  .ciclo__fresh {
+    animation: none;
+  }
+}

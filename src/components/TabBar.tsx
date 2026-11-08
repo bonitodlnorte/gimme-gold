@@ -5,11 +5,15 @@ import './TabBar.css'
 export function TabBar() {
   return (
     <nav className="tabbar" aria-label="Secciones">
-      <NavLink to="/" end>
+      <NavLink to="/" end viewTransition>
         Hoy
       </NavLink>
-      <NavLink to="/plan">Plan</NavLink>
-      <NavLink to="/aprender">Aprender</NavLink>
+      <NavLink to="/plan" viewTransition>
+        Plan
+      </NavLink>
+      <NavLink to="/aprender" viewTransition>
+        Aprender
+      </NavLink>
     </nav>
   )
 }

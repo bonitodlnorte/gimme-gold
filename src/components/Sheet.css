@@ -10,8 +10,56 @@
   color: var(--ink);
 }
 
+.sheet[open] {
+  animation: sheet-up 240ms ease-out;
+}
+
+.sheet.is-closing {
+  animation: sheet-down 180ms ease-in forwards;
+}
+
 .sheet::backdrop {
   background: rgb(60 60 60 / 0.55);
+  animation: sheet-dim 240ms ease-out;
+}
+
+.sheet.is-closing::backdrop {
+  animation: sheet-undim 180ms ease-in forwards;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-down {
+  to {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-dim {
+  from {
+    background: rgb(60 60 60 / 0);
+  }
+}
+
+@keyframes sheet-undim {
+  to {
+    background: rgb(60 60 60 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet[open],
+  .sheet.is-closing,
+  .sheet::backdrop,
+  .sheet.is-closing::backdrop {
+    animation: none;
+  }
 }
 
 .sheet__body {
@@ -39,6 +87,21 @@
 
   .sheet__body {
     padding: 20px 28px 28px;
+  }
+
+  /* On a desk it is centred, so it grows in instead of sliding up. */
+  @keyframes sheet-up {
+    from {
+      transform: scale(0.96);
+      opacity: 0;
+    }
+  }
+
+  @keyframes sheet-down {
+    to {
+      transform: scale(0.96);
+      opacity: 0;
+    }
   }
 
   .sheet__grip {
