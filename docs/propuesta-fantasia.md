@@ -3,6 +3,9 @@
 > Análisis de diseño hecho el 8 de noviembre de 2026 sobre la rama `v2`, mirando el código y la app
 > en un viewport de móvil (375 px) en las cinco situaciones de Hoy (recarga, Poder 1, Manifestación,
 > Poder 2, Mimos), más Plan y Aprender. Alex decide qué entra y en qué orden.
+>
+> **Estado (8 de noviembre de 2026):** implementado al completo en la PR #15, en el orden de la sección 5.
+> En desarrollo, `?celebrar=1` en la URL fuerza todas las celebraciones.
 
 ---
 
