@@ -137,6 +137,9 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   cursor: pointer;
+  transition:
+    transform 80ms ease-out,
+    border-bottom-width 80ms ease-out;
 }
 
 @media (hover: hover) {
@@ -171,6 +174,38 @@ a {
   --btn-ink: var(--ink);
   border: 2px solid var(--line);
   border-bottom-width: 5px;
+}
+
+/* Changing tab: the old screen fades out and the new one fades in (react-router's viewTransition on the tabs). */
+::view-transition-old(root) {
+  animation: 120ms ease-in both screen-out;
+}
+
+::view-transition-new(root) {
+  animation: 160ms ease-out both screen-in;
+}
+
+@keyframes screen-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+
+  .btn {
+    transition: none;
+  }
 }
 
 /* Information tag: flat, tinted with the phase when there is one. Not pressable. */

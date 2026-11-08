@@ -36,6 +36,27 @@ const PERIOD_TEXT = {
 
 const monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' })
 
+/** Phase colours for the browser chrome (Purpurina.useThemeColor). */
+export const PHASE_HEX = { poder1: '#1cb0f6', manifestacion: '#ffc800', poder2: '#58cc02', mimos: '#d61f69' } as const
+
+/** The marks of the calendar, drawn like the rest of the app instead of emoji (propuesta 4.7). */
+export function Flame({ className = 'plan__flame' }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 20" width="12" height="15" aria-hidden="true">
+      <path d="M8 1 q-1 6 -5 9 q-2 6 5 9 q7 -3 5 -9 q-1 -3 -3 -4 q0 3 -2 4 q-1 -3 0 -9 z" fill="#ff8a00" />
+      <path d="M8 11 q-3 3 0 8 q3 -5 0 -8 z" fill="#ffc800" />
+    </svg>
+  )
+}
+
+export function Star({ className = 'plan__star', style }: { className?: string; style?: React.CSSProperties }) {
+  return (
+    <svg className={className} style={style} viewBox="0 0 20 20" width="11" height="11" aria-hidden="true">
+      <path d="M10 1 l2.6 5.6 6.1 0.7 -4.5 4.2 1.2 6 -5.4 -3 -5.4 3 1.2 -6 -4.5 -4.2 6.1 -0.7 z" fill="currentColor" />
+    </svg>
+  )
+}
+
 /** A "maybe" period is not drawn on the calendar: only the expected days get a drop. */
 function showsDrop(day: ForecastDay): boolean {
   return day.period === 'en_curso' || day.period === 'probable'
@@ -54,6 +75,7 @@ export function PlanScreen({ status, periods, contraception }: Props) {
   const [pickDate, setPickDate] = useState(false)
   const [picked, setPicked] = useState('')
   const [showPrev, setShowPrev] = useState(false)
+  const [tools, setTools] = useState(false)
   // No ovulation with hormonal contraception, and while the period is late the dates are only a guess.
   const showFire = contraception !== 'si' && !fc.late
   const fireFor = (day: ForecastDay) => showFire && onFire(day)
@@ -97,9 +119,13 @@ export function PlanScreen({ status, periods, contraception }: Props) {
         <p className="plan__lead">Seis meses de tu ciclo. Dime qué quieres planificar y te marco los mejores días.</p>
       </header>
 
-      <button type="button" className="btn btn--ghost" onClick={() => setPickDate(true)}>
-        ¿Cómo estaré tal día?
-      </button>
+      {/* The controls fold away so the calendar is the first thing she scrolls to; they open while a goal is on. */}
+      <details className="plan__tools" open={tools} onToggle={(e) => setTools(e.currentTarget.open)}>
+        <summary className="btn btn--ghost plan__tools-summary">Planificar algo</summary>
+        <div className="plan__tools-body">
+          <button type="button" className="btn btn--ghost" onClick={() => setPickDate(true)}>
+            ¿Cómo estaré tal día?
+          </button>
 
       <section aria-labelledby="plan-goal">
         <h2 id="plan-goal" className="eyebrow">
@@ -124,7 +150,7 @@ export function PlanScreen({ status, periods, contraception }: Props) {
             {windows.length > 0 ? (
               <>
                 <p>
-                  <strong>Tus mejores días</strong>, marcados con ★ en el calendario:
+                  <strong>Tus mejores días</strong>, marcados con <Star className="plan__star plan__star--inline" /> en el calendario:
                 </p>
                 <ul className="plan__windows">
                   {windows.map((w) => (
@@ -142,6 +168,8 @@ export function PlanScreen({ status, periods, contraception }: Props) {
           </div>
         )}
       </section>
+        </div>
+      </details>
 
       {fc.late && <p className="ciclo__note ciclo__note--warn">{AVISO_RETRASO}</p>}
 
@@ -161,11 +189,16 @@ export function PlanScreen({ status, periods, contraception }: Props) {
           <i className="plan__drop" />
           Regla
         </span>
-        {showFire && <span className="plan__legend-fire">🔥 On fire: cerca de la ovulación, libido y fertilidad a tope</span>}
+        {showFire && (
+          <span className="plan__legend-fire">
+            <Flame />
+            On fire: cerca de la ovulación, libido y fertilidad a tope
+          </span>
+        )}
         {objetivo && (
           <>
             <span className="plan__legend-goal">
-              <b className="plan__star">★</b>
+              <Star />
               Buen día para {objetivo.label.toLowerCase()}
             </span>
             <span>
@@ -185,6 +218,11 @@ export function PlanScreen({ status, periods, contraception }: Props) {
       {(showPrev && lastMonth ? months : shownMonths).map((month) => (
         <section key={month.key} id={`mes-${month.key}`} className="plan__month" aria-label={monthYear.format(toJsDate(month.first))}>
           <h2 className="plan__month-name">{monthYear.format(toJsDate(month.first))}</h2>
+          {/* Stars pop in one after another, in date order, so she sees where they land. */}
+          {(() => {
+            let stars = 0
+            const popIn = () => ({ '--i': stars++ }) as React.CSSProperties
+            return (
           <div className="plan__grid">
             {WEEKDAYS.map((d) => (
               <span key={d} className="plan__wd" aria-hidden="true">
@@ -218,16 +256,12 @@ export function PlanScreen({ status, periods, contraception }: Props) {
                     aria-label={`${longDate.format(toJsDate(date))}, ya pasó: ${STATE_NAMES[was.state]}${was.period ? ', tuviste la regla' : ''}${wasFire ? ', on fire' : ''}${wasGood ? ', era buen día' : ''}`}
                     onClick={() => setOpen({ day: was, planned: false })}
                   >
-                    {wasGood && (
-                      <b className="plan__star" aria-hidden="true">
-                        ★
-                      </b>
-                    )}
+                    {wasGood && <Star key={goal} style={popIn()} />}
                     {Number(date.slice(8))}
                     {was.period && <i className="plan__drop" />}
                     {wasFire && (
-                      <span className="plan__marks" aria-hidden="true">
-                        🔥
+                      <span className="plan__marks">
+                        <Flame />
                       </span>
                     )}
                   </button>
@@ -253,22 +287,20 @@ export function PlanScreen({ status, periods, contraception }: Props) {
                   aria-label={`${longDate.format(toJsDate(date))}: ${STATE_NAMES[day.state]}${showsDrop(day) ? `, ${PERIOD_TEXT[day.period!].toLowerCase()}` : ''}${fire ? ', on fire: libido y fertilidad a tope' : ''}${good ? ', buen día' : ''}`}
                   onClick={() => setOpen({ day, planned: false })}
                 >
-                  {good && (
-                    <b className="plan__star" aria-hidden="true">
-                      ★
-                    </b>
-                  )}
+                  {good && <Star key={goal} style={popIn()} />}
                   {Number(date.slice(8))}
                   {showsDrop(day) && <i className="plan__drop" />}
                   {fire && (
-                    <span className="plan__marks" aria-hidden="true">
-                      🔥
+                    <span className="plan__marks">
+                      <Flame />
                     </span>
                   )}
                 </button>
               )
             })}
           </div>
+            )
+          })()}
         </section>
       ))}
 
@@ -345,7 +377,7 @@ function DaySheet({
         {day.period && <p className="plan__period">{PERIOD_TEXT[day.period]}</p>}
         {fire && (
           <p className="ciclo__note ciclo__note--info">
-            🔥 On fire: estás cerca de la ovulación, con la libido y la fertilidad a tope. {AVISO_FERTIL_PLAN}
+            <Flame className="plan__flame plan__flame--inline" /> On fire: estás cerca de la ovulación, con la libido y la fertilidad a tope. {AVISO_FERTIL_PLAN}
           </p>
         )}
         {day.confidence === 'baja' && <p className="plan__sheet-text">Queda lejos: tómatelo como una idea, no como una cita.</p>}
@@ -384,7 +416,11 @@ function PastSheet({ day, fire, onClose }: { day: PastDay; fire: boolean; onClos
         </h2>
         <p className="plan__sheet-text">{summary}</p>
         {day.period && <p className="plan__period">Tuviste la regla</p>}
-        {fire && <p className="ciclo__note ciclo__note--info">🔥 On fire. {AVISO_FERTIL_PASADO}</p>}
+        {fire && (
+          <p className="ciclo__note ciclo__note--info">
+            <Flame className="plan__flame plan__flame--inline" /> On fire. {AVISO_FERTIL_PASADO}
+          </p>
+        )}
         {goodFor.length > 0 && (
           <>
             <h3 className="eyebrow">Era buen día para</h3>

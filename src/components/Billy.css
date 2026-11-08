@@ -164,7 +164,132 @@
   }
 }
 
+/* Pokes (propuesta 4.5): one short gesture, then back to the loop. */
+.billy {
+  transform-box: fill-box;
+  transform-origin: 50% 85%;
+}
+
+.billy--spin {
+  animation: billy-poke-spin 0.6s ease-in-out 1;
+}
+
+@keyframes billy-poke-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.billy--bounce {
+  animation: billy-poke-bounce 0.6s ease-out 1;
+}
+
+@keyframes billy-poke-bounce {
+  25%,
+  75% {
+    transform: translateY(-8px);
+  }
+  50%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.billy--pulse .billy-aura {
+  animation: billy-poke-pulse 0.7s ease-out 1;
+}
+
+@keyframes billy-poke-pulse {
+  40% {
+    opacity: 0.9;
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+}
+
+.billy--wiggle {
+  animation: billy-poke-wiggle 0.5s ease-in-out 1;
+}
+
+@keyframes billy-poke-wiggle {
+  25% {
+    transform: rotate(-6deg);
+  }
+  75% {
+    transform: rotate(6deg);
+  }
+}
+
+.billy--twitch {
+  animation: billy-poke-twitch 0.5s steps(2) 1;
+}
+
+@keyframes billy-poke-twitch {
+  25% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  50% {
+    transform: translateX(2px) rotate(1deg);
+  }
+  75% {
+    transform: translateX(-1px);
+  }
+}
+
+.billy--squash {
+  animation: billy-poke-squash 0.5s ease-out 1;
+}
+
+@keyframes billy-poke-squash {
+  30% {
+    transform: scale(1.08, 0.9);
+  }
+  60% {
+    transform: scale(0.96, 1.06);
+  }
+}
+
+/* The loading screen: playing dead, and after a moment one eye opens to check whether we are still there. */
+.billy-eye {
+  opacity: 0;
+}
+
+.billy--waking .billy-eye {
+  animation: billy-wake 2.4s ease-in-out 0.8s infinite;
+}
+
+.billy--waking .billy-x path:nth-child(3),
+.billy--waking .billy-x path:nth-child(4) {
+  animation: billy-wake-x 2.4s ease-in-out 0.8s infinite;
+}
+
+@keyframes billy-wake {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  15%,
+  60% {
+    opacity: 1;
+  }
+}
+
+@keyframes billy-wake-x {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  15%,
+  60% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .billy,
   .billy * {
     animation: none !important;
   }

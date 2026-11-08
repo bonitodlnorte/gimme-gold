@@ -1,7 +1,7 @@
 // Billy, the dramatic opossum (decision D17). One mood per phase; see the canvas board "Billy · estados por fase".
 
 import type { Phase } from '../domain/cycle'
-import type { ReactNode } from 'react'
+import { useState, type MouseEvent, type ReactNode } from 'react'
 import './Billy.css'
 
 export type BillyMood =
@@ -144,11 +144,16 @@ function PlayingDead() {
       <circle cx="30" cy="58" r="11" fill={DARK} />
       <circle cx="30" cy="58" r="5" fill={PINK} />
       <ellipse cx="44" cy="78" rx="27" ry="23" fill={FACE} />
-      <g stroke={EYE} strokeWidth="3.2" strokeLinecap="round">
+      <g className="billy-x" stroke={EYE} strokeWidth="3.2" strokeLinecap="round">
         <path d="M32 68 L40 76" />
         <path d="M40 68 L32 76" />
         <path d="M48 68 L56 76" />
         <path d="M56 68 L48 76" />
+      </g>
+      {/* One eye that opens on the loading screen, when Billy wakes up. */}
+      <g className="billy-eye">
+        <circle cx="52" cy="72" r="5.5" fill="#fff" stroke={EYE} strokeWidth="2" />
+        <circle cx="52" cy="73" r="2.6" fill={EYE} />
       </g>
       <circle cx="24" cy="86" r="5" fill={NOSE} />
       <ellipse cx="40" cy="96" rx="5.5" ry="8" fill={NOSE} />
@@ -510,8 +515,38 @@ function BillyBody({ mood }: { mood: Exclude<BillyMood, 'muerto'> }) {
   return <Sitting mood={mood as 'normal' | 'fiesta' | 'alerta' | 'desolado'} />
 }
 
-export function Billy({ mood, size = 120 }: { mood: BillyMood; size?: number }) {
+/** What Billy does when she pokes him: a short gesture per mood, nothing more (propuesta 4.5). */
+const GESTURES: Record<BillyMood, string> = {
+  normal: 'squash',
+  fiesta: 'squash',
+  alerta: 'squash',
+  desolado: 'squash',
+  muerto: 'twitch',
+  meditando: 'pulse',
+  pesas: 'bounce',
+  bailando: 'spin',
+  artificiero: 'twitch',
+  spa: 'wiggle',
+  mayordomo: 'squash',
+  escucha: 'wiggle',
+  elegante: 'squash',
+  bandera: 'wiggle',
+}
+
+export function Billy({ mood, size = 120, waking = false }: { mood: BillyMood; size?: number; waking?: boolean }) {
   const dead = mood === 'muerto'
+  const [gesture, setGesture] = useState<string | null>(null)
+
+  function poke(e: MouseEvent) {
+    // A poke is a wink, not a tap on whatever Billy sits in (the hero link).
+    e.preventDefault()
+    e.stopPropagation()
+    if (gesture) return
+    navigator.vibrate?.(10)
+    setGesture(GESTURES[mood])
+    window.setTimeout(() => setGesture(null), 700)
+  }
+
   return (
     <svg
       width={dead ? size * 1.3 : size}
@@ -519,7 +554,8 @@ export function Billy({ mood, size = 120 }: { mood: BillyMood; size?: number }) 
       viewBox={dead ? '0 0 170 110' : '0 0 120 130'}
       role="img"
       aria-label={LABELS[mood]}
-      className="billy"
+      className={['billy', gesture && `billy--${gesture}`, waking && 'billy--waking'].filter(Boolean).join(' ')}
+      onClick={poke}
     >
       {dead ? <PlayingDead /> : <BillyBody mood={mood} />}
     </svg>

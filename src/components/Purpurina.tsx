@@ -41,22 +41,39 @@ export function reducedMotion(): boolean {
 }
 
 /**
- * Whether a celebration keyed by `name` is due today. The first call of the day says yes and
- * remembers it; the rest of the day say no. Without storage (private mode) it fires every time.
- * In development, ?purpurina=1 forces it.
+ * Whether the celebration `name` is due for `stamp` (a date, a cycle, a phase…). The first call
+ * with a new stamp says yes and remembers it; the following ones say no. Without storage
+ * (private mode) it fires every time. In development, ?celebrar=1 forces every celebration.
  */
-export function celebrateToday(name: string): boolean {
-  if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('purpurina') === '1') return true
+export function celebrateOnce(name: string, stamp: string): boolean {
+  if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('celebrar') === '1') return true
   if (reducedMotion()) return false
   const key = `gimmeGold_celebrado_${name}`
-  const date = today()
   try {
-    if (window.localStorage.getItem(key) === date) return false
-    window.localStorage.setItem(key, date)
+    if (window.localStorage.getItem(key) === stamp) return false
+    window.localStorage.setItem(key, stamp)
   } catch {
     // No storage: celebrate anyway.
   }
   return true
+}
+
+/** Once a day. */
+export function celebrateToday(name: string): boolean {
+  return celebrateOnce(name, today())
+}
+
+/** Paints the browser chrome (Android's status bar, iOS standalone) in the phase colour while mounted. */
+export function useThemeColor(color: string | null) {
+  useEffect(() => {
+    const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
+    if (!meta || !color) return
+    const before = meta.content
+    meta.content = color
+    return () => {
+      meta.content = before
+    }
+  }, [color])
 }
 
 /** The glitter layer. Mount it and it falls once, then calls onDone and renders nothing. */
