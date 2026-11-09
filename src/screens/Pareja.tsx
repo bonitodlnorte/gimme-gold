@@ -49,7 +49,7 @@ export function ParejaScreen() {
     fetchPartnerView(token).then(setView, () => setFailed(true))
   }, [token])
 
-  // Her glitter week reaches him too, in a smaller dose: once a day while she is in Manifestación.
+  // Her glitter week reaches him too, in a smaller dose, each time he opens the page.
   useEffect(() => {
     if (view && partnerStatus(view, today()).state === 'manifestacion' && celebrateToday('purpurina-pareja')) setGlitter(true)
   }, [view])

@@ -42,9 +42,9 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
   const [error, setError] = useState(false)
   const phase = status.phase
   const onPeriod = phase === 'poder1' && status.periodOngoing
-  // Alerta de purpurina: once a day while she is in Manifestación.
+  // Alerta de purpurina: every time she opens the app while she is in Manifestación.
   const [glitter, setGlitter] = useState(() => phase === 'manifestacion' && celebrateToday('purpurina'))
-  // Each phase has its own welcome the first time she opens the app in it (propuesta 4.2).
+  // Each phase has its own welcome whenever she opens the app in it (propuesta 4.2).
   const [welcome, setWelcome] = useState<string | null>(() => {
     const moment = onPeriod ? 'recarga' : phase
     return celebrateOnce('fase', `${status.cycleStart}/${moment}`) ? moment : null
