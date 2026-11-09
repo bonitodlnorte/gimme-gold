@@ -4,9 +4,9 @@
 // early it came. Keys are also what the client stores when a device subscribes, so nobody receives
 // a notification about the state they were already in.
 
-import { type CycleStatus, type Phase } from './cycle'
-import type { LocalDate } from './dates'
-import { partnerStatus, type PartnerState } from './partner'
+import { type CycleStatus, type Phase } from './cycle.js'
+import type { LocalDate } from './dates.js'
+import { partnerStatus, type PartnerState } from './partner.js'
 
 /** Days before the expected period at which she gets the heads-up. */
 export const AVISO_REGLA_DIAS = 2

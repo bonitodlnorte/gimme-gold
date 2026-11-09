@@ -2,8 +2,8 @@
 // returns: the cycle start, the estimated length and whether phases are orientative. It never
 // reveals fertility or a late period.
 
-import { phaseForCycleDay, type Phase } from './cycle'
-import { addDays, daysBetween, type LocalDate } from './dates'
+import { phaseForCycleDay, type Phase } from './cycle.js'
+import { addDays, daysBetween, type LocalDate } from './dates.js'
 
 /** Phases plus the first days of the period and the countdown at the end of Mimos. */
 export type PartnerState = 'regla' | Phase | 'codigo-rojo'

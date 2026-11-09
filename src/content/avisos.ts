@@ -2,8 +2,8 @@
 // shows one line of title and two of body on a lock screen. Nothing here may hint at fertility or at a
 // late period on the partner's side (D10). Also used by api/avisos.ts, so no browser APIs.
 
-import type { EventoElla } from '../domain/avisos'
-import type { PartnerState } from '../domain/partner'
+import type { EventoElla } from '../domain/avisos.js'
+import type { PartnerState } from '../domain/partner.js'
 
 export interface AvisoCopy {
   title: string

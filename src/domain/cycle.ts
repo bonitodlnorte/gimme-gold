@@ -3,7 +3,7 @@
 // - the cycle length is the median of the last 6 completed cycles;
 // - with hormonal contraception phases are shown with a warning and no fertile window.
 
-import { addDays, daysBetween, type LocalDate } from './dates'
+import { addDays, daysBetween, type LocalDate } from './dates.js'
 
 export type Phase = 'poder1' | 'manifestacion' | 'poder2' | 'mimos'
 export type Contraception = 'no' | 'si' | 'no_decir'

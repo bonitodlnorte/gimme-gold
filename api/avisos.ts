@@ -1,9 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
 import { sendNotification, setVapidDetails } from 'web-push'
-import { AVISOS_ELLA, AVISOS_PAREJA, type AvisoCopy } from '../src/content/avisos'
-import { avisoElla, avisoPareja } from '../src/domain/avisos'
-import { cycleStatus, type Contraception, type Period } from '../src/domain/cycle'
-import type { LocalDate } from '../src/domain/dates'
+import { AVISOS_ELLA, AVISOS_PAREJA, type AvisoCopy } from '../src/content/avisos.js'
+import { avisoElla, avisoPareja } from '../src/domain/avisos.js'
+import { cycleStatus, type Contraception, type Period } from '../src/domain/cycle.js'
+import type { LocalDate } from '../src/domain/dates.js'
 
 // The daily notifications run (vercel.json "crons"). For every subscribed device it computes today's state
 // key (src/domain/avisos.ts), compares it with the last one notified and sends when it changed. Her devices
