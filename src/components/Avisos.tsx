@@ -25,8 +25,15 @@ export interface AvisosBackend {
 
 export interface Push {
   state: PushState
+  /** What went wrong the last time activating failed, in the browser's words. Shown small, to diagnose a phone. */
+  error: string | null
   activate: () => Promise<'on' | 'denegado' | 'error'>
   deactivate: () => Promise<void>
+}
+
+function describe(e: unknown): string {
+  if (e instanceof Error) return `${e.name}: ${e.message}`
+  return String(e)
 }
 
 /** In development, ?avisos=1 shows the prompt as if the app were installed with notifications off. */
@@ -36,6 +43,7 @@ function forced(): boolean {
 
 export function usePush(backend: AvisosBackend): Push {
   const [state, setState] = useState<PushState>('cargando')
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     let live = true
@@ -63,17 +71,23 @@ export function usePush(backend: AvisosBackend): Push {
   return useMemo<Push>(
     () => ({
       state,
+      error,
       async activate() {
+        setError(null)
         try {
           const keys = await subscribePush()
           if (!keys) {
             setState('denegado')
             return 'denegado'
           }
-          if (!(await backend.save(keys))) return 'error'
+          if (!(await backend.save(keys))) {
+            setError('El servidor no ha aceptado este dispositivo: puede que el enlace ya no sea válido.')
+            return 'error'
+          }
           setState('on')
           return 'on'
-        } catch {
+        } catch (e) {
+          setError(describe(e))
           return 'error'
         }
       },
@@ -86,7 +100,7 @@ export function usePush(backend: AvisosBackend): Push {
         }
       },
     }),
-    [state, backend],
+    [state, error, backend],
   )
 }
 
@@ -154,7 +168,12 @@ export function AvisosPrompt({ variant, push }: { variant: Variant; push: Push }
         <Billy mood="alerta" size={110} />
         <h2 className="avisos__title">{copy.title}</h2>
         <p>{copy.text}</p>
-        {error && <p className="alta__error">No he podido activarlos. Inténtalo otra vez, o más tarde desde Ajustes.</p>}
+        {error && (
+          <p className="alta__error">
+            No he podido activarlos. Inténtalo otra vez, o más tarde desde Ajustes.
+            {push.error && <small className="avisos__detalle">{push.error}</small>}
+          </p>
+        )}
         <button type="button" className="btn btn--go" disabled={busy} onClick={go}>
           {copy.go}
         </button>
@@ -210,7 +229,12 @@ export function AvisosAjuste({ variant, push }: { variant: Variant; push: Push }
       <button type="button" className={`btn ${on ? 'btn--ghost' : 'btn--go'}`} disabled={busy} onClick={toggle}>
         {on ? 'Desactivar los avisos' : 'Activar los avisos'}
       </button>
-      {error && <p className="alta__error">No he podido activarlos. Inténtalo otra vez.</p>}
+      {error && (
+        <p className="alta__error">
+          No he podido activarlos. Inténtalo otra vez.
+          {push.error && <small className="avisos__detalle">{push.error}</small>}
+        </p>
+      )}
     </div>
   )
 }
