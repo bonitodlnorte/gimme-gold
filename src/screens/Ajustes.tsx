@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { AvisosAjuste, usePush, type AvisosBackend } from '../components/Avisos'
 import { Billy } from '../components/Billy'
 import { AVISO_NO_ANTICONCEPTIVO } from '../content/fases'
 import {
@@ -31,6 +32,7 @@ interface Props {
   settings: CycleSettings
   periods: Period[]
   estimate: LengthEstimate
+  avisos: AvisosBackend
   onSaveSettings: (settings: CycleSettings) => Promise<void>
   /** Returns how many periods were new. */
   onImport: (periods: Period[]) => Promise<number>
@@ -38,7 +40,8 @@ interface Props {
   onSignOut: () => void
 }
 
-export function AjustesScreen({ email, settings, periods, estimate, onSaveSettings, onImport, onDeleteAccount, onSignOut }: Props) {
+export function AjustesScreen({ email, settings, periods, estimate, avisos, onSaveSettings, onImport, onDeleteAccount, onSignOut }: Props) {
+  const push = usePush(avisos)
   const [length, setLength] = useState<number | null>(settings.declaredLength)
   const [contraception, setContraception] = useState(settings.contraception)
   const [saving, setSaving] = useState(false)
@@ -169,6 +172,13 @@ export function AjustesScreen({ email, settings, periods, estimate, onSaveSettin
             {saved && !dirty ? 'Guardado' : 'Guardar cambios'}
           </button>
         )}
+      </section>
+
+      <section className="ajustes__section" aria-labelledby="ajustes-avisos">
+        <h2 id="ajustes-avisos" className="eyebrow">
+          Avisos
+        </h2>
+        <AvisosAjuste variant="ella" push={push} />
       </section>
 
       <section className="ajustes__section" aria-labelledby="ajustes-pareja">

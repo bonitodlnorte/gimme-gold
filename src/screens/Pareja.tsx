@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { AvisosAjuste, AvisosPrompt, usePush, type AvisosBackend } from '../components/Avisos'
 import { Instalar } from '../components/Instalar'
 import { useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
 import { Purpurina, celebrateToday, useThemeColor } from '../components/Purpurina'
 import { Flame, PHASE_HEX } from './Plan'
 import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, PARA_PAREJA, PLANES_PAREJA, avisoProximo } from '../content/pareja'
+import { avisoPareja } from '../domain/avisos'
 import { toJsDate, today } from '../domain/dates'
 import { partnerStatus, type PartnerSegment, type PartnerState } from '../domain/partner'
-import { fetchPartnerView, type PartnerView } from '../data/store'
+import { deletePartnerPushSubscription, fetchPartnerView, savePartnerPushSubscription, type PartnerView } from '../data/store'
 import './Ciclo.css'
 import './Pareja.css'
 
@@ -44,6 +46,17 @@ export function ParejaScreen() {
   const [showAll, setShowAll] = useState(false)
   const [glitter, setGlitter] = useState(false)
   useThemeColor(view ? PHASE_HEX[partnerStatus(view, today()).phase] : null)
+
+  // His device is saved against the link, by token (D10: no account). Today's key goes with it.
+  const avisos = useMemo<AvisosBackend>(() => {
+    const lastKey = view ? avisoPareja(view, today()).key : ''
+    return {
+      lastKey,
+      save: (keys) => savePartnerPushSubscription(token, keys, lastKey),
+      remove: (endpoint) => deletePartnerPushSubscription(token, endpoint),
+    }
+  }, [view, token])
+  const push = usePush(avisos)
 
   useEffect(() => {
     fetchPartnerView(token).then(setView, () => setFailed(true))
@@ -170,6 +183,8 @@ export function ParejaScreen() {
           </section>
 
           <Instalar variant="pareja" />
+          <AvisosAjuste variant="pareja" push={push} />
+          <AvisosPrompt variant="pareja" push={push} />
 
           <p className="pareja__footer">Te lo ha compartido ella desde Gimme Gold, y puede retirarlo cuando quiera.</p>
         </div>

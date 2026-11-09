@@ -2,6 +2,7 @@
 
 import type { Contraception, CycleSettings, Period } from '../domain/cycle'
 import type { LocalDate } from '../domain/dates'
+import type { PushKeys } from '../lib/push'
 import { supabase } from '../lib/supabase'
 
 export interface Profile extends CycleSettings {
@@ -168,4 +169,47 @@ export async function fetchPartnerView(token: string): Promise<PartnerView | nul
   const row = Array.isArray(data) ? data[0] : null
   if (!row) return null
   return { cycleStart: row.cycle_start, cycleLength: row.cycle_length, orientative: row.orientative }
+}
+
+// Push subscriptions (avisos). Hers go through RLS; the partner's through RPCs by token, since he has
+// no account. `lastKey` is today's state (src/domain/avisos.ts), so the cron never notifies the state
+// the device was already in.
+
+
+
+export async function savePushSubscription(userId: string, keys: PushKeys, lastKey: string): Promise<void> {
+  const { error } = await supabase
+    .from('push_subscriptions')
+    .upsert({ user_id: userId, endpoint: keys.endpoint, p256dh: keys.p256dh, auth: keys.auth, last_key: lastKey }, { onConflict: 'endpoint' })
+  if (error) throw error
+}
+
+export async function deletePushSubscription(endpoint: string): Promise<void> {
+  const { error } = await supabase.from('push_subscriptions').delete().eq('endpoint', endpoint)
+  if (error) throw error
+}
+
+/** Whether this device is registered for her account. */
+export async function hasPushSubscription(userId: string, endpoint: string): Promise<boolean> {
+  const { data, error } = await supabase.from('push_subscriptions').select('id').eq('user_id', userId).eq('endpoint', endpoint).maybeSingle()
+  if (error) throw error
+  return data !== null
+}
+
+/** Returns false when the link is no longer valid. */
+export async function savePartnerPushSubscription(token: string, keys: PushKeys, lastKey: string): Promise<boolean> {
+  const { data, error } = await supabase.rpc('partner_subscribe', {
+    token,
+    endpoint: keys.endpoint,
+    p256dh: keys.p256dh,
+    auth: keys.auth,
+    last_key: lastKey,
+  })
+  if (error) throw error
+  return data === true
+}
+
+export async function deletePartnerPushSubscription(token: string, endpoint: string): Promise<void> {
+  const { error } = await supabase.rpc('partner_unsubscribe', { token, endpoint })
+  if (error) throw error
 }
