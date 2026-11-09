@@ -4,7 +4,7 @@ import { Billy, moodFor } from '../components/Billy'
 import { AvisosPrompt, usePush, type AvisosBackend } from '../components/Avisos'
 import { Instalar } from '../components/Instalar'
 import { Mudanza } from '../components/Mudanza'
-import { Purpurina, celebrateOnce, celebrateToday, useThemeColor, type PartyKind } from '../components/Purpurina'
+import { Purpurina, celebrateOnce, celebrateToday, partyFor, useThemeColor, type PartyKind } from '../components/Purpurina'
 import { PHASE_HEX } from './Plan'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
 import { PHASE_NAMES, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
@@ -45,10 +45,10 @@ export function CicloScreen({ status, contraception, periods, avisos, onPeriodSt
   const [error, setError] = useState(false)
   const phase = status.phase
   const onPeriod = phase === 'poder1' && status.periodOngoing
-  // Alerta de purpurina every time she opens the app in Manifestación; cucumber slices in Poder 2, Billy's spa day.
+  // One party per phase, every time she opens the app: glitter, cucumbers, lightning, stars, opossums.
   const [party, setParty] = useState<PartyKind | null>(() => {
-    const kind: PartyKind | null = phase === 'manifestacion' ? 'purpurina' : phase === 'poder2' ? 'pepinos' : null
-    return kind && celebrateToday(kind) ? kind : null
+    const kind = partyFor(onPeriod ? 'recarga' : phase)
+    return celebrateToday(kind) ? kind : null
   })
   // Each phase has its own welcome whenever she opens the app in it (propuesta 4.2).
   const [welcome, setWelcome] = useState<string | null>(() => {
