@@ -46,6 +46,31 @@
   }
 }
 
+/* Cucumber slices (Poder 2): they jump up from the bottom edge, spin, and fall back out of sight. */
+.purpurina__p--slice {
+  top: auto;
+  bottom: calc(var(--size) * -1);
+  background: none;
+  animation: pepino-jump var(--fall) linear var(--delay) 1 both;
+}
+
+@keyframes pepino-jump {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  45% {
+    opacity: 1;
+    transform: translate3d(calc(var(--drift) / 2), calc(var(--height) * -1), 0) rotate(calc(var(--spin) / 2));
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--drift), 0, 0) rotate(var(--spin));
+  }
+}
+
 /* Billy takes a little bow when the glitter is falling. */
 .ciclo__hero.is-celebrating .billy {
   animation: purpurina-bow 0.6s ease-out 1.2s 1 both;

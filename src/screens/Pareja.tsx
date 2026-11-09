@@ -3,7 +3,7 @@ import { AvisosAjuste, AvisosPrompt, usePush, type AvisosBackend } from '../comp
 import { Instalar } from '../components/Instalar'
 import { useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
-import { Purpurina, celebrateToday, useThemeColor } from '../components/Purpurina'
+import { Purpurina, celebrateToday, useThemeColor, type PartyKind } from '../components/Purpurina'
 import { Flame, PHASE_HEX } from './Plan'
 import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, PARA_PAREJA, PLANES_PAREJA, avisoProximo } from '../content/pareja'
 import { avisoPareja } from '../domain/avisos'
@@ -44,7 +44,7 @@ export function ParejaScreen() {
   const [view, setView] = useState<PartnerView | null | undefined>(undefined)
   const [failed, setFailed] = useState(false)
   const [showAll, setShowAll] = useState(false)
-  const [glitter, setGlitter] = useState(false)
+  const [party, setParty] = useState<PartyKind | null>(null)
   useThemeColor(view ? PHASE_HEX[partnerStatus(view, today()).phase] : null)
 
   // His device is saved against the link, by token (D10: no account). Today's key goes with it.
@@ -62,9 +62,12 @@ export function ParejaScreen() {
     fetchPartnerView(token).then(setView, () => setFailed(true))
   }, [token])
 
-  // Her glitter week reaches him too, in a smaller dose, each time he opens the page.
+  // Her glitter week, and her cucumber days, reach him too in a smaller dose, each time he opens the page.
   useEffect(() => {
-    if (view && partnerStatus(view, today()).state === 'manifestacion' && celebrateToday('purpurina-pareja')) setGlitter(true)
+    if (!view) return
+    const state = partnerStatus(view, today()).state
+    const kind: PartyKind | null = state === 'manifestacion' ? 'purpurina' : state === 'poder2' ? 'pepinos' : null
+    if (kind && celebrateToday(`${kind}-pareja`)) setParty(kind)
   }, [view])
 
   if (failed || view === null) {
@@ -99,7 +102,7 @@ export function ParejaScreen() {
 
   return (
     <main className="screen ciclo pareja" data-phase={status.phase}>
-      {glitter && <Purpurina count={25} onDone={() => setGlitter(false)} />}
+      {party && <Purpurina kind={party} count={party === 'pepinos' ? 10 : 25} onDone={() => setParty(null)} />}
       <header className="ciclo__date">
         <p className="eyebrow">{dateLabel.format(toJsDate(today()))}</p>
         <h1>Cómo está ella hoy</h1>
