@@ -7,6 +7,10 @@
 > **Estado (8 de noviembre de 2026):** implementado al completo en la PR #15, en el orden de la sección 5.
 > En desarrollo, `?celebrar=1` en la URL fuerza todas las celebraciones.
 >
+> **Cambio del 9 de noviembre de 2026 (II):** una fiesta por fase, todas con la mecánica de la purpurina:
+> estrellas y «z» que suben despacio en Recarga, rayos en Poder 1, purpurina en Manifestación, pepinos en
+> Poder 2 y zarigüeyas haciéndose las muertas cayendo como hojas en Mimos. La pareja recibe una dosis menor.
+>
 > **Cambio del 9 de noviembre de 2026:** las usuarias echaban en falta un efecto al entrar en Poder 2 (el
 > temblor del hero pasaba desapercibido). Ahora en Poder 2 saltan rodajas de pepino desde abajo de la
 > pantalla, como las de Billy en el spa, con la misma mecánica que la purpurina.

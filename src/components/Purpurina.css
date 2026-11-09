@@ -47,7 +47,7 @@
 }
 
 /* Cucumber slices (Poder 2): they jump up from the bottom edge, spin, and fall back out of sight. */
-.purpurina__p--slice {
+.purpurina__p--pepinos {
   top: auto;
   bottom: calc(var(--size) * -1);
   background: none;
@@ -68,6 +68,83 @@
   100% {
     opacity: 1;
     transform: translate3d(var(--drift), 0, 0) rotate(var(--spin));
+  }
+}
+
+/* Lightning (Poder 1): fast, straight down, a slight tilt. */
+.purpurina__p--rayos {
+  width: calc(var(--size) * 0.65);
+  background: none;
+  animation: rayo-fall var(--fall) cubic-bezier(0.5, 0, 0.9, 0.6) var(--delay) 1 both;
+}
+
+@keyframes rayo-fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(var(--spin));
+  }
+  10%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--drift), 100vh, 0) rotate(var(--spin));
+  }
+}
+
+/* Stars and z's (Recarga): they rise slowly from the bottom and fade on the way up. */
+.purpurina__p--estrellas {
+  top: auto;
+  bottom: calc(var(--size) * -1);
+  background: none;
+  animation: estrella-rise var(--fall) ease-out var(--delay) 1 both;
+}
+
+@keyframes estrella-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--drift), -70vh, 0) rotate(var(--spin));
+  }
+}
+
+/* Opossums (Mimos): they fall like leaves, swaying side to side and rocking. */
+.purpurina__p--zarigueyas {
+  height: calc(var(--size) * 0.67);
+  background: none;
+  animation:
+    hoja-fall var(--fall) ease-in var(--delay) 1 both,
+    hoja-sway calc(var(--fall) / 2.5) ease-in-out var(--delay) infinite alternate;
+}
+
+@keyframes hoja-fall {
+  0% {
+    opacity: 0;
+    top: -70px;
+  }
+  8%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    top: 100vh;
+  }
+}
+
+@keyframes hoja-sway {
+  from {
+    transform: translateX(calc(var(--drift) * -1)) rotate(calc(var(--spin) * -1));
+  }
+  to {
+    transform: translateX(var(--drift)) rotate(var(--spin));
   }
 }
 

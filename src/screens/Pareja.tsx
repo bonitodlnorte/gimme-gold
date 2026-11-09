@@ -3,7 +3,7 @@ import { AvisosAjuste, AvisosPrompt, usePush, type AvisosBackend } from '../comp
 import { Instalar } from '../components/Instalar'
 import { useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
-import { Purpurina, celebrateToday, useThemeColor, type PartyKind } from '../components/Purpurina'
+import { Purpurina, celebrateToday, partyFor, useThemeColor, type PartyKind } from '../components/Purpurina'
 import { Flame, PHASE_HEX } from './Plan'
 import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, PARA_PAREJA, PLANES_PAREJA, avisoProximo } from '../content/pareja'
 import { avisoPareja } from '../domain/avisos'
@@ -29,6 +29,9 @@ function whenText(seg: PartnerSegment): string {
   if (seg.from.slice(0, 7) === seg.to.slice(0, 7)) return `${fmt(dayOnly, seg.from)}–${fmt(dayShortMonth, seg.to)}`
   return `${fmt(dayShortMonth, seg.from)} – ${fmt(dayShortMonth, seg.to)}`
 }
+
+/** Fewer particles than on her screen: he gets the news, not the whole party. */
+const PARTNER_DOSE: Record<PartyKind, number> = { purpurina: 25, pepinos: 10, rayos: 14, estrellas: 7, zarigueyas: 5 }
 
 // What Billy suggests he does, not how she is (her avatars come from moodFor).
 const MOODS: Record<Exclude<PartnerState, 'codigo-rojo'>, BillyMood> = {
@@ -62,12 +65,12 @@ export function ParejaScreen() {
     fetchPartnerView(token).then(setView, () => setFailed(true))
   }, [token])
 
-  // Her glitter week, and her cucumber days, reach him too in a smaller dose, each time he opens the page.
+  // Her parties reach him too, in a smaller dose, each time he opens the page.
   useEffect(() => {
     if (!view) return
     const state = partnerStatus(view, today()).state
-    const kind: PartyKind | null = state === 'manifestacion' ? 'purpurina' : state === 'poder2' ? 'pepinos' : null
-    if (kind && celebrateToday(`${kind}-pareja`)) setParty(kind)
+    const kind = partyFor(state === 'codigo-rojo' ? 'mimos' : state === 'regla' ? 'recarga' : state)
+    if (celebrateToday(`${kind}-pareja`)) setParty(kind)
   }, [view])
 
   if (failed || view === null) {
@@ -102,7 +105,7 @@ export function ParejaScreen() {
 
   return (
     <main className="screen ciclo pareja" data-phase={status.phase}>
-      {party && <Purpurina kind={party} count={party === 'pepinos' ? 10 : 25} onDone={() => setParty(null)} />}
+      {party && <Purpurina kind={party} count={PARTNER_DOSE[party]} onDone={() => setParty(null)} />}
       <header className="ciclo__date">
         <p className="eyebrow">{dateLabel.format(toJsDate(today()))}</p>
         <h1>Cómo está ella hoy</h1>
