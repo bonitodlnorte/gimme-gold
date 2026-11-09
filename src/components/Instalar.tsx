@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Billy } from './Billy'
 import { onOldHost } from './Mudanza'
+import { installed, platform } from '../lib/pwa'
 import { supabase } from '../lib/supabase'
 import '../screens/Alta.css'
 import './Mudanza.css'
 
-// Billy's tip to add the app to the home screen. iOS has no install prompt, so it shows the
-// steps; Android Chrome fires beforeinstallprompt, which we keep to offer a one-tap install.
+// Billy's invitation to turn notifications on, which means adding the app to the home screen: push only
+// works from there on iPhone. Once the installed app opens, Avisos.tsx asks for the permission, so this is
+// one flow, not two. iOS has no install prompt, so it shows the steps; Android Chrome fires
+// beforeinstallprompt, which we keep to offer a one-tap install.
 
 interface InstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -25,12 +28,12 @@ const DISMISSED_KEY = { ella: 'gimmeGold_instalarCerrado', pareja: 'gimmeGold_in
 
 const COPY = {
   ella: {
-    title: 'Llévame en el bolsillo',
-    text: 'Añádeme a tu pantalla de inicio y me abrirás como una app. Prometo no hacerme el muerto cuando me necesites.',
+    title: 'Activa los avisos',
+    text: 'Te aviso cuando cambies de fase y dos días antes de la regla. Para eso tengo que vivir en tu pantalla de inicio: añádeme y, al abrirme, te lo pido.',
   },
   pareja: {
-    title: 'Que no te pille desprevenido',
-    text: 'Guárdame en la pantalla de inicio y tendrás el parte a un toque. El código rojo no avisa dos veces.',
+    title: 'Que te avise yo',
+    text: 'Un aviso cuando cambie la cosa y otro antes del código rojo, para que no te pille desprevenido. Guárdame en la pantalla de inicio y, al abrirme, te lo pido.',
   },
 }
 
@@ -42,21 +45,6 @@ function dismissed(variant: Variant): boolean {
   } catch {
     return false
   }
-}
-
-function installed(): boolean {
-  return window.matchMedia('(display-mode: standalone)').matches || (navigator as { standalone?: boolean }).standalone === true
-}
-
-/** 'ios', 'android' or null on desktop. In development, ?instalar=ios|android previews it. */
-function platform(): 'ios' | 'android' | null {
-  const forced = import.meta.env.DEV ? new URLSearchParams(window.location.search).get('instalar') : null
-  if (forced === 'ios' || forced === 'android') return forced
-  const ua = navigator.userAgent
-  // iPadOS reports itself as a Mac, but with touch.
-  if (/iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return 'ios'
-  if (/Android/.test(ua)) return 'android'
-  return null
 }
 
 function ShareIcon() {
@@ -132,7 +120,7 @@ export function Instalar({ variant = 'ella' }: { variant?: Variant }) {
   }
 
   return (
-    <aside className="mudanza instalar" aria-label="Añadir Gimme Gold a la pantalla de inicio">
+    <aside className="mudanza instalar" aria-label="Activar los avisos añadiendo la app a la pantalla de inicio">
       <Billy mood="fiesta" size={56} />
       <div>
         <p className="mudanza__title">{COPY[variant].title}</p>

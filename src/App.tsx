@@ -1,20 +1,25 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import type { AvisosBackend } from './components/Avisos'
 import { Billy } from './components/Billy'
 import {
   addPeriod,
   deleteAccount,
   deletePeriod,
+  deletePushSubscription,
+  hasPushSubscription,
   importPeriods,
   loadPeriods,
   loadProfile,
   saveOnboarding,
+  savePushSubscription,
   updatePeriod,
   updateProfile,
   type Onboarding,
   type Profile,
 } from './data/store'
+import { avisoElla } from './domain/avisos'
 import { cycleStatus, type Period } from './domain/cycle'
 import { today } from './domain/dates'
 import { readLegacyStorage } from './domain/legacyImport'
@@ -78,6 +83,21 @@ export function App() {
     [data],
   )
 
+  // How this device is saved for her notifications; today's key goes with it (src/domain/avisos.ts).
+  const avisos = useMemo<AvisosBackend | null>(() => {
+    if (!userId || !status) return null
+    const lastKey = avisoElla(status).key
+    return {
+      lastKey,
+      save: async (keys) => {
+        await savePushSubscription(userId, keys, lastKey)
+        return true
+      },
+      remove: deletePushSubscription,
+      known: (endpoint) => hasPushSubscription(userId, endpoint),
+    }
+  }, [userId, status])
+
   if (session === undefined) return <Waiting text="Despertando a Billy…" />
   if (!session || !userId) return <LoginScreen />
   if (failed) {
@@ -93,7 +113,7 @@ export function App() {
   }
   if (!data) return <Waiting text="Cargando tu ciclo…" />
 
-  if (!data.profile || !status) {
+  if (!data.profile || !status || !avisos) {
     return (
       <AltaScreen
         legacy={data.profile ? null : legacy}
@@ -123,6 +143,7 @@ export function App() {
             status={status}
             contraception={data.profile.contraception}
             periods={data.periods}
+            avisos={avisos}
             onPeriodStarted={saved((period) => addPeriod(userId, period))}
             onPeriodEnded={saved(() => updatePeriod(userId, status.cycleStart, { ...current, end: today() }))}
           />
@@ -153,6 +174,7 @@ export function App() {
             settings={data.profile}
             periods={data.periods}
             estimate={status.estimate}
+            avisos={avisos}
             onSaveSettings={saved((settings) => updateProfile(userId, settings))}
             onImport={async (periods) => {
               const added = await importPeriods(userId, periods, data.periods)

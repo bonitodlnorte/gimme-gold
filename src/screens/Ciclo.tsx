@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Billy, moodFor } from '../components/Billy'
+import { AvisosPrompt, usePush, type AvisosBackend } from '../components/Avisos'
 import { Instalar } from '../components/Instalar'
 import { Mudanza } from '../components/Mudanza'
 import { Purpurina, celebrateOnce, celebrateToday, useThemeColor } from '../components/Purpurina'
@@ -32,11 +33,13 @@ interface Props {
   status: CycleStatus
   contraception: Contraception
   periods: Period[]
+  avisos: AvisosBackend
   onPeriodStarted: (period: Period) => Promise<void>
   onPeriodEnded: () => Promise<void>
 }
 
-export function CicloScreen({ status, contraception, periods, onPeriodStarted, onPeriodEnded }: Props) {
+export function CicloScreen({ status, contraception, periods, avisos, onPeriodStarted, onPeriodEnded }: Props) {
+  const push = usePush(avisos)
   const [registering, setRegistering] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(false)
@@ -203,6 +206,7 @@ export function CicloScreen({ status, contraception, periods, onPeriodStarted, o
           </div>
 
           <Instalar />
+          <AvisosPrompt variant="ella" push={push} />
 
           {registering && (
             <PeriodSheet

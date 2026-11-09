@@ -2,7 +2,7 @@
 // D19: v1 is for family and friends; a legal review is due before opening it to the public.
 
 export const CONTACTO_PRIVACIDAD = 'privacidad@korokota.com'
-export const ACTUALIZADA = '1 de noviembre de 2026'
+export const ACTUALIZADA = '9 de noviembre de 2026'
 
 export const SECCIONES: { titulo: string; parrafos: string[] }[] = [
   {
@@ -17,6 +17,7 @@ export const SECCIONES: { titulo: string; parrafos: string[] }[] = [
       'Tu email, para que puedas entrar con un código.',
       'Tus datos de salud: las fechas de tus reglas, las notas que escribas, la duración habitual de tu ciclo y si tomas anticonceptivos hormonales.',
       'Si compartes un enlace con tu pareja, guardamos una huella cifrada del enlace (no el enlace en sí), cuándo se creó y cuándo caduca.',
+      'Si activas los avisos, guardamos la dirección técnica que tu teléfono nos da para enviártelos y cuál fue el último aviso. Lo mismo con el teléfono de tu pareja, si los activa desde su enlace. Al desactivarlos se borra.',
       'Nada más: ni tu nombre, ni tu ubicación, ni analítica de uso, ni publicidad.',
     ],
   },
@@ -32,7 +33,8 @@ export const SECCIONES: { titulo: string; parrafos: string[] }[] = [
     parrafos: [
       'Tus datos se guardan en Supabase, en servidores de Frankfurt (Unión Europea). Cada usuaria solo puede leer y escribir los suyos.',
       'Los emails con el código los envía Resend desde la Unión Europea; solo conoce tu dirección de email.',
-      'La web se sirve desde Vercel, que no guarda tus datos de salud.',
+      'La web se sirve desde Vercel, que no guarda tus datos de salud. Cada mañana, un proceso en Vercel calcula si toca un aviso y lo envía.',
+      'Los avisos viajan cifrados hasta tu teléfono a través del servicio de notificaciones de Apple o de Google, que no puede leerlos. Aun así, solo llevan el nombre de la fase y una frase de Billy.',
       'Tu pareja, si le compartes el enlace, solo ve tu fase de hoy, planes y los próximos días. Nunca ve tu ventana fértil, tus notas, tu historial ni si se te retrasa la regla.',
       'No vendemos ni cedemos tus datos a nadie.',
     ],
