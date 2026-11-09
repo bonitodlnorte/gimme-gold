@@ -55,7 +55,7 @@ Uno por estado de su vista, con los mismos titulares que ya conoce.
 
 ## Puesta en marcha
 
-1. Aplicar `supabase/migrations/0003_avisos.sql`.
+1. Aplicar `supabase/migrations/0003_avisos.sql` y `0004_avisos_params.sql`.
 2. Generar las claves VAPID (`npx web-push generate-vapid-keys`) y ponerlas en Vercel junto con `CRON_SECRET`, `VAPID_SUBJECT` y
    `SUPABASE_SERVICE_ROLE_KEY` (ver `.env.example`). La pública también como `VITE_VAPID_PUBLIC_KEY`.
 3. Desplegar: el cron de `vercel.json` queda registrado solo.

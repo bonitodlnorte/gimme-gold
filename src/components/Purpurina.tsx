@@ -1,6 +1,7 @@
 // Alerta de purpurina (docs/propuesta-fantasia.md, 4.1): golden glitter falls over the whole screen
-// when she opens Hoy in Manifestación. On every opening of the app, only CSS, never over the health notes (it is
-// pointer-events: none and gone in under three seconds).
+// when she opens Hoy in Manifestación. In Poder 2, Billy's spa day, cucumber slices jump up from the
+// bottom instead. On every opening of the app, only CSS, never over the health notes (the layer is
+// pointer-events: none and gone in about three seconds).
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { today } from '../domain/dates'
@@ -10,6 +11,8 @@ const COLORS = ['var(--manifestacion)', 'var(--manifestacion-edge)', '#ffffff', 
 const SHAPES = ['square', 'diamond', 'star'] as const
 const DURATION_MS = 3200
 
+export type PartyKind = 'purpurina' | 'pepinos'
+
 interface Particle {
   id: number
   left: number
@@ -18,22 +21,40 @@ interface Particle {
   fall: number
   spin: number
   drift: number
+  /** How high a cucumber slice jumps, in vh. */
+  height: number
   color: string
   shape: (typeof SHAPES)[number]
 }
 
-function makeParticles(count: number): Particle[] {
+function makeParticles(kind: PartyKind, count: number): Particle[] {
+  const slices = kind === 'pepinos'
   return Array.from({ length: count }, (_, id) => ({
     id,
     left: Math.random() * 100,
-    size: 4 + Math.random() * 5,
-    delay: Math.random() * 0.9,
-    fall: 1.6 + Math.random() * 0.9,
-    spin: (Math.random() < 0.5 ? -1 : 1) * (360 + Math.random() * 540),
-    drift: (Math.random() - 0.5) * 60,
+    size: slices ? 26 + Math.random() * 18 : 4 + Math.random() * 5,
+    delay: Math.random() * (slices ? 0.8 : 0.9),
+    fall: slices ? 1.5 + Math.random() * 0.7 : 1.6 + Math.random() * 0.9,
+    spin: (Math.random() < 0.5 ? -1 : 1) * (slices ? 180 + Math.random() * 360 : 360 + Math.random() * 540),
+    drift: (Math.random() - 0.5) * (slices ? 120 : 60),
+    height: 35 + Math.random() * 40,
     color: COLORS[Math.floor(Math.random() * COLORS.length)]!,
     shape: SHAPES[Math.floor(Math.random() * SHAPES.length)]!,
   }))
+}
+
+/** A cucumber slice: dark rind, pale flesh, a ring of seeds. The same one Billy wears on his eyes in the spa. */
+function Slice() {
+  return (
+    <svg viewBox="0 0 40 40" width="100%" height="100%" aria-hidden="true">
+      <circle cx="20" cy="20" r="19" fill="#5c9e3a" />
+      <circle cx="20" cy="20" r="16" fill="#c9eaa6" />
+      <circle cx="20" cy="20" r="9.5" fill="#e4f3d3" />
+      {[0, 60, 120, 180, 240, 300].map((deg) => (
+        <ellipse key={deg} cx="20" cy="12.5" rx="1.6" ry="3" fill="#8fbf5a" transform={`rotate(${deg} 20 20)`} />
+      ))}
+    </svg>
+  )
 }
 
 export function reducedMotion(): boolean {
@@ -75,10 +96,11 @@ export function useThemeColor(color: string | null) {
   }, [color])
 }
 
-/** The glitter layer. Mount it and it falls once, then calls onDone and renders nothing. */
-export function Purpurina({ count = 70, onDone }: { count?: number; onDone?: () => void }) {
+/** The party layer: glitter falling, or cucumber slices jumping. Mount it and it plays once, then calls onDone and renders nothing. */
+export function Purpurina({ kind = 'purpurina', count, onDone }: { kind?: PartyKind; count?: number; onDone?: () => void }) {
   const [alive, setAlive] = useState(true)
-  const particles = useMemo(() => makeParticles(count), [count])
+  const n = count ?? (kind === 'pepinos' ? 22 : 70)
+  const particles = useMemo(() => makeParticles(kind, n), [kind, n])
   // The timer runs once per mount, whatever the parent re-renders with.
   const done = useRef(onDone)
   done.current = onDone
@@ -93,11 +115,11 @@ export function Purpurina({ count = 70, onDone }: { count?: number; onDone?: () 
 
   if (!alive) return null
   return (
-    <div className="purpurina" aria-hidden="true">
+    <div className={`purpurina purpurina--${kind}`} aria-hidden="true">
       {particles.map((p) => (
         <i
           key={p.id}
-          className={`purpurina__p purpurina__p--${p.shape}`}
+          className={kind === 'pepinos' ? 'purpurina__p purpurina__p--slice' : `purpurina__p purpurina__p--${p.shape}`}
           style={
             {
               left: `${p.left}vw`,
@@ -106,10 +128,13 @@ export function Purpurina({ count = 70, onDone }: { count?: number; onDone?: () 
               '--fall': `${p.fall}s`,
               '--spin': `${p.spin}deg`,
               '--drift': `${p.drift}px`,
+              '--height': `${p.height}vh`,
               '--color': p.color,
             } as React.CSSProperties
           }
-        />
+        >
+          {kind === 'pepinos' && <Slice />}
+        </i>
       ))}
     </div>
   )

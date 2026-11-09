@@ -33,6 +33,17 @@ export interface Push {
 
 function describe(e: unknown): string {
   if (e instanceof Error) return `${e.name}: ${e.message}`
+  // Supabase errors are plain objects with message, code and details.
+  if (e && typeof e === 'object') {
+    const { message, code, details } = e as { message?: string; code?: string; details?: string }
+    const text = [code, message, details].filter(Boolean).join(' · ')
+    if (text) return text
+    try {
+      return JSON.stringify(e)
+    } catch {
+      return String(e)
+    }
+  }
   return String(e)
 }
 

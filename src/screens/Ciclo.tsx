@@ -4,7 +4,7 @@ import { Billy, moodFor } from '../components/Billy'
 import { AvisosPrompt, usePush, type AvisosBackend } from '../components/Avisos'
 import { Instalar } from '../components/Instalar'
 import { Mudanza } from '../components/Mudanza'
-import { Purpurina, celebrateOnce, celebrateToday, useThemeColor } from '../components/Purpurina'
+import { Purpurina, celebrateOnce, celebrateToday, useThemeColor, type PartyKind } from '../components/Purpurina'
 import { PHASE_HEX } from './Plan'
 import { AVISO_ORIENTATIVO, DATO_FERTIL, PARA_ELLA } from '../content/fases'
 import { PHASE_NAMES, type Contraception, type CycleStatus, type Period } from '../domain/cycle'
@@ -45,8 +45,11 @@ export function CicloScreen({ status, contraception, periods, avisos, onPeriodSt
   const [error, setError] = useState(false)
   const phase = status.phase
   const onPeriod = phase === 'poder1' && status.periodOngoing
-  // Alerta de purpurina: every time she opens the app while she is in Manifestación.
-  const [glitter, setGlitter] = useState(() => phase === 'manifestacion' && celebrateToday('purpurina'))
+  // Alerta de purpurina every time she opens the app in Manifestación; cucumber slices in Poder 2, Billy's spa day.
+  const [party, setParty] = useState<PartyKind | null>(() => {
+    const kind: PartyKind | null = phase === 'manifestacion' ? 'purpurina' : phase === 'poder2' ? 'pepinos' : null
+    return kind && celebrateToday(kind) ? kind : null
+  })
   // Each phase has its own welcome whenever she opens the app in it (propuesta 4.2).
   const [welcome, setWelcome] = useState<string | null>(() => {
     const moment = onPeriod ? 'recarga' : phase
@@ -74,7 +77,7 @@ export function CicloScreen({ status, contraception, periods, avisos, onPeriodSt
 
   return (
     <main className={`screen ciclo${welcome ? ` is-welcome-${welcome}` : ''}`} data-phase={phase} onAnimationEnd={(e) => e.target === e.currentTarget && setWelcome(null)}>
-      {glitter && <Purpurina onDone={() => setGlitter(false)} />}
+      {party && <Purpurina kind={party} onDone={() => setParty(null)} />}
       {welcome === 'recarga' && <div className="ciclo__velo" aria-hidden="true" />}
       <header className="ciclo__top">
         <div className="ciclo__date">
@@ -105,7 +108,7 @@ export function CicloScreen({ status, contraception, periods, avisos, onPeriodSt
       <div className="ciclo__body">
         <div className="ciclo__col">
           {/* The recharge has no card of its own in Aprender: it is the start of Poder 1. */}
-          <Link to={`/aprender/${phase}`} state={FROM_HOY} className={`ciclo__hero${glitter ? ' is-celebrating' : ''}${fresh ? ' is-fresh' : ''}`} aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
+          <Link to={`/aprender/${phase}`} state={FROM_HOY} className={`ciclo__hero${party ? ' is-celebrating' : ''}${fresh ? ' is-fresh' : ''}`} aria-label={`${phaseName}: ${copy.headline}. Por qué te sientes así`}>
             <div className="ciclo__hero-text">
               <span className="ciclo__phase">{phaseName}</span>
               <p className="ciclo__headline">{copy.headline}</p>

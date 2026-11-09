@@ -199,17 +199,17 @@ export async function hasPushSubscription(userId: string, endpoint: string): Pro
 /** Returns false when the link is no longer valid. */
 export async function savePartnerPushSubscription(token: string, keys: PushKeys, lastKey: string): Promise<boolean> {
   const { data, error } = await supabase.rpc('partner_subscribe', {
-    token,
-    endpoint: keys.endpoint,
-    p256dh: keys.p256dh,
-    auth: keys.auth,
-    last_key: lastKey,
+    p_token: token,
+    p_endpoint: keys.endpoint,
+    p_p256dh: keys.p256dh,
+    p_auth: keys.auth,
+    p_last_key: lastKey,
   })
   if (error) throw error
   return data === true
 }
 
 export async function deletePartnerPushSubscription(token: string, endpoint: string): Promise<void> {
-  const { error } = await supabase.rpc('partner_unsubscribe', { token, endpoint })
+  const { error } = await supabase.rpc('partner_unsubscribe', { p_token: token, p_endpoint: endpoint })
   if (error) throw error
 }
