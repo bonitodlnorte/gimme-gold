@@ -9,6 +9,8 @@
 - Cada mañana (a las 9:00 hora de Madrid en verano, 8:00 en invierno) un proceso calcula el **estado de hoy** de cada
   dispositivo apuntado y lo compara con el último que se le notificó. Si cambió, envía. Así nunca se repite un aviso y,
   si ella apunta la regla antes o después de lo previsto, la pareja se entera igual al día siguiente.
+- Cuando ella apunta la regla en Hoy, el aviso sale al momento: la app pide al servidor que envíe ya lo que cambió para
+  sus dispositivos y los de su pareja, con la misma lógica que el proceso de la mañana (que sigue cubriendo todo lo demás).
 - Al activar los avisos se guarda el estado de ese día como «ya notificado»: nadie recibe un aviso de la fase en la que ya estaba.
 - Para activarlos hay que tener la app en la pantalla de inicio (en iPhone, el navegador no manda avisos). En la web, Billy
   invita a «activar los avisos», que lleva a instalar; al abrir la app instalada por primera vez, Billy pide el permiso con un toque.

@@ -213,3 +213,21 @@ export async function deletePartnerPushSubscription(token: string, endpoint: str
   const { error } = await supabase.rpc('partner_unsubscribe', { p_token: token, p_endpoint: endpoint })
   if (error) throw error
 }
+
+// Notifications (avisos). The daily cron (api/avisos.ts) covers everything; this only brings a change forward.
+
+/**
+ * Asks the server to send right now whatever notification her period change produced, mainly so her partner
+ * hears about it at once. Fire and forget: never blocks the UI and never shows an error, the morning cron sends
+ * it anyway.
+ */
+export function avisarAhora(): void {
+  void supabase.auth
+    .getSession()
+    .then(({ data }) => {
+      const token = data.session?.access_token
+      if (!token) return
+      return fetch('/api/avisar', { method: 'POST', headers: { authorization: `Bearer ${token}` }, keepalive: true })
+    })
+    .catch(() => undefined)
+}

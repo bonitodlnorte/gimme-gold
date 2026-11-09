@@ -5,6 +5,7 @@ import type { AvisosBackend } from './components/Avisos'
 import { Billy } from './components/Billy'
 import {
   addPeriod,
+  avisarAhora,
   deleteAccount,
   deletePeriod,
   deletePushSubscription,
@@ -144,7 +145,10 @@ export function App() {
             contraception={data.profile.contraception}
             periods={data.periods}
             avisos={avisos}
-            onPeriodStarted={saved((period) => addPeriod(userId, period))}
+            onPeriodStarted={saved(async (period) => {
+              await addPeriod(userId, period)
+              avisarAhora() // the partner hears about it now, not at tomorrow's cron
+            })}
             onPeriodEnded={saved(() => updatePeriod(userId, status.cycleStart, { ...current, end: today() }))}
           />
         }
