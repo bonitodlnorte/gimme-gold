@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import webpush from 'web-push'
+import { sendNotification, setVapidDetails } from 'web-push'
 import { AVISOS_ELLA, AVISOS_PAREJA, type AvisoCopy } from '../src/content/avisos'
 import { avisoElla, avisoPareja } from '../src/domain/avisos'
 import { cycleStatus, type Contraception, type Period } from '../src/domain/cycle'
@@ -47,7 +47,7 @@ export async function GET(request: Request): Promise<Response> {
   if (!url || !serviceKey || !vapidPublic || !vapidPrivate || !subject) {
     return Response.json({ error: 'not_configured' }, { status: 503 })
   }
-  webpush.setVapidDetails(subject, vapidPublic, vapidPrivate)
+  setVapidDetails(subject, vapidPublic, vapidPrivate)
 
   const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } })
   const today = todayIn(TZ)
@@ -131,7 +131,7 @@ export async function GET(request: Request): Promise<Response> {
 
     if (payload) {
       try {
-        await webpush.sendNotification({ endpoint: row.endpoint, keys: { p256dh: row.p256dh, auth: row.auth } }, JSON.stringify(payload), { TTL: 12 * 3600, urgency: 'normal' })
+        await sendNotification({ endpoint: row.endpoint, keys: { p256dh: row.p256dh, auth: row.auth } }, JSON.stringify(payload), { TTL: 12 * 3600, urgency: 'normal' })
         sent++
       } catch (e) {
         const code = (e as { statusCode?: number }).statusCode
