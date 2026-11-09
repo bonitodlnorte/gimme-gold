@@ -32,3 +32,12 @@
 .avisos__ajuste .alta__hint {
   margin: 0;
 }
+
+.avisos__detalle {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.8;
+  word-break: break-word;
+}
