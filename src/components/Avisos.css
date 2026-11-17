@@ -41,3 +41,10 @@
   opacity: 0.8;
   word-break: break-word;
 }
+
+.avisos__hecho {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--poder2-ink);
+}
