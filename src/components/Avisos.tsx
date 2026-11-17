@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Billy } from './Billy'
 import { Sheet } from './Sheet'
-import { currentPush, pushPermission, pushSupported, subscribePush, unsubscribePush, type PushKeys } from '../lib/push'
+import { currentPush, pushPermission, pushSupported, resubscribePush, subscribePush, unsubscribePush, type PushKeys } from '../lib/push'
 import { installed } from '../lib/pwa'
 import '../screens/Alta.css'
 import './Avisos.css'
@@ -63,7 +63,12 @@ export function usePush(backend: AvisosBackend): Push {
       if (!pushSupported()) return setState('no-disponible')
       if (pushPermission() === 'denied') return setState('denegado')
       const keys = await currentPush()
-      if (!keys) return setState('off')
+      if (!keys) {
+        // He said yes once and the system dropped the subscription since (iOS does): take it back without asking.
+        const again = installed() ? await resubscribePush() : null
+        if (again && (await backend.save(again).catch(() => false))) return setState('on')
+        return setState('off')
+      }
       // The browser remembers a subscription the backend may have lost (a reinstall, a new link): save it again.
       if (backend.known && !(await backend.known(keys.endpoint).catch(() => true))) await backend.save(keys).catch(() => false)
       setState('on')
@@ -186,7 +191,7 @@ export function AvisosPrompt({ variant, push }: { variant: Variant; push: Push }
           </p>
         )}
         <button type="button" className="btn btn--go" disabled={busy} onClick={go}>
-          {copy.go}
+          {busy ? 'Activando…' : copy.go}
         </button>
         <button type="button" className="alta__link" onClick={later}>
           Ahora no
@@ -200,6 +205,8 @@ export function AvisosPrompt({ variant, push }: { variant: Variant; push: Push }
 export function AvisosAjuste({ variant, push }: { variant: Variant; push: Push }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(false)
+  // Says so right after he turns them on or off: the button changing its label alone is easy to miss.
+  const [done, setDone] = useState<'on' | 'off' | null>(null)
   const inApp = installed() || forced()
 
   if (push.state === 'cargando') return null
@@ -211,8 +218,15 @@ export function AvisosAjuste({ variant, push }: { variant: Variant; push: Push }
   async function toggle() {
     setBusy(true)
     setError(false)
-    if (push.state === 'on') await push.deactivate()
-    else if ((await push.activate()) === 'error') setError(true)
+    setDone(null)
+    if (push.state === 'on') {
+      await push.deactivate()
+      setDone('off')
+    } else {
+      const result = await push.activate()
+      if (result === 'error') setError(true)
+      if (result === 'on') setDone('on')
+    }
     setBusy(false)
   }
 
@@ -238,8 +252,13 @@ export function AvisosAjuste({ variant, push }: { variant: Variant; push: Push }
             : 'Un aviso cuando cambie la cosa y otro antes del código rojo.'}
       </p>
       <button type="button" className={`btn ${on ? 'btn--ghost' : 'btn--go'}`} disabled={busy} onClick={toggle}>
-        {on ? 'Desactivar los avisos' : 'Activar los avisos'}
+        {busy ? (on ? 'Desactivando…' : 'Activando…') : on ? 'Desactivar los avisos' : 'Activar los avisos'}
       </button>
+      {done && !busy && (
+        <p className="avisos__hecho" role="status">
+          {done === 'on' ? '¡Hecho! Avisos activados en este teléfono.' : 'Avisos desactivados en este teléfono.'}
+        </p>
+      )}
       {error && (
         <p className="alta__error">
           No he podido activarlos. Inténtalo otra vez.

@@ -67,18 +67,59 @@ async function rememberStart(): Promise<void> {
   }
 }
 
+// iOS sometimes leaves one of these steps pending for ever, with no error. Each gets a limit, and the error names
+// the step, so a phone that cannot subscribe says where it stopped.
+const STEP_MS = 12_000
+
+function within<T>(promise: Promise<T>, step: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = window.setTimeout(() => reject(new Error(`Tiempo agotado en: ${step}`)), STEP_MS)
+    promise.then(
+      (value) => (window.clearTimeout(timer), resolve(value)),
+      (error) => (window.clearTimeout(timer), reject(error)),
+    )
+  })
+}
+
+async function subscribeOn(reg: ServiceWorkerRegistration, key: string): Promise<PushSubscription> {
+  const existing = await within(reg.pushManager.getSubscription(), 'leer la suscripción')
+  if (existing) return existing
+  return within(reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(key) }), 'suscribir el dispositivo')
+}
+
+/** Subscribes with the permission already granted. A stuck service worker is thrown away and tried once more. */
+async function subscribeGranted(key: string): Promise<PushKeys> {
+  let sub: PushSubscription
+  try {
+    sub = await subscribeOn(await within(registration(), 'arrancar el service worker'), key)
+  } catch {
+    const old = await navigator.serviceWorker.getRegistration('/')
+    await old?.unregister()
+    sub = await subscribeOn(await within(registration(), 'arrancar el service worker (2º intento)'), key)
+  }
+  await rememberStart()
+  return toKeys(sub)
+}
+
 /** Asks for permission (must run from a tap) and subscribes. Returns null when she said no. */
 export async function subscribePush(): Promise<PushKeys | null> {
   if (!VAPID_PUBLIC_KEY) throw new Error('Falta VITE_VAPID_PUBLIC_KEY')
-  const permission = await Notification.requestPermission()
+  const permission = await within(Notification.requestPermission(), 'pedir el permiso')
   if (permission !== 'granted') return null
-  const reg = await registration()
-  const existing = await reg.pushManager.getSubscription()
-  const sub =
-    existing ??
-    (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY) }))
-  await rememberStart()
-  return toKeys(sub)
+  return subscribeGranted(VAPID_PUBLIC_KEY)
+}
+
+/**
+ * Subscribes again without asking, for a device that already said yes but whose subscription the system dropped
+ * (iOS does that on its own). Returns null when it cannot, and never throws: it runs unprompted on opening the app.
+ */
+export async function resubscribePush(): Promise<PushKeys | null> {
+  if (!VAPID_PUBLIC_KEY || !pushSupported() || pushPermission() !== 'granted') return null
+  try {
+    return await subscribeGranted(VAPID_PUBLIC_KEY)
+  } catch {
+    return null
+  }
 }
 
 /** Drops the browser's subscription. Returns the endpoint it had, to delete it from Supabase too. */
