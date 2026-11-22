@@ -73,7 +73,7 @@ export function CicloScreen({ status, contraception, periods, avisos, onPeriodSt
   const copy = PARA_ELLA[onPeriod ? 'regla' : phase]
   // Same name as the Plan calendar: period days are Recarga, not Poder 1.
   const phaseName = onPeriod ? 'Recarga' : PHASE_NAMES[phase]
-  const changes = upcomingChanges(forecast(status, periods, 60), 3)
+  const changes = upcomingChanges(forecast(status, 60), 3)
 
   return (
     <main className={`screen ciclo${welcome ? ` is-welcome-${welcome}` : ''}`} data-phase={phase} onAnimationEnd={(e) => e.target === e.currentTarget && setWelcome(null)}>

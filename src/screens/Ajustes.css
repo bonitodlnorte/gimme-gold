@@ -117,3 +117,17 @@
   font-size: 15px;
   overflow-wrap: anywhere;
 }
+
+.ajustes__auto {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.ajustes__auto strong {
+  margin-right: 4px;
+  color: var(--ink);
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 900;
+}

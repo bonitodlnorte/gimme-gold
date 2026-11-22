@@ -12,13 +12,14 @@ export interface Profile extends CycleSettings {
 export async function loadProfile(userId: string): Promise<Profile | null> {
   const { data, error } = await supabase
     .from('profiles')
-    .select('declared_cycle_length, contraception, legacy_imported_at')
+    .select('declared_cycle_length, declared_period_days, contraception, legacy_imported_at')
     .eq('user_id', userId)
     .maybeSingle()
   if (error) throw error
   if (!data) return null
   return {
     declaredLength: data.declared_cycle_length,
+    declaredPeriodDays: data.declared_period_days,
     contraception: data.contraception as Contraception,
     legacyImported: data.legacy_imported_at !== null,
   }
@@ -47,6 +48,7 @@ export async function saveOnboarding(userId: string, { settings, periods, import
   const profile = await supabase.from('profiles').upsert({
     user_id: userId,
     declared_cycle_length: settings.declaredLength,
+    declared_period_days: settings.declaredPeriodDays ?? null,
     contraception: settings.contraception,
     health_consent_at: now,
     legacy_imported_at: imported ? now : null,
@@ -66,7 +68,11 @@ export async function saveOnboarding(userId: string, { settings, periods, import
 export async function updateProfile(userId: string, settings: CycleSettings): Promise<void> {
   const { error } = await supabase
     .from('profiles')
-    .update({ declared_cycle_length: settings.declaredLength, contraception: settings.contraception })
+    .update({
+      declared_cycle_length: settings.declaredLength,
+      declared_period_days: settings.declaredPeriodDays ?? null,
+      contraception: settings.contraception,
+    })
     .eq('user_id', userId)
   if (error) throw error
 }

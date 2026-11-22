@@ -178,6 +178,7 @@ export function App() {
             settings={data.profile}
             periods={data.periods}
             estimate={status.estimate}
+            periodEstimate={status.periodEstimate}
             avisos={avisos}
             onSaveSettings={saved((settings) => updateProfile(userId, settings))}
             onImport={async (periods) => {

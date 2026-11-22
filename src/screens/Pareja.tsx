@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
 import { Purpurina, celebrateToday, partyFor, useThemeColor, type PartyKind } from '../components/Purpurina'
 import { Flame, PHASE_HEX } from './Plan'
-import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, PARA_PAREJA, PLANES_PAREJA, avisoProximo } from '../content/pareja'
+import { AVISO_ORIENTATIVO_PAREJA, ENLACE_NO_VALIDO, FOTOS_PAREJA, PARA_PAREJA, PLANES_PAREJA, avisoProximo } from '../content/pareja'
 import { avisoPareja } from '../domain/avisos'
 import { toJsDate, today } from '../domain/dates'
 import { partnerStatus, type PartnerSegment, type PartnerState } from '../domain/partner'
@@ -34,12 +34,14 @@ function whenText(seg: PartnerSegment): string {
 const PARTNER_DOSE: Record<PartyKind, number> = { purpurina: 25, pepinos: 10, rayos: 14, estrellas: 7, zarigueyas: 5 }
 
 // What Billy suggests he does, not how she is (her avatars come from moodFor).
-const MOODS: Record<Exclude<PartnerState, 'codigo-rojo'>, BillyMood> = {
+const MOODS: Record<PartnerState, BillyMood> = {
   regla: 'mayordomo',
   poder1: 'escucha',
   manifestacion: 'elegante',
   poder2: 'artificiero',
   mimos: 'bandera',
+  // Playing dead next to the photo of the real thing.
+  'codigo-rojo': 'muerto',
 }
 
 export function ParejaScreen() {
@@ -93,6 +95,7 @@ export function ParejaScreen() {
 
   const status = partnerStatus(view, today())
   const copy = PARA_PAREJA[status.state]
+  const foto = FOTOS_PAREJA[status.state]
   // How long today's moment lasts: more useful to him than Pelz's phase name, and never "Poder 1" on period days.
   const now = status.ahead[0]?.current ? status.ahead[0] : null
   const lasts = now ? `Hasta el ${fmt(dayMonth, now.to)}` : 'Hoy es el último día'
@@ -121,13 +124,13 @@ export function ParejaScreen() {
               </span>
               <p className="ciclo__headline">{copy.headline}</p>
             </div>
-            {status.state !== 'codigo-rojo' && <Billy mood={MOODS[status.state]} size={96} />}
+            <Billy mood={MOODS[status.state]} size={96} />
           </section>
 
-          {status.state === 'codigo-rojo' && (
-            <figure className="pareja__photo">
-              <img src="/images/play-dead-animal.jpeg" alt="Una zarigüeya haciéndose la muerta" />
-              <figcaption>Tú, hoy. Así.</figcaption>
+          {foto && (
+            <figure className={`pareja__photo${foto.size ? ' pareja__photo--small' : ''}`}>
+              <img src={foto.src} alt={foto.alt} {...foto.size} />
+              <figcaption>{foto.pie}</figcaption>
             </figure>
           )}
 

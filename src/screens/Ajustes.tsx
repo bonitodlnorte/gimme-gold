@@ -5,12 +5,16 @@ import { Billy } from '../components/Billy'
 import { AVISO_NO_ANTICONCEPTIVO } from '../content/fases'
 import {
   DEFAULT_LENGTH,
+  DEFAULT_PERIOD_DAYS,
   MAX_LENGTH,
+  MAX_PERIOD_DAYS,
   MIN_LENGTH,
+  MIN_PERIOD_DAYS,
   type Contraception,
   type CycleSettings,
   type LengthEstimate,
   type Period,
+  type PeriodDaysEstimate,
 } from '../domain/cycle'
 import { today } from '../domain/dates'
 import { buildExportFile, parseExportFile } from '../domain/legacyImport'
@@ -32,6 +36,7 @@ interface Props {
   settings: CycleSettings
   periods: Period[]
   estimate: LengthEstimate
+  periodEstimate: PeriodDaysEstimate
   avisos: AvisosBackend
   onSaveSettings: (settings: CycleSettings) => Promise<void>
   /** Returns how many periods were new. */
@@ -40,9 +45,10 @@ interface Props {
   onSignOut: () => void
 }
 
-export function AjustesScreen({ email, settings, periods, estimate, avisos, onSaveSettings, onImport, onDeleteAccount, onSignOut }: Props) {
+export function AjustesScreen({ email, settings, periods, estimate, periodEstimate, avisos, onSaveSettings, onImport, onDeleteAccount, onSignOut }: Props) {
   const push = usePush(avisos)
   const [length, setLength] = useState<number | null>(settings.declaredLength)
+  const [periodDays, setPeriodDays] = useState<number | null>(settings.declaredPeriodDays ?? null)
   const [contraception, setContraception] = useState(settings.contraception)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -51,14 +57,21 @@ export function AjustesScreen({ email, settings, periods, estimate, avisos, onSa
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const dirty = length !== settings.declaredLength || contraception !== settings.contraception
+  const dirty =
+    length !== settings.declaredLength ||
+    periodDays !== (settings.declaredPeriodDays ?? null) ||
+    contraception !== settings.contraception
   const value = length ?? DEFAULT_LENGTH
+  const periodValue = periodDays ?? DEFAULT_PERIOD_DAYS
+  // With history behind them, both numbers are computed and kept up to date: there is nothing to set.
+  const lengthAuto = estimate.source === 'historial'
+  const periodAuto = periodEstimate.source === 'historial'
 
   async function save() {
     setSaving(true)
     setError(null)
     try {
-      await onSaveSettings({ declaredLength: length, contraception })
+      await onSaveSettings({ declaredLength: length, declaredPeriodDays: periodDays, contraception })
       setSaved(true)
     } catch {
       setError('No se han guardado los cambios. Prueba otra vez.')
@@ -122,28 +135,91 @@ export function AjustesScreen({ email, settings, periods, estimate, avisos, onSa
         </h2>
 
         <div className="ajustes__field">
-          <span className="alta__label">Duración habitual</span>
-          <div className="stepper stepper--compact">
-            <button type="button" aria-label="Un día menos" disabled={value <= MIN_LENGTH} onClick={() => (setLength(value - 1), setSaved(false))}>
-              −
-            </button>
-            <output aria-live="polite">
-              <strong>{length === null ? '¿?' : value}</strong> {length === null ? 'no lo sé' : 'días'}
-            </output>
-            <button type="button" aria-label="Un día más" disabled={value >= MAX_LENGTH} onClick={() => (setLength(value + 1), setSaved(false))}>
-              +
-            </button>
-          </div>
-          {length !== null && (
-            <button type="button" className="alta__link" onClick={() => (setLength(null), setSaved(false))}>
-              No lo sé
-            </button>
+          <span className="alta__label">Duración del ciclo</span>
+          {lengthAuto ? (
+            <>
+              <p className="ajustes__auto">
+                <strong>{estimate.length}</strong> días
+              </p>
+              <p className="alta__hint">
+                La calculo yo con {estimate.basedOn === 1 ? 'tu último ciclo' : `tus últimos ${estimate.basedOn} ciclos`} y se
+                actualiza sola cada vez que apuntas una regla.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="stepper stepper--compact">
+                <button type="button" aria-label="Un día menos" disabled={value <= MIN_LENGTH} onClick={() => (setLength(value - 1), setSaved(false))}>
+                  −
+                </button>
+                <output aria-live="polite">
+                  <strong>{length === null ? '¿?' : value}</strong> {length === null ? 'no lo sé' : 'días'}
+                </output>
+                <button type="button" aria-label="Un día más" disabled={value >= MAX_LENGTH} onClick={() => (setLength(value + 1), setSaved(false))}>
+                  +
+                </button>
+              </div>
+              {length !== null && (
+                <button type="button" className="alta__link" onClick={() => (setLength(null), setSaved(false))}>
+                  No lo sé
+                </button>
+              )}
+              <p className="alta__hint">
+                De un día 1 de regla al siguiente. La uso hasta que apuntes dos reglas; desde ahí la calculo yo con tu historial.
+              </p>
+            </>
           )}
-          <p className="alta__hint">
-            {estimate.source === 'historial'
-              ? `Ahora calculo tu ciclo con tu historial: ${estimate.length} días. Esto solo cuenta mientras no haya historial suficiente.`
-              : 'La uso hasta que hayas apuntado al menos dos reglas.'}
-          </p>
+        </div>
+
+        <div className="ajustes__field">
+          <span className="alta__label">Días de regla</span>
+          {periodAuto ? (
+            <>
+              <p className="ajustes__auto">
+                <strong>{periodEstimate.days}</strong> días
+              </p>
+              <p className="alta__hint">
+                Lo calculo con{' '}
+                {periodEstimate.basedOn === 1
+                  ? 'la última regla a la que le apuntaste el final'
+                  : `las últimas ${periodEstimate.basedOn} reglas a las que les apuntaste el final`}
+                . Si no te cuadra, corrige las fechas en <Link to="/historial">el historial</Link>.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="stepper stepper--compact">
+                <button
+                  type="button"
+                  aria-label="Un día menos de regla"
+                  disabled={periodValue <= MIN_PERIOD_DAYS}
+                  onClick={() => (setPeriodDays(periodValue - 1), setSaved(false))}
+                >
+                  −
+                </button>
+                <output aria-live="polite">
+                  <strong>{periodDays === null ? '¿?' : periodValue}</strong> {periodDays === null ? 'no lo sé' : 'días'}
+                </output>
+                <button
+                  type="button"
+                  aria-label="Un día más de regla"
+                  disabled={periodValue >= MAX_PERIOD_DAYS}
+                  onClick={() => (setPeriodDays(periodValue + 1), setSaved(false))}
+                >
+                  +
+                </button>
+              </div>
+              {periodDays !== null && (
+                <button type="button" className="alta__link" onClick={() => (setPeriodDays(null), setSaved(false))}>
+                  No lo sé
+                </button>
+              )}
+              <p className="alta__hint">
+                Cuántos días te suele durar. {periodDays === null ? `Mientras tanto cuento ${DEFAULT_PERIOD_DAYS}. ` : ''}Con esto pinto la
+                regla en el calendario y en el plan, hasta que apuntes cuándo se te acaba alguna.
+              </p>
+            </>
+          )}
         </div>
 
         <div className="ajustes__field">

@@ -90,7 +90,11 @@ export function buildExportFile(settings: CycleSettings, periods: Period[], expo
     version: 2,
     exportedAt: exportedAt.toISOString(),
     data: {
-      profile: { declaredCycleLength: settings.declaredLength, contraception: settings.contraception },
+      profile: {
+        declaredCycleLength: settings.declaredLength,
+        declaredPeriodDays: settings.declaredPeriodDays ?? null,
+        contraception: settings.contraception,
+      },
       periods: periods.map((p) => ({ start: p.start, end: p.end ?? null, note: p.note ?? null })),
     },
   }

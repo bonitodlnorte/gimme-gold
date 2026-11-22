@@ -3,6 +3,7 @@ import {
   completedCycleLengths,
   cycleStatus,
   estimateCycleLength,
+  estimatePeriodDays,
   fertileWindow,
   phaseForCycleDay,
   phaseRanges,
@@ -159,5 +160,36 @@ describe('phaseRanges', () => {
         expect([actual[phase].from, actual[phase].to]).toEqual(expected[phase])
       }
     }
+  })
+})
+
+describe('estimatePeriodDays', () => {
+  it('uses what she set, or 5, until she logs a period end', () => {
+    expect(estimatePeriodDays([{ start: '2026-10-01' }])).toMatchObject({ days: 5, source: 'por_defecto' })
+    expect(estimatePeriodDays([{ start: '2026-10-01' }], 7)).toMatchObject({ days: 7, source: 'declarada' })
+    expect(estimatePeriodDays([{ start: '2026-10-01' }], 40)).toMatchObject({ days: 5, source: 'por_defecto' })
+  })
+
+  it('takes the median of the last 6 logged ends over what she set', () => {
+    const logged: Period[] = [
+      { start: '2026-01-01', end: '2026-01-09' },
+      { start: '2026-02-01', end: '2026-02-03' },
+      { start: '2026-03-01', end: '2026-03-03' },
+      { start: '2026-04-01', end: '2026-04-04' },
+      { start: '2026-05-01' },
+      { start: '2026-06-01', end: '2026-06-04' },
+      { start: '2026-07-01', end: '2026-07-04' },
+      { start: '2026-08-01', end: '2026-08-05' },
+    ]
+    // 5, 4, 4, 4, 3, 3: the 9-day one from January is the seventh and no longer counts.
+    expect(estimatePeriodDays(logged, 7)).toEqual({ days: 4, source: 'historial', basedOn: 6 })
+  })
+
+  it('sets how long a period without a logged end is taken to last', () => {
+    const one: Period[] = [{ start: '2026-10-01' }]
+    const seven = { declaredLength: null, declaredPeriodDays: 7, contraception: 'no' as const }
+    expect(cycleStatus(one, seven, '2026-10-07')!.periodOngoing).toBe(true)
+    expect(cycleStatus(one, seven, '2026-10-08')!.periodOngoing).toBe(false)
+    expect(cycleStatus(one, { ...seven, declaredPeriodDays: 3 }, '2026-10-04')!.periodOngoing).toBe(false)
   })
 })

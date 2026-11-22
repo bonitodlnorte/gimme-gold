@@ -54,6 +54,40 @@ export const PARA_PAREJA: Record<PartnerState, PartnerCopy> = {
   },
 }
 
+/** A real photo under the headline: what he should do today, not how she is. Files live in public/images. */
+export interface FotoPareja {
+  src: string
+  alt: string
+  pie: string
+  /** Pixel size of a small file (a gif): it is shown at this size, centred, never stretched. */
+  size?: { width: number; height: number }
+}
+
+export const FOTOS_PAREJA: Partial<Record<PartnerState, FotoPareja>> = {
+  manifestacion: {
+    src: '/images/manifestacion-bond.gif',
+    alt: 'James Bond de esmoquin, ajustándose el puño de la camisa',
+    pie: 'Tú, hoy. Sin chándal.',
+    size: { width: 245, height: 300 },
+  },
+  poder2: {
+    src: '/images/bomb-squad.jpeg',
+    alt: 'Un artificiero con traje de protección, arrodillado ante una mochila',
+    pie: 'Aproximarse con máxima precaución.',
+  },
+  mimos: {
+    src: '/images/mimos-gatos.gif',
+    alt: 'Un gatito dándole un masaje a otro',
+    pie: 'Tu trabajo de esta semana.',
+    size: { width: 208, height: 219 },
+  },
+  'codigo-rojo': {
+    src: '/images/play-dead-animal.jpeg',
+    alt: 'Una zarigüeya haciéndose la muerta',
+    pie: 'Tú, hoy. Así.',
+  },
+}
+
 /** What to plan in each stretch ahead (Lo que viene). Concrete, bookable ideas. */
 export const PLANES_PAREJA: Record<PartnerState, { titulo: string; ideas: string[] }> = {
   regla: { titulo: 'Día de recarga', ideas: ['Dale espacio', 'Cena en casa y cocinas tú', 'Ibuprofeno y chocolate a mano'] },

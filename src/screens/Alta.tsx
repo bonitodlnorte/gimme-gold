@@ -2,14 +2,24 @@ import { useState } from 'react'
 import { Billy } from '../components/Billy'
 import { MonthPicker } from '../components/MonthPicker'
 import { AVISO_NO_ANTICONCEPTIVO } from '../content/fases'
-import { DEFAULT_LENGTH, MAX_LENGTH, MIN_LENGTH, sortedStarts, type Contraception } from '../domain/cycle'
+import {
+  DEFAULT_LENGTH,
+  DEFAULT_PERIOD_DAYS,
+  MAX_LENGTH,
+  MAX_PERIOD_DAYS,
+  MIN_LENGTH,
+  MIN_PERIOD_DAYS,
+  sortedStarts,
+  type Contraception,
+} from '../domain/cycle'
 import { addDays, toJsDate, today, type LocalDate } from '../domain/dates'
 import type { LegacyData } from '../domain/legacyImport'
 import type { Onboarding } from '../data/store'
 import './Alta.css'
 
 // Steps 2–4 of the sign-up (D18), plus the import screen shown after step 1 when the old
-// app left data in this browser. Importing skips steps 2 and 3.
+// app left data in this browser. Step 3 is two screens: cycle length, then period days (D28).
+// Importing skips steps 2 and 3.
 
 export function Progress({ step }: { step: 1 | 2 | 3 | 4 }) {
   return (
@@ -24,7 +34,7 @@ export function Progress({ step }: { step: 1 | 2 | 3 | 4 }) {
 const monthYear = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' })
 const shortDate = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short' })
 
-type Step = 'importar' | 'regla' | 'duracion' | 'anticonceptivos'
+type Step = 'importar' | 'regla' | 'duracion' | 'dias_regla' | 'anticonceptivos'
 
 interface Props {
   legacy: LegacyData | null
@@ -36,6 +46,7 @@ export function AltaScreen({ legacy, onDone }: Props) {
   const [imported, setImported] = useState(false)
   const [lastPeriod, setLastPeriod] = useState<LocalDate | null>(null)
   const [length, setLength] = useState<number | null>(DEFAULT_LENGTH)
+  const [periodDays, setPeriodDays] = useState<number | null>(DEFAULT_PERIOD_DAYS)
   const [contraception, setContraception] = useState<Contraception | null>(null)
   const [consent, setConsent] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -45,10 +56,11 @@ export function AltaScreen({ legacy, onDone }: Props) {
     if (!contraception) return
     const periods = imported && legacy ? legacy.periods : lastPeriod ? [{ start: lastPeriod }] : []
     const declaredLength = imported && legacy ? legacy.declaredLength : length
+    const declaredPeriodDays = imported ? null : periodDays
     setBusy(true)
     setError(null)
     try {
-      await onDone({ settings: { declaredLength, contraception }, periods, imported })
+      await onDone({ settings: { declaredLength, declaredPeriodDays, contraception }, periods, imported })
     } catch {
       setError('No he podido guardar tus datos. Prueba otra vez.')
       setBusy(false)
@@ -151,13 +163,47 @@ export function AltaScreen({ legacy, onDone }: Props) {
         </div>
         <p className="alta__hint">Entre 21 y 35 días es lo normal. Yo los cuento con los dedos, que tengo muchos.</p>
         <div className="alta__actions">
-          <button type="button" className="btn btn--go" onClick={() => setStep('anticonceptivos')}>
+          <button type="button" className="btn btn--go" onClick={() => setStep('dias_regla')}>
             Continuar
           </button>
-          <button type="button" className="btn btn--ghost" onClick={() => (setLength(null), setStep('anticonceptivos'))}>
+          <button type="button" className="btn btn--ghost" onClick={() => (setLength(null), setStep('dias_regla'))}>
             No lo sé, pon 28
           </button>
           <button type="button" className="alta__link" onClick={() => setStep('regla')}>
+            Volver
+          </button>
+        </div>
+      </main>
+    )
+  }
+
+  if (step === 'dias_regla') {
+    const value = periodDays ?? DEFAULT_PERIOD_DAYS
+    return (
+      <main className="screen alta">
+        <Progress step={3} />
+        <h1 className="alta__title">¿Y cuántos días te dura la regla?</h1>
+        <p className="alta__lead">Del primer día al último. Con esto pinto tus reglas en el calendario; luego lo afino con lo que apuntes.</p>
+        <div className="stepper">
+          <button type="button" aria-label="Un día menos" disabled={value <= MIN_PERIOD_DAYS} onClick={() => setPeriodDays(value - 1)}>
+            −
+          </button>
+          <output aria-live="polite">
+            <strong>{value}</strong> días
+          </output>
+          <button type="button" aria-label="Un día más" disabled={value >= MAX_PERIOD_DAYS} onClick={() => setPeriodDays(value + 1)}>
+            +
+          </button>
+        </div>
+        <p className="alta__hint">Entre 3 y 7 días es lo habitual.</p>
+        <div className="alta__actions">
+          <button type="button" className="btn btn--go" onClick={() => setStep('anticonceptivos')}>
+            Continuar
+          </button>
+          <button type="button" className="btn btn--ghost" onClick={() => (setPeriodDays(null), setStep('anticonceptivos'))}>
+            No lo sé, pon {DEFAULT_PERIOD_DAYS}
+          </button>
+          <button type="button" className="alta__link" onClick={() => setStep('duracion')}>
             Volver
           </button>
         </div>
@@ -210,7 +256,7 @@ export function AltaScreen({ legacy, onDone }: Props) {
         <button type="button" className="btn btn--go" disabled={!contraception || !consent || busy} onClick={finish}>
           Empezar
         </button>
-        <button type="button" className="alta__link" onClick={() => setStep(imported ? 'importar' : 'duracion')}>
+        <button type="button" className="alta__link" onClick={() => setStep(imported ? 'importar' : 'dias_regla')}>
           Volver
         </button>
       </div>
