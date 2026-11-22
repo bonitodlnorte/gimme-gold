@@ -10,11 +10,11 @@ import {
   MAX_PERIOD_DAYS,
   MIN_LENGTH,
   MIN_PERIOD_DAYS,
+  estimatePeriodDays,
   type Contraception,
   type CycleSettings,
   type LengthEstimate,
   type Period,
-  type PeriodDaysEstimate,
 } from '../domain/cycle'
 import { today } from '../domain/dates'
 import { buildExportFile, parseExportFile } from '../domain/legacyImport'
@@ -36,7 +36,6 @@ interface Props {
   settings: CycleSettings
   periods: Period[]
   estimate: LengthEstimate
-  periodEstimate: PeriodDaysEstimate
   avisos: AvisosBackend
   onSaveSettings: (settings: CycleSettings) => Promise<void>
   /** Returns how many periods were new. */
@@ -45,7 +44,7 @@ interface Props {
   onSignOut: () => void
 }
 
-export function AjustesScreen({ email, settings, periods, estimate, periodEstimate, avisos, onSaveSettings, onImport, onDeleteAccount, onSignOut }: Props) {
+export function AjustesScreen({ email, settings, periods, estimate, avisos, onSaveSettings, onImport, onDeleteAccount, onSignOut }: Props) {
   const push = usePush(avisos)
   const [length, setLength] = useState<number | null>(settings.declaredLength)
   const [periodDays, setPeriodDays] = useState<number | null>(settings.declaredPeriodDays ?? null)
@@ -62,10 +61,12 @@ export function AjustesScreen({ email, settings, periods, estimate, periodEstima
     periodDays !== (settings.declaredPeriodDays ?? null) ||
     contraception !== settings.contraception
   const value = length ?? DEFAULT_LENGTH
-  const periodValue = periodDays ?? DEFAULT_PERIOD_DAYS
-  // With history behind them, both numbers are computed and kept up to date: there is nothing to set.
+  // The cycle length is computed from her history as soon as there is one: nothing to set then.
   const lengthAuto = estimate.source === 'historial'
-  const periodAuto = periodEstimate.source === 'historial'
+  // Period days she can always set herself; left unset, this is what her history (or the default) gives.
+  const periodAuto = estimatePeriodDays(periods)
+  const periodValue = periodDays ?? periodAuto.days
+  const periodFromHistory = periodAuto.source === 'historial'
 
   async function save() {
     setSaving(true)
@@ -173,53 +174,44 @@ export function AjustesScreen({ email, settings, periods, estimate, periodEstima
 
         <div className="ajustes__field">
           <span className="alta__label">Días de regla</span>
-          {periodAuto ? (
-            <>
-              <p className="ajustes__auto">
-                <strong>{periodEstimate.days}</strong> días
-              </p>
-              <p className="alta__hint">
-                Lo calculo con{' '}
-                {periodEstimate.basedOn === 1
-                  ? 'la última regla a la que le apuntaste el final'
-                  : `las últimas ${periodEstimate.basedOn} reglas a las que les apuntaste el final`}
-                . Si no te cuadra, corrige las fechas en <Link to="/historial">el historial</Link>.
-              </p>
-            </>
-          ) : (
-            <>
-              <div className="stepper stepper--compact">
-                <button
-                  type="button"
-                  aria-label="Un día menos de regla"
-                  disabled={periodValue <= MIN_PERIOD_DAYS}
-                  onClick={() => (setPeriodDays(periodValue - 1), setSaved(false))}
-                >
-                  −
-                </button>
-                <output aria-live="polite">
-                  <strong>{periodDays === null ? '¿?' : periodValue}</strong> {periodDays === null ? 'no lo sé' : 'días'}
-                </output>
-                <button
-                  type="button"
-                  aria-label="Un día más de regla"
-                  disabled={periodValue >= MAX_PERIOD_DAYS}
-                  onClick={() => (setPeriodDays(periodValue + 1), setSaved(false))}
-                >
-                  +
-                </button>
-              </div>
-              {periodDays !== null && (
-                <button type="button" className="alta__link" onClick={() => (setPeriodDays(null), setSaved(false))}>
-                  No lo sé
-                </button>
-              )}
-              <p className="alta__hint">
-                Cuántos días te suele durar. {periodDays === null ? `Mientras tanto cuento ${DEFAULT_PERIOD_DAYS}. ` : ''}Con esto pinto la
-                regla en el calendario y en el plan, hasta que apuntes cuándo se te acaba alguna.
-              </p>
-            </>
+          <div className="stepper stepper--compact">
+            <button
+              type="button"
+              aria-label="Un día menos de regla"
+              disabled={periodValue <= MIN_PERIOD_DAYS}
+              onClick={() => (setPeriodDays(periodValue - 1), setSaved(false))}
+            >
+              −
+            </button>
+            <output aria-live="polite">
+              <strong>{periodValue}</strong> días
+            </output>
+            <button
+              type="button"
+              aria-label="Un día más de regla"
+              disabled={periodValue >= MAX_PERIOD_DAYS}
+              onClick={() => (setPeriodDays(periodValue + 1), setSaved(false))}
+            >
+              +
+            </button>
+          </div>
+          {periodDays !== null && (
+            <button type="button" className="alta__link" onClick={() => (setPeriodDays(null), setSaved(false))}>
+              {periodFromHistory ? 'Que lo calcule Billy con mi historial' : 'No lo sé'}
+            </button>
           )}
+          <p className="alta__hint">
+            {periodDays !== null
+              ? 'Lo has puesto tú, así que manda este número.'
+              : periodFromHistory
+                ? `Lo calculo con ${
+                    periodAuto.basedOn === 1
+                      ? 'la última regla a la que le apuntaste el final'
+                      : `las últimas ${periodAuto.basedOn} reglas a las que les apuntaste el final`
+                  }. Si no te cuadra, pon tú el número.`
+                : `Cuento ${DEFAULT_PERIOD_DAYS} mientras no me digas otra cosa.`}{' '}
+            Con esto pinto la regla en el calendario y en el plan.
+          </p>
         </div>
 
         <div className="ajustes__field">

@@ -16,7 +16,7 @@ export interface Period {
 
 export interface CycleSettings {
   declaredLength: number | null
-  /** How many days her period usually lasts, as she set it in Ajustes; used until she logs period ends. */
+  /** How many days her period usually lasts, as she set it; null leaves it to her history. */
   declaredPeriodDays?: number | null
   contraception: Contraception
 }
@@ -109,11 +109,12 @@ export interface PeriodDaysEstimate {
 }
 
 /**
- * How many days her period usually lasts: the median of the last 6 periods whose end she logged;
- * without any, what she set in Ajustes, or 5. Same rule as the cycle length (D14).
+ * How many days her period usually lasts (D28). What she set herself always wins; when she set
+ * nothing ("no lo sé"), the median of the last 6 periods whose end she logged, or 5.
  */
 export function estimatePeriodDays(periods: Period[], declaredDays: number | null = null): PeriodDaysEstimate {
   const inRange = (n: number) => n >= MIN_PERIOD_DAYS && n <= MAX_PERIOD_DAYS
+  if (declaredDays !== null && inRange(declaredDays)) return { days: declaredDays, source: 'declarada', basedOn: 0 }
   const recent = [...periods]
     .filter((p) => p.end)
     .sort((a, b) => (a.start < b.start ? 1 : -1))
@@ -121,8 +122,7 @@ export function estimatePeriodDays(periods: Period[], declaredDays: number | nul
     .filter(inRange)
     .slice(0, LENGTHS_WINDOW)
   if (recent.length > 0) return { days: median(recent), source: 'historial', basedOn: recent.length }
-  const declared = declaredDays !== null && inRange(declaredDays) ? declaredDays : null
-  return { days: declared ?? DEFAULT_PERIOD_DAYS, source: declared !== null ? 'declarada' : 'por_defecto', basedOn: 0 }
+  return { days: DEFAULT_PERIOD_DAYS, source: 'por_defecto', basedOn: 0 }
 }
 
 function clampLength(length: number): number {

@@ -47,7 +47,7 @@ Lo que la diferencia es el tono: **el humor es la base de la app**, no un adorno
 | D25 | **La regla es recarga, no una desgracia.** | Billy nunca se lamenta ni llora con la regla: aparece en modo zen. El Billy triste queda para errores. |
 | D26 | **El Plan marca con 🔥 los días «on fire»: cerca de la ovulación, libido y fertilidad a tope (toda Manifestación). La pareja ve el mismo 🔥, sin leyenda.** | Un solo emoji en vez de libido, días fértiles y ovulación por separado, que casi coinciden. Es una estimación: nunca con anticonceptivos hormonales ni con la regla retrasada, y al pulsar un día 🔥 se avisa de que no sirve como método anticonceptivo. En la vista de pareja se oculta si las fases son orientativas. |
 | D27 | **El Plan enseña el pasado como contexto: el mes en curso desde el día 1 y, bajo demanda, el mes anterior.** Los días pasados salen apagados, con las fases, sus ★ y 🔥 y solo las reglas que ella apuntó. | Lo pidieron las usuarias: «lo que viene» se entiende mejor sabiendo de dónde vienes, y lo ya pasado es lo único seguro del calendario. En un ciclo cerrado las fases salen de su duración real. El pasado conserva sus ★ y su 🔥 (salvo en un ciclo con la regla retrasada, donde las fases son una suposición), para que pueda ver qué días le fueron bien. Pulsar un día 🔥 pasado avisa de que la estimación no sirve para saber si hubo riesgo de embarazo. |
-| D28 | **Los días de regla siguen la misma regla que el ciclo: la mediana de las últimas 6 reglas con final apuntado.** Si no hay ninguna, los que ella indique en Ajustes, o 5. | Cuánto dura la regla cambia mucho de una persona a otra y mueve el calendario y el Plan. En Ajustes, lo que ya se calcula con el historial se enseña como dato y no se puede tocar: se corrige en el historial. |
+| D28 | **Los días de regla los puede fijar ella siempre, en el alta y en Ajustes (2 a 10).** Si no los fija ("No lo sé"), se calculan como el ciclo: mediana de las últimas 6 reglas con final apuntado, o 5. | Cuánto dura la regla cambia mucho de una persona a otra y mueve el calendario y el Plan. Una sola regla apuntada no debe quitarle el control: lo que ella pone manda sobre el historial. |
 
 ## 3. Usuarios
 
@@ -122,7 +122,7 @@ La ovulación se estima en el día **O = L − 14**, donde L es la duración del
 - **Usuaria nueva:** indica su duración habitual al darse de alta. Si no la sabe, se usan 28 días.
 - **Con historial:** mediana de los últimos 6 ciclos. La mediana evita que un ciclo raro descoloque las fases.
 - **Ciclos de menos de 21 días o más de 45:** antes de contarlos, la app pregunta si se olvidó registrar una regla.
-- **Días de regla (D28):** igual: mediana de las últimas 6 reglas con final apuntado; sin ninguna, lo que indique en Ajustes (2 a 10 días), o 5.
+- **Días de regla (D28):** manda lo que ella indique (2 a 10 días). Si no indica nada, mediana de las últimas 6 reglas con final apuntado, o 5.
 - **Margen de error:** cuanto más varían sus ciclos, más ancho se muestra el margen en la predicción. Si la diferencia entre ciclos pasa de unos 7 a 9 días, se activa el aviso de ciclo irregular (D12).
 
 **Pendiente:**

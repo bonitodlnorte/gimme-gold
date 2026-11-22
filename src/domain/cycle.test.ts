@@ -164,13 +164,13 @@ describe('phaseRanges', () => {
 })
 
 describe('estimatePeriodDays', () => {
-  it('uses what she set, or 5, until she logs a period end', () => {
+  it('uses what she set, or 5 when she set nothing valid', () => {
     expect(estimatePeriodDays([{ start: '2026-10-01' }])).toMatchObject({ days: 5, source: 'por_defecto' })
     expect(estimatePeriodDays([{ start: '2026-10-01' }], 7)).toMatchObject({ days: 7, source: 'declarada' })
     expect(estimatePeriodDays([{ start: '2026-10-01' }], 40)).toMatchObject({ days: 5, source: 'por_defecto' })
   })
 
-  it('takes the median of the last 6 logged ends over what she set', () => {
+  it('takes the median of the last 6 logged ends when she set nothing, and her number when she did', () => {
     const logged: Period[] = [
       { start: '2026-01-01', end: '2026-01-09' },
       { start: '2026-02-01', end: '2026-02-03' },
@@ -182,7 +182,8 @@ describe('estimatePeriodDays', () => {
       { start: '2026-08-01', end: '2026-08-05' },
     ]
     // 5, 4, 4, 4, 3, 3: the 9-day one from January is the seventh and no longer counts.
-    expect(estimatePeriodDays(logged, 7)).toEqual({ days: 4, source: 'historial', basedOn: 6 })
+    expect(estimatePeriodDays(logged)).toEqual({ days: 4, source: 'historial', basedOn: 6 })
+    expect(estimatePeriodDays(logged, 7)).toEqual({ days: 7, source: 'declarada', basedOn: 0 })
   })
 
   it('sets how long a period without a logged end is taken to last', () => {
