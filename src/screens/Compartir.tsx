@@ -6,7 +6,7 @@ import './Alta.css'
 import './Historial.css'
 import './Compartir.css'
 
-// G-Compartir: one partner link at a time. Only its hash is stored, so the link itself can only be
+// G-Compartir: one partner link at a time, with no expiry: she revokes it or replaces it. Only its hash is stored, so the link itself can only be
 // shared right after creating it; sharing again creates a new one and the old one stops working.
 
 const longDate = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long' })
@@ -87,6 +87,10 @@ export function CompartirScreen({ userId }: { userId: string }) {
         <dd>Tu ventana fértil, tus notas, tu historial ni si se te retrasa la regla.</dd>
       </dl>
 
+      <Link to="/compartir/vista" className="btn btn--ghost compartir__preview">
+        Ver lo que ve tu pareja
+      </Link>
+
       {failed && <p className="alta__error">Algo ha fallado. Prueba otra vez.</p>}
 
       {fresh && (
@@ -107,7 +111,7 @@ export function CompartirScreen({ userId }: { userId: string }) {
             <div className="compartir__active">
               <span>
                 <strong>Enlace activo</strong>
-                <span>Caduca el {longDate.format(new Date(link.expiresAt))}</span>
+                <span>Desde el {longDate.format(new Date(link.createdAt))}. No caduca: lo cortas tú cuando quieras.</span>
               </span>
               <span className="compartir__dot" aria-hidden="true" />
             </div>

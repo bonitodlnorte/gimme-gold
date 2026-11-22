@@ -16,7 +16,7 @@ export const SECCIONES: { titulo: string; parrafos: string[] }[] = [
     parrafos: [
       'Tu email, para que puedas entrar con un código.',
       'Tus datos de salud: las fechas de tus reglas, las notas que escribas, la duración habitual de tu ciclo y si tomas anticonceptivos hormonales.',
-      'Si compartes un enlace con tu pareja, guardamos una huella cifrada del enlace (no el enlace en sí), cuándo se creó y cuándo caduca.',
+      'Si compartes un enlace con tu pareja, guardamos una huella cifrada del enlace (no el enlace en sí), cuándo se creó y si lo has retirado. El enlace no caduca solo: funciona hasta que lo retires o crees otro.',
       'Si activas los avisos, guardamos la dirección técnica que tu teléfono nos da para enviártelos y cuál fue el último aviso. Lo mismo con el teléfono de tu pareja, si los activa desde su enlace. Al desactivarlos se borra.',
       'Nada más: ni tu nombre, ni tu ubicación, ni analítica de uso, ni publicidad.',
     ],

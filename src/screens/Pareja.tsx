@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { AvisosAjuste, AvisosPrompt, usePush, type AvisosBackend } from '../components/Avisos'
 import { Instalar } from '../components/Instalar'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Billy, type BillyMood } from '../components/Billy'
 import { Purpurina, celebrateToday, partyFor, useThemeColor, type PartyKind } from '../components/Purpurina'
 import { Flame, PHASE_HEX } from './Plan'
@@ -48,9 +48,6 @@ export function ParejaScreen() {
   const { token = '' } = useParams()
   const [view, setView] = useState<PartnerView | null | undefined>(undefined)
   const [failed, setFailed] = useState(false)
-  const [showAll, setShowAll] = useState(false)
-  const [party, setParty] = useState<PartyKind | null>(null)
-  useThemeColor(view ? PHASE_HEX[partnerStatus(view, today()).phase] : null)
 
   // His device is saved against the link, by token (D10: no account). Today's key goes with it.
   const avisos = useMemo<AvisosBackend>(() => {
@@ -66,14 +63,6 @@ export function ParejaScreen() {
   useEffect(() => {
     fetchPartnerView(token).then(setView, () => setFailed(true))
   }, [token])
-
-  // Her parties reach him too, in a smaller dose, each time he opens the page.
-  useEffect(() => {
-    if (!view) return
-    const state = partnerStatus(view, today()).state
-    const kind = partyFor(state === 'codigo-rojo' ? 'mimos' : state === 'regla' ? 'recarga' : state)
-    if (celebrateToday(`${kind}-pareja`)) setParty(kind)
-  }, [view])
 
   if (failed || view === null) {
     return (
@@ -93,6 +82,40 @@ export function ParejaScreen() {
     )
   }
 
+  return (
+    <ParejaVista view={view}>
+      <Instalar variant="pareja" />
+      <AvisosAjuste variant="pareja" push={push} />
+      <AvisosPrompt variant="pareja" push={push} />
+
+      <p className="pareja__footer">Te lo ha compartido ella desde Gimme Gold, y puede retirarlo cuando quiera.</p>
+    </ParejaVista>
+  )
+}
+
+/**
+ * What the partner sees for a given view. With `preview` it is her looking at his page from her own
+ * account (Compartir): same content, a banner on top, and none of his extras (install, notifications)
+ * or parties.
+ */
+export function ParejaVista({ view, preview = false, children }: { view: PartnerView; preview?: boolean; children?: ReactNode }) {
+  const [showAll, setShowAll] = useState(false)
+  const [party, setParty] = useState<PartyKind | null>(null)
+  useThemeColor(PHASE_HEX[partnerStatus(view, today()).phase])
+
+  // She arrives from the bottom of Compartir: start at the top, like he does.
+  useEffect(() => {
+    if (preview) window.scrollTo(0, 0)
+  }, [preview])
+
+  // Her parties reach him too, in a smaller dose, each time he opens the page.
+  useEffect(() => {
+    if (preview) return
+    const state = partnerStatus(view, today()).state
+    const kind = partyFor(state === 'codigo-rojo' ? 'mimos' : state === 'regla' ? 'recarga' : state)
+    if (celebrateToday(`${kind}-pareja`)) setParty(kind)
+  }, [view, preview])
+
   const status = partnerStatus(view, today())
   const copy = PARA_PAREJA[status.state]
   const foto = FOTOS_PAREJA[status.state]
@@ -109,6 +132,14 @@ export function ParejaScreen() {
   return (
     <main className="screen ciclo pareja" data-phase={status.phase}>
       {party && <Purpurina kind={party} count={PARTNER_DOSE[party]} onDone={() => setParty(null)} />}
+      {preview && (
+        <p className="pareja__preview">
+          <Link to="/compartir" aria-label="Volver a Tu pareja">
+            ‹ Volver
+          </Link>
+          <span>Vista previa: esto es lo que ve hoy tu pareja</span>
+        </p>
+      )}
       <header className="ciclo__date">
         <p className="eyebrow">{dateLabel.format(toJsDate(today()))}</p>
         <h1>Cómo está ella hoy</h1>
@@ -191,11 +222,7 @@ export function ParejaScreen() {
             )}
           </section>
 
-          <Instalar variant="pareja" />
-          <AvisosAjuste variant="pareja" push={push} />
-          <AvisosPrompt variant="pareja" push={push} />
-
-          <p className="pareja__footer">Te lo ha compartido ella desde Gimme Gold, y puede retirarlo cuando quiera.</p>
+          {children}
         </div>
       </div>
     </main>

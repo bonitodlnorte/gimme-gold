@@ -84,6 +84,7 @@
 }
 
 .compartir__dot {
+  flex: none;
   width: 12px;
   height: 12px;
   border-radius: 999px;
@@ -95,4 +96,11 @@
   .compartir__actions {
     margin-top: 8px;
   }
+}
+
+.compartir__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }

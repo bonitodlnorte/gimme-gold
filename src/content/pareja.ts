@@ -121,5 +121,5 @@ export const AVISO_ORIENTATIVO_PAREJA =
 
 export const ENLACE_NO_VALIDO = {
   headline: 'Este enlace ya no funciona',
-  billy: 'Ha caducado o te lo han retirado. Yo no sé nada, yo solo pasaba por aquí. Pídele uno nuevo, con cariño.',
+  billy: 'Te lo han retirado o ha sido sustituido por otro. Yo no sé nada, yo solo pasaba por aquí. Pídele uno nuevo, con cariño.',
 }
