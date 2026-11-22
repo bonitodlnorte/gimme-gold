@@ -54,8 +54,37 @@
   gap: 8px;
 }
 
-.psheet__choices[data-count='4'] {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.psheet__date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-soft);
+  font-size: 16px;
+}
+
+.psheet__date strong::first-letter {
+  text-transform: uppercase;
+}
+
+.psheet__change {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mimos-ink);
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.psheet__hint .psheet__change {
+  min-height: 0;
+  text-decoration: underline;
 }
 
 .psheet__choice {
@@ -132,4 +161,25 @@
 
 .psheet__delete {
   --btn-ink: var(--mimos-ink);
+}
+
+.psheet__field .stepper {
+  justify-content: space-between;
+  padding: 0;
+}
+
+.psheet__field .stepper button {
+  width: 48px;
+  height: 48px;
+}
+
+.psheet__field .stepper output {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 6px;
+  font-weight: 800;
+}
+
+.psheet__field .stepper strong {
+  font-size: 32px;
 }

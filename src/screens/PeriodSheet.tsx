@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { Billy } from '../components/Billy'
 import { MonthPicker } from '../components/MonthPicker'
 import { Sheet } from '../components/Sheet'
-import type { Period } from '../domain/cycle'
-import { addDays, today, type LocalDate } from '../domain/dates'
+import { DEFAULT_PERIOD_DAYS, type Period } from '../domain/cycle'
+import { addDays, daysBetween, toJsDate, today, type LocalDate } from '../domain/dates'
 import { checkPeriod, type PeriodError } from '../domain/periods'
+import './Alta.css'
 import './PeriodSheet.css'
 
 // Registers a period that just arrived (G-Registrar), adds a past one or edits one from the history.
@@ -21,17 +22,21 @@ const ERRORS: Record<PeriodError, string> = {
 /** How far back the history can be filled in. */
 const HISTORY_MONTHS_BACK = 24
 
+/** The longest period the day counter offers. */
+const MAX_DAYS = 14
+
+const longDate = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })
+const dayMonth = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long' })
+
+/** The start of a period that just arrived: almost always today or yesterday. */
 function DateChoice({
   label,
   value,
   onChange,
-  emptyLabel,
 }: {
   label: string
   value: LocalDate | null
-  onChange: (date: LocalDate | null) => void
-  /** When given, the date is optional and this option clears it. */
-  emptyLabel?: string
+  onChange: (date: LocalDate) => void
 }) {
   const now = today()
   const yesterday = addDays(now, -1)
@@ -39,7 +44,6 @@ function DateChoice({
   const [picking, setPicking] = useState(isOther)
 
   const options: { key: string; label: string; on: boolean; pick: () => void }[] = [
-    ...(emptyLabel ? [{ key: 'none', label: emptyLabel, on: value === null && !picking, pick: () => (setPicking(false), onChange(null)) }] : []),
     { key: 'hoy', label: 'Hoy', on: value === now && !picking, pick: () => (setPicking(false), onChange(now)) },
     { key: 'ayer', label: 'Ayer', on: value === yesterday && !picking, pick: () => (setPicking(false), onChange(yesterday)) },
     { key: 'otro', label: 'Otro día', on: picking, pick: () => setPicking(true) },
@@ -48,7 +52,7 @@ function DateChoice({
   return (
     <fieldset className="psheet__field">
       <legend>{label}</legend>
-      <div className="psheet__choices" data-count={options.length}>
+      <div className="psheet__choices">
         {options.map((o) => (
           <button key={o.key} type="button" aria-pressed={o.on} className={`psheet__choice${o.on ? ' is-on' : ''}`} onClick={o.pick}>
             {o.label}
@@ -56,6 +60,81 @@ function DateChoice({
         ))}
       </div>
       {picking && <MonthPicker value={value} onChange={onChange} maxMonthsBack={HISTORY_MONTHS_BACK} />}
+    </fieldset>
+  )
+}
+
+/** The start of a period from the history: a calendar, with no Hoy/Ayer shortcuts. */
+function PastDate({ label, value, onChange }: { label: string; value: LocalDate | null; onChange: (date: LocalDate) => void }) {
+  const [picking, setPicking] = useState(value === null)
+
+  return (
+    <fieldset className="psheet__field">
+      <legend>{label}</legend>
+      {value && (
+        <div className="psheet__date">
+          <strong>{longDate.format(toJsDate(value))}</strong>
+          {!picking && (
+            <button type="button" className="psheet__change" onClick={() => setPicking(true)}>
+              Cambiar
+            </button>
+          )}
+        </div>
+      )}
+      {picking && <MonthPicker value={value} onChange={onChange} maxMonthsBack={HISTORY_MONTHS_BACK} />}
+    </fieldset>
+  )
+}
+
+/** How many days a period lasted, counting the first one. Null when she does not know. */
+function DaysChoice({
+  start,
+  value,
+  max,
+  onChange,
+}: {
+  start: LocalDate
+  value: number | null
+  max: number
+  onChange: (days: number | null) => void
+}) {
+  return (
+    <fieldset className="psheet__field">
+      <legend>¿Cuántos días duró?</legend>
+      <div className="stepper">
+        <button type="button" aria-label="Un día menos" disabled={value === null || value <= 1} onClick={() => onChange((value ?? 2) - 1)}>
+          −
+        </button>
+        <output aria-live="polite">
+          {value === null ? (
+            'No lo sé'
+          ) : (
+            <>
+              <strong>{value}</strong> {value === 1 ? 'día' : 'días'}
+            </>
+          )}
+        </output>
+        <button
+          type="button"
+          aria-label="Un día más"
+          disabled={value !== null && value >= max}
+          onClick={() => onChange(value === null ? Math.min(DEFAULT_PERIOD_DAYS, max) : value + 1)}
+        >
+          +
+        </button>
+      </div>
+      {value !== null && (
+        <p className="psheet__hint">
+          {value === 1
+            ? `Solo el ${dayMonth.format(toJsDate(start))}.`
+            : `Del ${
+                start.slice(0, 7) === addDays(start, value - 1).slice(0, 7) ? Number(start.slice(8)) : dayMonth.format(toJsDate(start))
+              } al ${dayMonth.format(toJsDate(addDays(start, value - 1)))}.`}{' '}
+          <button type="button" className="psheet__change" onClick={() => onChange(null)}>
+            No lo sé
+          </button>
+        </p>
+      )}
     </fieldset>
   )
 }
@@ -73,11 +152,16 @@ interface Props {
 
 export function PeriodSheet({ mode, periods, initial, onSave, onDelete, onClose }: Props) {
   const [start, setStart] = useState<LocalDate | null>(initial?.start ?? (mode === 'ha-llegado' ? today() : null))
-  const [end, setEnd] = useState<LocalDate | null>(initial?.end ?? null)
+  const [days, setDays] = useState<number | null>(initial?.end ? daysBetween(initial.start, initial.end) + 1 : null)
   const [note, setNote] = useState(initial?.note ?? '')
   const [busy, setBusy] = useState(false)
   const [failed, setFailed] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+
+  // The length is what she sets: moving the start moves the end with it, never past today.
+  const maxDays = start ? Math.max(1, Math.min(daysBetween(start, today()) + 1, Math.max(MAX_DAYS, days ?? 0))) : 1
+  const shownDays = days === null ? null : Math.min(days, maxDays)
+  const end = start && shownDays !== null ? addDays(start, shownDays - 1) : null
 
   const candidate: Period | null = start ? { start, end, note } : null
   const check = candidate ? checkPeriod(periods, candidate, today(), initial?.start) : null
@@ -111,9 +195,13 @@ export function PeriodSheet({ mode, periods, initial, onSave, onDelete, onClose 
         </div>
       </div>
 
-      <DateChoice label="¿Cuándo empezó?" value={start} onChange={setStart} />
-      {mode !== 'ha-llegado' && start && (
-        <DateChoice label="¿Cuándo terminó?" value={end} onChange={setEnd} emptyLabel="No lo sé" />
+      {mode === 'ha-llegado' ? (
+        <DateChoice label="¿Cuándo empezó?" value={start} onChange={setStart} />
+      ) : (
+        <>
+          <PastDate label="¿Qué día empezó?" value={start} onChange={setStart} />
+          {start && start <= today() && <DaysChoice start={start} value={shownDays} max={maxDays} onChange={setDays} />}
+        </>
       )}
 
       <div className="psheet__field">
