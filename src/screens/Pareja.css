@@ -19,6 +19,20 @@
   object-fit: cover;
 }
 
+/* Small files (gifs) keep their own size on a soft background instead of being stretched. */
+.pareja__photo--small {
+  background: var(--surface-soft);
+}
+
+.pareja__photo--small img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  margin: 16px auto 0;
+  border-radius: 12px;
+}
+
 .pareja__photo figcaption {
   padding: 10px 16px;
   font-size: 16px;
