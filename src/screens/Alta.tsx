@@ -183,7 +183,7 @@ export function AltaScreen({ legacy, onDone }: Props) {
       <main className="screen alta">
         <Progress step={3} />
         <h1 className="alta__title">¿Y cuántos días te dura la regla?</h1>
-        <p className="alta__lead">Del primer día al último. Con esto pinto tus reglas en el calendario; luego lo afino con lo que apuntes.</p>
+        <p className="alta__lead">Del primer día al último. Con esto pinto tus reglas en el calendario. Lo puedes cambiar cuando quieras en Ajustes.</p>
         <div className="stepper">
           <button type="button" aria-label="Un día menos" disabled={value <= MIN_PERIOD_DAYS} onClick={() => setPeriodDays(value - 1)}>
             −
