@@ -69,7 +69,7 @@ interface Props {
 }
 
 export function PlanScreen({ status, periods, contraception }: Props) {
-  const fc = useMemo(() => forecast(status, periods), [status, periods])
+  const fc = useMemo(() => forecast(status), [status])
   const [goal, setGoal] = useState<GoalId | null>(null)
   const [open, setOpen] = useState<{ day: ForecastDay | PastDay; planned: boolean } | null>(null)
   const [pickDate, setPickDate] = useState(false)

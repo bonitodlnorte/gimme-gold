@@ -2,7 +2,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { sendNotification, setVapidDetails } from 'web-push'
 import { AVISOS_ELLA, AVISOS_PAREJA, type AvisoCopy } from '../../src/content/avisos.js'
 import { avisoElla, avisoPareja } from '../../src/domain/avisos.js'
-import { cycleStatus, type Contraception, type Period } from '../../src/domain/cycle.js'
+import { cycleStatus, type Contraception, type CycleSettings, type Period } from '../../src/domain/cycle.js'
 import type { LocalDate } from '../../src/domain/dates.js'
 
 // Sending notifications, shared by the daily cron (api/avisos.ts) and the on-the-spot call when she logs her
@@ -79,12 +79,16 @@ export async function enviarAvisos(admin: SupabaseClient, rows: SubscriptionRow[
 
   const owners = [...new Set([...rows.map((r) => r.user_id), ...linkOwner.values()].filter((x): x is string => x !== null))]
   const [{ data: profiles }, { data: periods }] = await Promise.all([
-    admin.from('profiles').select('user_id, declared_cycle_length, contraception').in('user_id', owners),
+    admin.from('profiles').select('user_id, declared_cycle_length, declared_period_days, contraception').in('user_id', owners),
     admin.from('periods').select('user_id, start_date, end_date').in('user_id', owners).order('start_date'),
   ])
-  const settingsOf = new Map<string, { declaredLength: number | null; contraception: Contraception }>()
+  const settingsOf = new Map<string, CycleSettings>()
   for (const p of profiles ?? []) {
-    settingsOf.set(p.user_id as string, { declaredLength: p.declared_cycle_length as number | null, contraception: p.contraception as Contraception })
+    settingsOf.set(p.user_id as string, {
+      declaredLength: p.declared_cycle_length as number | null,
+      declaredPeriodDays: p.declared_period_days as number | null,
+      contraception: p.contraception as Contraception,
+    })
   }
   const periodsOf = new Map<string, Period[]>()
   for (const p of periods ?? []) {

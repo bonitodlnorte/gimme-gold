@@ -16,6 +16,8 @@ export interface Period {
 
 export interface CycleSettings {
   declaredLength: number | null
+  /** How many days her period usually lasts, as she set it in Ajustes; used until she logs period ends. */
+  declaredPeriodDays?: number | null
   contraception: Contraception
 }
 
@@ -26,6 +28,8 @@ export const LENGTHS_WINDOW = 6
 /** Spread between the shortest and longest recent cycle above which the cycle counts as irregular. */
 export const IRREGULAR_SPREAD = 7
 export const DEFAULT_PERIOD_DAYS = 5
+export const MIN_PERIOD_DAYS = 2
+export const MAX_PERIOD_DAYS = 10
 const LUTEAL_DAYS = 14
 
 export const PHASE_NAMES: Record<Phase, string> = {
@@ -97,6 +101,30 @@ export function estimateCycleLength(periods: Period[], declaredLength: number | 
   }
 }
 
+export interface PeriodDaysEstimate {
+  days: number
+  source: 'historial' | 'declarada' | 'por_defecto'
+  /** Number of periods with a logged end behind the estimate. */
+  basedOn: number
+}
+
+/**
+ * How many days her period usually lasts: the median of the last 6 periods whose end she logged;
+ * without any, what she set in Ajustes, or 5. Same rule as the cycle length (D14).
+ */
+export function estimatePeriodDays(periods: Period[], declaredDays: number | null = null): PeriodDaysEstimate {
+  const inRange = (n: number) => n >= MIN_PERIOD_DAYS && n <= MAX_PERIOD_DAYS
+  const recent = [...periods]
+    .filter((p) => p.end)
+    .sort((a, b) => (a.start < b.start ? 1 : -1))
+    .map((p) => daysBetween(p.start, p.end!) + 1)
+    .filter(inRange)
+    .slice(0, LENGTHS_WINDOW)
+  if (recent.length > 0) return { days: median(recent), source: 'historial', basedOn: recent.length }
+  const declared = declaredDays !== null && inRange(declaredDays) ? declaredDays : null
+  return { days: declared ?? DEFAULT_PERIOD_DAYS, source: declared !== null ? 'declarada' : 'por_defecto', basedOn: 0 }
+}
+
 function clampLength(length: number): number {
   return Math.min(MAX_LENGTH, Math.max(MIN_LENGTH, length))
 }
@@ -137,6 +165,7 @@ export interface CycleStatus {
   cycleDay: number
   phase: Phase
   estimate: LengthEstimate
+  periodEstimate: PeriodDaysEstimate
   /** Days past the expected start of the next period; 0 when not late. */
   daysLate: number
   periodOngoing: boolean
@@ -169,7 +198,8 @@ export function cycleStatus(periods: Period[], settings: CycleSettings, on: Loca
   const margin = nextPeriodMargin(estimate)
   const expected = addDays(current.start, length)
 
-  const periodOngoing = current.end ? on <= current.end : cycleDay <= DEFAULT_PERIOD_DAYS
+  const periodEstimate = estimatePeriodDays(periods, settings.declaredPeriodDays ?? null)
+  const periodOngoing = current.end ? on <= current.end : cycleDay <= periodEstimate.days
 
   let fertile: boolean | null = null
   if (settings.contraception !== 'si' && daysLate === 0) {
@@ -183,6 +213,7 @@ export function cycleStatus(periods: Period[], settings: CycleSettings, on: Loca
     cycleDay,
     phase: daysLate > 0 ? 'mimos' : phaseForCycleDay(cycleDay, length),
     estimate,
+    periodEstimate,
     daysLate,
     periodOngoing,
     periodEndLogged: Boolean(current.end),

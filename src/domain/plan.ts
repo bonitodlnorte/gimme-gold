@@ -3,7 +3,6 @@
 // with the square root of the number of cycles ahead (independent cycle-to-cycle variation).
 
 import {
-  DEFAULT_PERIOD_DAYS,
   MAX_LENGTH,
   ovulationDay,
   sortedStarts,
@@ -42,24 +41,9 @@ export interface Forecast {
   late: boolean
 }
 
-function median(values: number[]): number {
-  const sorted = [...values].sort((a, b) => a - b)
-  const mid = Math.floor(sorted.length / 2)
-  return sorted.length % 2 === 1 ? sorted[mid]! : Math.round((sorted[mid - 1]! + sorted[mid]!) / 2)
-}
-
-/** How many days her period usually lasts, from the ends she logged. */
-export function typicalPeriodDays(periods: Period[]): number {
-  const lengths = periods
-    .filter((p) => p.end)
-    .map((p) => daysBetween(p.start, p.end!) + 1)
-    .filter((n) => n >= 2 && n <= 10)
-  return lengths.length > 0 ? median(lengths) : DEFAULT_PERIOD_DAYS
-}
-
-export function forecast(status: CycleStatus, periods: Period[], horizon = HORIZON_DAYS): Forecast {
+export function forecast(status: CycleStatus, horizon = HORIZON_DAYS): Forecast {
   const length = status.estimate.length
-  const periodDays = typicalPeriodDays(periods)
+  const periodDays = status.periodEstimate.days
   const late = status.daysLate > 0
   const baseMargin = daysBetween(status.nextPeriod.expected, status.nextPeriod.latest)
   // When late, assume the period could start any day now: the next cycle starts tomorrow.
@@ -137,7 +121,7 @@ export interface PastDay {
 export function pastDays(status: CycleStatus, periods: Period[], from: LocalDate): PastDay[] {
   const starts = sortedStarts(periods)
   const ends = new Map(periods.map((p) => [p.start, p.end ?? null]))
-  const usual = typicalPeriodDays(periods)
+  const usual = status.periodEstimate.days
   const days: PastDay[] = []
   for (let date = from; date < status.date; date = addDays(date, 1)) {
     let i = starts.length - 1
