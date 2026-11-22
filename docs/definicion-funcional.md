@@ -60,7 +60,7 @@ Lo que la diferencia es el tono: **el humor es la base de la app**, no un adorno
 ### Pareja
 
 - No tiene cuenta. Entra con un enlace que le comparte la usuaria.
-- La usuaria puede revocar el enlace cuando quiera, y el enlace puede caducar.
+- La usuaria puede revocar el enlace cuando quiera, o crear uno nuevo, que invalida el anterior. El enlace no caduca solo: a los 90 días la vista de pareja y sus avisos se rompían sin que nadie hubiera hecho nada. La pantalla «Tu pareja» enseña desde cuándo está activo.
 - **Objetivo:** ayudar a quien convive con ella a entender cómo está según su ciclo hormonal, y facilitar la comunicación y la convivencia.
 - **Qué ve:** cómo está ella hoy y planes concretos que encajan con su momento. Por ejemplo, "hoy es buen día para salir a cenar" o "hoy toca plan en casa con manta y series". También ve qué viene en los próximos días.
 - **No ve la ventana fértil** ni ninguna información de fertilidad.

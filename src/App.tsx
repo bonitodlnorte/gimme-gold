@@ -32,6 +32,7 @@ import { CicloScreen } from './screens/Ciclo'
 import { CompartirScreen } from './screens/Compartir'
 import { HistorialScreen } from './screens/Historial'
 import { LoginScreen } from './screens/Login'
+import { ParejaVista } from './screens/Pareja'
 import { PlanScreen } from './screens/Plan'
 
 type UserData = { profile: Profile | null; periods: Period[] }
@@ -170,6 +171,16 @@ export function App() {
       <Route path="/aprender" element={<AprenderScreen cycleLength={status.estimate.length} currentPhase={status.phase} />} />
       <Route path="/aprender/:tema" element={<FichaScreen cycleLength={status.estimate.length} currentPhase={status.phase} />} />
       <Route path="/compartir" element={<CompartirScreen userId={userId} />} />
+      {/* Her own look at the partner page, built from the same three values partner_view() gives him. */}
+      <Route
+        path="/compartir/vista"
+        element={
+          <ParejaVista
+            preview
+            view={{ cycleStart: status.cycleStart, cycleLength: status.estimate.length, orientative: status.showWarning }}
+          />
+        }
+      />
       <Route
         path="/ajustes"
         element={

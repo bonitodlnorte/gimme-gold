@@ -127,13 +127,13 @@ async function sha256Hex(text: string): Promise<string> {
 }
 
 export interface PartnerLink {
-  expiresAt: string
+  createdAt: string
 }
 
 export async function loadPartnerLink(userId: string): Promise<PartnerLink | null> {
   const { data, error } = await supabase
     .from('partner_links')
-    .select('expires_at')
+    .select('created_at')
     .eq('user_id', userId)
     .is('revoked_at', null)
     .gt('expires_at', new Date().toISOString())
@@ -141,7 +141,7 @@ export async function loadPartnerLink(userId: string): Promise<PartnerLink | nul
     .limit(1)
     .maybeSingle()
   if (error) throw error
-  return data ? { expiresAt: data.expires_at } : null
+  return data ? { createdAt: data.created_at } : null
 }
 
 export async function revokePartnerLinks(userId: string): Promise<void> {
